@@ -6,7 +6,8 @@ const bcrypt = require("bcryptjs")
 const UserAuthentication = require("../../usecase/User/UserAuthenticationUseCase.js")
 const rootUser = new UserUseCases();
 const authUser = new UserAuthentication()
-
+const RoleUseCases = require("../../usecase/Assets/Role/RoleUseCases.js")
+const Role = new RoleUseCases();
 
 
 //USER ADMINISTRATION ROUTES
@@ -80,16 +81,7 @@ router.delete("/homepage/User_Administration/user_management/user_profile/delete
 
 //USER LOGIN ROUTES 
 //- requires JWT authentication and OTP verification
-/*router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await rootUser.login(email, password);
-    //console.log("user is" +user);
-    res.json({message: "Login successful"});
-  } catch (error) {
-    res.status(401).json({ error: error.message });
-  }
-});*/
+
 //should return JWT token and user ROLE ID to frontend
 router.post("/login", async (req, res) => {
   try {
@@ -166,9 +158,6 @@ router.post("/login/verify_acc/email_verification/resendOTP", async (req, res) =
     res.status(401).json({ error: error.message });
   }
 });
-
-
-
 
 
 //middleware for JWT authentication
