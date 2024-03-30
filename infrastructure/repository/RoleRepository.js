@@ -122,10 +122,6 @@ async updateRole(roleId, roleData) {
   }
 }
 }
-
-
-
-
   
 module.exports = RoleRepository;
 
