@@ -28,7 +28,7 @@ class RoleRepository {
       const query = `
         CREATE TABLE role (
         id SERIAL PRIMARY KEY,
-        TypeofRole VARCHAR(255)         
+        TypeofRole VARCHAR(255) NOT NULL UNIQUE        
       );
       `;
       await this.pool.query(query);
