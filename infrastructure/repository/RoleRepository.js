@@ -48,13 +48,15 @@ class RoleRepository {
    try {
       const query = `
       INSERT INTO role (TypeofRole) VALUES ($1)
+      RETURNING id;
       `;
       const values = [role.TypeofRole];
   
       const result = await this.pool.query(query, values);
-      console.log("Role added successfully");
-      console.log(result);     
-      return result.rows[0];
+      console.log("Role added successfully");    
+      const roleId = result.rows[0].id;
+      console.log('Role added successfully with ID:', roleId);
+      return roleId;
       
     } catch (err) {
       console.error(err);

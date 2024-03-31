@@ -8,10 +8,11 @@ class RoleUseCases {
     this.roleRepository = new RoleRepository();
   }
 
+  //extract the ID to send as respond
   async addRole(roleData) {
     const newRole = new Role(roleData);
-    await this.roleRepository.addRole(newRole);
-    return newRole;
+    const roleid = await this.roleRepository.addRole(newRole);
+    return {newRole,roleid};
   }
 
  async getAllRoles() {
