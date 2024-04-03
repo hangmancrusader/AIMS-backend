@@ -13,8 +13,8 @@ class HostingUseCases {
     console.log(hostingData);
     // Logic to add a new user
     const newHost = new Hositng(hostingData);
-    await this.hostingRepository.addHosting(newHost);
-    return newHost;
+    const id = await this.hostingRepository.addHosting(newHost);
+    return {newHost,id};
   }
 
   async getUser(userId) {
@@ -36,17 +36,7 @@ class HostingUseCases {
     await this.userRepository.updateUser(userId, userData);
   }
 
-  async login(email, password) {
-    // Logic to authenticate a user
-    
-    const {currentpassword} = await this.userRepository.getUserByEmail(email);
-    if(currentpassword === password) {
-      return currentpassword;
-    }
-    else{
-      throw new Error('Invalid email or password');
-    }
-  }//end of login
+//end of login
 }
 
 module.exports = HostingUseCases;

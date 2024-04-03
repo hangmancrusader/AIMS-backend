@@ -6,8 +6,7 @@ const bcrypt = require("bcryptjs")
 const UserAuthentication = require("../../usecase/User/UserAuthenticationUseCase.js")
 const rootUser = new UserUseCases();
 const authUser = new UserAuthentication()
-const RoleUseCases = require("../../usecase/Assets/Role/RoleUseCases.js")
-const Role = new RoleUseCases();
+
 
 
 //USER ADMINISTRATION ROUTES
