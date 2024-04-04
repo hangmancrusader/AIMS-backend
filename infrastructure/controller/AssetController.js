@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt  = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
-//const AssetUseCases = require("../../usecase/Assets/Application/ApplicationUseCases");
-//const Asset = new HostingUseCases();// create Assetusecase.js
+const AssetUseCases = require("../../usecase/Assets/AssetUseCases");
+const Asset = new AssetUseCases();// create Assetusecase.js
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
 //a separate repo only for creating and altering tables

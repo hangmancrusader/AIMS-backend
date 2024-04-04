@@ -13,8 +13,8 @@ class ApplicationUseCases {
     console.log(Data);
     
     const newApp = new Application(Data);
-    await this.applicationRepository.add(newApp);
-    return newApp;
+    const id = await this.applicationRepository.add(newApp);
+    return {newApp,id};
   }
 
   async get(Id) {

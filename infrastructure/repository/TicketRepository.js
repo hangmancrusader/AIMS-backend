@@ -5,7 +5,7 @@ const express = require('express')
 const app =express();
 app.use(express.json());
 //the connectoptions will be initilized with dbconfig when dbconfig is imported in index.js
-class ServiceRepository {
+class TicketRepository {
   constructor() {
     this.pool = connectionOptions;
   }
@@ -37,7 +37,7 @@ async update(Id, Data) {
 
 }
   
-module.exports = ServiceRepository;
+module.exports = TicketRepository;
 
 
 

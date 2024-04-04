@@ -1,6 +1,6 @@
 // UseCases for User Administration done by a Root/Other Role
-const HostingRepository = require('../../infrastructure/repository/HostingRepository.js');
-const Hositng = require('../../entitities/Hosting.js')
+const HostingRepository = require('../../../infrastructure/repository/HostingRepository.js');
+const Hositng = require('../../../entitities/Hosting.js')
 class HostingUseCases {
 
   constructor()
@@ -8,7 +8,7 @@ class HostingUseCases {
     this.hostingRepository = new HostingRepository();
   }
 
-  async addHosting(hostingData) {
+  async add(hostingData) {
     // Log the userData object
     console.log(hostingData);
     // Logic to add a new user
@@ -17,26 +17,25 @@ class HostingUseCases {
     return {newHost,id};
   }
 
-  async getUser(userId) {
-    console.log(userId);
-    return await this.userRepository.getUser(userId);
+  async get(Id) {
+    console.log(Id);
+    return await this.hostingRepository.getUser(Id);
   }
 
 
-  async getAllUsers() {
-    return await this.userRepository.getAllUsers();
+  async getAll() {
+    return await this.hostingRepository.getAll();
   }
 
-  async deleteUser(userId) {
-    await this.userRepository.deleteUser(userId);
+  async delete(Id) {
+    await this.hostingRepository.deleteUser(Id);
   }
 
-  async updateUser(userId, userData) {
+  async update(Id, Data) {
     // Logic to update a user
-    await this.userRepository.updateUser(userId, userData);
+    await this.hostingRepository.update(Id, Data);
   }
 
-//end of login
 }
 
 module.exports = HostingUseCases;
