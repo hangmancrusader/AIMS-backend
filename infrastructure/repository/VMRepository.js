@@ -13,9 +13,109 @@ class VMRepository {
 
   // class functionss
  
- async add(Data) {
-    
-  }////////////////////////////////////////////////////////////////
+  async add(data) {
+    try
+    {
+    const query = `
+    INSERT INTO virtualmachine (
+      netdevID,
+      secsolID,
+      appID,
+      dbID,
+      VMname,
+      Hostname,
+      CPUconfig,
+      AssetBarcode,
+      StorageConfigSpecs,
+      type,
+      version,
+      host,
+      OStype,
+      License,
+      Firewallconfig,
+      SecSW,
+      SecSoln,
+      Encryption,
+      IPAddress,
+      macaddress,
+      DNS,
+      Subnet,
+      Gateway,
+      deploymentMethod,
+      decomissionDate,
+      serviceProv,
+      SSinfo,
+      BackupFreq,
+      "Method",
+      integrationwithtools,
+      mentionif,
+      Currentlocation,
+      Dept,
+      Status,
+      "Condition",
+      purchasedate,
+      cost
+    )
+    VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+      $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
+      $21, $22, $23, $24, $25, $26, $27, $28, $29, $30,
+      $31, $32, $33, $34, $35, $36, $37
+    )
+    RETURNING id;
+
+    `;
+    const values = [
+      data.netdevID,
+      data.secsolID,
+      data.appID,
+      data.dbID,
+      data.VMname,
+      data.Hostname,
+      data.CPUconfig,
+      data.AssetBarcode,
+      data.StorageConfigSpecs,
+      data.type,
+      data.version,
+      data.host,
+      data.OStype,
+      data.License,
+      data.Firewallconfig,
+      data.SecSW,
+      data.SecSoln,
+      data.Encryption,
+      data.IPAddress,
+      data.macaddress,
+      data.DNS,
+      data.Subnet,
+      data.Gateway,
+      data.deploymentMethod,
+      data.decomissionDate,
+      data.serviceProv,
+      data.SSinfo,
+      data.BackupFreq,
+      data.Method,
+      data.integrationwithtools,
+      data.mentionif,
+      data.Currentlocation,
+      data.Dept,
+      data.Status,
+      data.Condition,
+      data.purchasedate,
+      data.cost
+    ];
+     
+    const result = await this.pool.query(query, values);
+    console.log("VM added successfully");    
+    const id = result.rows[0].id;
+    console.log('VM added successfully with ID:', id);
+    return id;
+  }
+  catch (err) {
+    console.error(err);
+    console.log("Not added ");
+  }
+}/////////////////////////////////////////////////////////////////
 
  
  async get(Id) {

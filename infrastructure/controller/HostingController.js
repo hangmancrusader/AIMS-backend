@@ -28,7 +28,7 @@ const TablesRepository = new TablesRepo();
 
   router.post("/addhosting",async (req, res) => {
     try {
-      console.log(req.body)
+      //console.log(req.body)
       const data = req.body;
       const result = await Hosting.add(data);// the db returns the id of new Laptop
       res.status(201).json(result);

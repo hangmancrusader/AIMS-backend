@@ -13,8 +13,8 @@ class VMUseCases {
     console.log(Data);
     
     const newVM = new VM(Data);
-    await this.vmRepository.add(newVM);
-    return newVM;
+    const id = await this.vmRepository.add(newVM);
+    return {id};
   }
 
   async get(Id) {

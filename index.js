@@ -39,19 +39,19 @@ app.use(express.json());
 
 app.use('/AIMS', userRoutes);
 app.use('/AIMS', roleRoutes);
-//app.use('/AIMS', hostingRoutes);
-//app.use('/AIMS',vmRoutes); 
-//app.use('/AIMS', databaseRoutes);
+app.use('/AIMS', hostingRoutes);
+app.use('/AIMS',vmRoutes); 
+app.use('/AIMS', databaseRoutes);
 //app.use('/AIMS', applicationRoutes);
 //app.use('/AIMS', netdevRoutes);
 //app.use('/AIMS',endpointdevRoutes);
 //app.use('/AIMS', serviceRoutes);
 //app.use('/AIMS', securitysolutionRoutes);
-//app.use('/AIMS', laptopsRoutes);
-//app.use('/AIMS', printerRoutes);
-//app.use('/AIMS', voipRoutes);
-//app.use('/AIMS', ticketRoutes);
-//app.use('/AIMS', mobileRoutes);
+app.use('/AIMS', laptopsRoutes);
+app.use('/AIMS', printerRoutes);
+app.use('/AIMS', voipRoutes);
+app.use('/AIMS', ticketRoutes);
+app.use('/AIMS', mobileRoutes);
 //app.use('/AIMS', assetRoutes);
 
 //all tables created

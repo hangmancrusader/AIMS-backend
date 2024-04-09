@@ -13,8 +13,8 @@ class MobilePhoneUseCases {
     console.log(Data);
     
     const newMobPhone = new MobPhone(Data);
-    await this.mobPhoneRepo.add(newMobPhone);
-    return newMobPhone;
+    const id = await this.mobPhoneRepo.add(newMobPhone);
+    return {id};
   }
 
   async get(Id) {

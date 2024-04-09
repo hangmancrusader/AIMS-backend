@@ -13,8 +13,8 @@ class VoIPUseCases {
     console.log(Data);
     
     const newVoIP = new VoIP(Data);
-    await this.voipRepo.add(newVoIP);
-    return newVoIP;
+    const id = await this.voipRepo.add(newVoIP);
+    return {id};
   }
 
   async get(Id) {

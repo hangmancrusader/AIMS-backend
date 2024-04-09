@@ -13,8 +13,8 @@ class PrinterUseCases {
     console.log(Data);
     
     const newPrinter = new Printer(Data);
-    await this.printerRepo.add(newPrinter);
-    return newPrinter;
+    const id = await this.printerRepo.add(newPrinter);
+    return {id};
   }
 
   async get(Id) {

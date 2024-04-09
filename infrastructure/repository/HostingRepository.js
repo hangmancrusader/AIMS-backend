@@ -1,5 +1,4 @@
-//const { Pool } = require('pg');
-const port = 8080
+
 const connectionOptions = require('../connection/db.js')
 const express = require('express')
 const app =express();
@@ -13,9 +12,57 @@ class HostingRepository {
 
   // class functionss
  
- async add(Data) {
+  async add(data) {
+    try
+    {
+    const query = `
+    INSERT INTO hosting ( vmID,hostname, CloudProv, CloudPlan, SLAdeets, CPAccessURL, CPLoginUserName, CPLoginUserPassword, SSHhn, BillingCycle, NextRenewaldate, BilingContact, BackupFreq, TimeforBACKUP, Timingsfrom, TimingsTo, SSLcertif, CertifExpiry, TechSupportContact, EmergencyContact, SubscriptionStartDate, SubscriptionEnddate, MonthlyCost, AccountID, Hypervisortype, VersionHV, HostHV)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26,$27)
+    RETURNING id;
+    `;
+    const values = [
+      data.vmID,
+      data.hostname,
+      data.CloudProv,
+      data.CloudPlan,
+      data.SLAdeets,
+      data.CPAccessURL,
+      data.CPLoginUserName,
+      data.CPLoginUserPassword,
+      data.SSHhn,
+      data.BillingCycle,
+      data.NextRenewaldate,
+      data.BilingContact,
+      data.BackupFreq,
+      data.TimeforBACKUP,
+      data.Timingsfrom,
+      data.TimingsTo,
+      data.SSLcertif,
+      data.CertifExpiry,
+      data.TechSupportContact,
+      data.EmergencyContact,
+      data.SubscriptionStartDate,
+      data.SubscriptionEnddate,
+      data.MonthlyCost,
+      data.AccountID,
+      data.Hypervisortype,
+      data.VersionHV,
+      data.HostHV
+    ];
     
-  }////////////////////////////////////////////////////////////////
+    
+  
+    const result = await this.pool.query(query, values);
+    console.log("Hosting added successfully");    
+    const id = result.rows[0].id;
+    console.log('Hosting added successfully with ID:', id);
+    return id;
+  }
+  catch (err) {
+    console.error(err);
+    console.log("Not added ");
+  }
+}////////////////////////////////////////////////////////////////
 
  
  async get(Id) {

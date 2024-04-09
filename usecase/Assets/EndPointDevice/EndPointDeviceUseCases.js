@@ -13,8 +13,8 @@ class EndPointDeviceUseCases {
     console.log(Data);
     
     const newDev = new EndPointDev(Data);
-    await this.EndPointDevRepository.add(newDev);
-    return newDev;
+    const id = await this.EndPointDevRepository.add(newDev);
+    return {id};
   }
 
   async get(Id) {

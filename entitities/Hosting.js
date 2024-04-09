@@ -30,7 +30,7 @@ class Hosting {
       HostHV
     }) {
       this.id = id;
-      this.vm = vmID;
+      this.vmID = vmID;
       this.hostname = hostname;
       this.CloudProv = CloudProv;
       this.CloudPlan = CloudPlan;
@@ -51,7 +51,7 @@ class Hosting {
       this.TechSupportContact = TechSupportContact;
       this.EmergencyContact = EmergencyContact;
       this.SubscriptionStartDate = SubscriptionStartDate;
-      this.SubscriptiDatabase;ase;ase;date = SubscriptionEnddate;
+      this.SubscriptionEnddate = SubscriptionEnddate;
       this.MonthlyCost = MonthlyCost;
       this.AccountID = AccountID;
       this.Hypervisortype = Hypervisortype;

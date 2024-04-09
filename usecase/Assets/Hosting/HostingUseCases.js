@@ -1,6 +1,6 @@
-// UseCases for User Administration done by a Root/Other Role
+// UseCases for User Administration done by a Roo
 const HostingRepository = require('../../../infrastructure/repository/HostingRepository.js');
-const Hositng = require('../../../entitities/Hosting.js')
+const Hosting = require('../../../entitities/Hosting.js')
 class HostingUseCases {
 
   constructor()
@@ -12,14 +12,14 @@ class HostingUseCases {
     // Log the userData object
     console.log(hostingData);
     // Logic to add a new user
-    const newHost = new Hositng(hostingData);
-    const id = await this.hostingRepository.addHosting(newHost);
-    return {newHost,id};
+    const newHost = new Hosting(hostingData);
+    const id = await this.hostingRepository.add(newHost);
+    return {id};
   }
 
   async get(Id) {
     console.log(Id);
-    return await this.hostingRepository.getUser(Id);
+    return await this.hostingRepository.get(Id);
   }
 
 

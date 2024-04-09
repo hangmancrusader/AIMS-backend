@@ -13,8 +13,8 @@ class LaptopUseCases {
     console.log(Data);
     
     const newLaptop = new Laptop(Data);
-    await this.laptopRepo.add(newLaptop);
-    return newLaptop;
+    const id = await this.laptopRepo.add(newLaptop);
+    return {id};
   }
 
   async get(Id) {
