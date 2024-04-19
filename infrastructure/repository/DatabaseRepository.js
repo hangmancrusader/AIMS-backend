@@ -87,12 +87,29 @@ class DatabaseRepository {
 
  
  async get(Id) {
-  
+  const query = 'SELECT * FROM database WHERE id = $1';
+  const values = [Id];
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
 }
  
 
 async getAll() {
- 
+  const query = 'SELECT * FROM database;';
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query);
+    return result.rows;
+  } finally {
+    client.release();
+  }
 }
 
 async delete(Id) {

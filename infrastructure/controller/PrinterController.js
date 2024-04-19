@@ -54,11 +54,11 @@ const TablesRepository = new TablesRepo();
   router.get("/getprinters",async (req, res) => {
     try {
       
-      const result = await Laptop.getAll();
+      const result = await Printer.getAll();
       if (result) {
         res.status(201).json(result);
       } else {
-        res.status(404).json({ message: "Laptops not found" });
+        res.status(404).json({ message: "Printers not found" });
       }
     } catch (error) {
       res.status(500).json({ error: error.message });

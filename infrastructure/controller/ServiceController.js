@@ -54,7 +54,7 @@ const TablesRepository = new TablesRepo();
   router.get("/getservices",async (req, res) => {
     try {
       
-      const result = await s.getAll();
+      const result = await service.getAll();
       if (result) {
         res.status(201).json(result);
       } else {

@@ -17,45 +17,83 @@ class NetDevRepository {
     try
     {
     const query = `
-    INSERT INTO networkdevice (Assetname, SerialNumber, Manufacturer, ModelNo, AssetBarcode, Description, OS, Processor, RAM, Storage, Screensize, Currentlocation, Dept, AssignedUser, "Condition", Status, AssignmentHistory, Returndate, lastdeptacquired, purchasedate, cost, warrantyinfo, IPAddress, macaddress, installedsSW, Licenses, depmethod, decomissiondate, serviceProv, MaintainceHist, Firewallconfig, SecuritySW, Encryption)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32,$33)
+    INSERT INTO networkdevice (
+      DevName,
+      type,
+      ModelNo,
+      PhysicalLoc,
+      RackandUnit,
+      FirewallRules,
+      DetectionSettings,
+      LoginUN,
+      LoginPassword,
+      SSHconfig,
+      VPNtunnels,
+      VPNsetting,
+      RoutingTables,
+      DynamicRoutingProtocols,
+      OSVersion,
+      Lastupdate,
+      HighAvailConfig,
+      FailOverSettings,
+      InterfacesConfig,
+      MACaddress,
+      PortConfig,
+      logging_config,
+      SNMPConfig,
+      PowerConsumption,
+      TempEnvControls,
+      Configfiles,
+      RunningConfigs,
+      purchasedate,
+      Cost,
+      VendorContact,
+      SupportContDetails,
+      Doclink
+    ) 
+    VALUES (
+      $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+      $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
+      $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32
+    ) 
     RETURNING id;
+    
     `;
     const values = [
-      data.Assetname,
-      data.SerialNumber,
-      data.Manufacturer,
+      data.DevName,
+      data.type,
       data.ModelNo,
-      data.AssetBarcode,
-      data.Description,
-      data.OS,
-      data.Processor,
-      data.RAM,
-      data.Storage,
-      data.Screensize,
-      data.Currentlocation,
-      data.Dept,
-      data.AssignedUser,
-      data.Condition,
-      data.Status,
-      data.AssignmentHistory,
-      data.Returndate,
-      data.lastdeptacquired,
+      data.PhysicalLoc,
+      data.RackandUnit,
+      data.FirewallRules,
+      data.DetectionSettings,
+      data.LoginUN,
+      data.LoginPassword,
+      data.SSHconfig,
+      data.VPNtunnels,
+      data.VPNsetting,
+      data.RoutingTables,
+      data.DynamicRoutingProtocols,
+      data.OSVersion,
+      data.Lastupdate,
+      data.HighAvailConfig,
+      data.FailOverSettings,
+      data.InterfacesConfig,
+      data.MACaddress,
+      data.PortConfig,
+      data.logging_config,
+      data.SNMPConfig,
+      data.PowerConsumption,
+      data.TempEnvControls,
+      data.Configfiles,
+      data.RunningConfigs,
       data.purchasedate,
-      data.cost,
-      data.warrantyinfo,
-      data.IPAddress,
-      data.macaddress,
-      data.installedsSW,
-      data.Licenses,
-      data.depmethod,
-      data.decomissiondate,
-      data.serviceProv,
-      data.MaintainceHist,
-      data.Firewallconfig,
-      data.SecuritySW,
-      data.Encryption
+      data.Cost,
+      data.VendorContact,
+      data.SupportContDetails,
+      data.Doclink
     ];
+    
     
   
     const result = await this.pool.query(query, values);
@@ -72,12 +110,29 @@ class NetDevRepository {
 
  
  async get(Id) {
-  
+  const query = 'SELECT * FROM networkdevice WHERE id = $1';
+  const values = [Id];
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
 }
  
 
 async getAll() {
- 
+  const query = 'SELECT * FROM networkdevice';
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query);
+    return result.rows;
+  } finally {
+    client.release();
+  }
 }
 
 async delete(Id) {

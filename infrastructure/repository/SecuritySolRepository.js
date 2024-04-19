@@ -16,45 +16,62 @@ class SecuritySolutionRepository {
   try
   {
   const query = `
-  INSERT INTO securitysolution (Assetname, SerialNumber, Manufacturer, ModelNo, AssetBarcode, Description, OS, Processor, RAM, Storage, Screensize, Currentlocation, Dept, AssignedUser, "Condition", Status, AssignmentHistory, Returndate, lastdeptacquired, purchasedate, cost, warrantyinfo, IPAddress, macaddress, installedsSW, Licenses, depmethod, decomissiondate, serviceProv, MaintainceHist, Firewallconfig, SecuritySW, Encryption)
-  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29, $30, $31, $32,$33)
+  INSERT INTO securitysolution (
+    product_name,
+    vendor,
+    subscriptionID,
+    license_expiry_date,
+    current_version,
+    last_updated,
+    deployement_method,
+    policy_settings,
+    exclusion_list,
+    logging_config,
+    even_log_storage_location,
+    scan_frequency,
+    scan_time,
+    scan_custom_config,
+    integration_SEM,
+    integration_EP_management,
+    threat_feeds,
+    ioc_management,
+    vendor_contact,
+    documentation_links,
+    purchase_date,
+    cost
+  ) 
+  VALUES (
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, 
+    $17, $18, $19, $20, $21, $22
+  ) 
   RETURNING id;
+  
   `;
   const values = [
-    data.Assetname,
-    data.SerialNumber,
-    data.Manufacturer,
-    data.ModelNo,
-    data.AssetBarcode,
-    data.Description,
-    data.OS,
-    data.Processor,
-    data.RAM,
-    data.Storage,
-    data.Screensize,
-    data.Currentlocation,
-    data.Dept,
-    data.AssignedUser,
-    data.Condition,
-    data.Status,
-    data.AssignmentHistory,
-    data.Returndate,
-    data.lastdeptacquired,
-    data.purchasedate,
-    data.cost,
-    data.warrantyinfo,
-    data.IPAddress,
-    data.macaddress,
-    data.installedsSW,
-    data.Licenses,
-    data.depmethod,
-    data.decomissiondate,
-    data.serviceProv,
-    data.MaintainceHist,
-    data.Firewallconfig,
-    data.SecuritySW,
-    data.Encryption
+    data.product_name,
+    data.vendor,
+    data.subscriptionID,
+    data.license_expiry_date,
+    data.current_version,
+    data.last_updated,
+    data.deployement_method,
+    data.policy_settings,
+    data.exclusion_list,
+    data.logging_config,
+    data.even_log_storage_location,
+    data.scan_frequency,
+    data.scan_time,
+    data.scan_custom_config,
+    data.integration_SEM,
+    data.integration_EP_management,
+    data.threat_feeds,
+    data.ioc_management,
+    data.vendor_contact,
+    data.documentation_links,
+    data.purchase_date,
+    data.cost
   ];
+  
   
 
   const result = await this.pool.query(query, values);
@@ -71,12 +88,29 @@ catch (err) {
 
  
  async get(Id) {
-  
+  const query = 'SELECT * FROM securitysolution WHERE id = $1';
+  const values = [Id];
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query, values);
+    return result.rows[0];
+  } finally {
+    client.release();
+  }
 }
  
 
 async getAll() {
- 
+  const query = 'SELECT * FROM securitysolution';
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query);
+    return result.rows;
+  } finally {
+    client.release();
+  }
 }
 
 async delete(Id) {

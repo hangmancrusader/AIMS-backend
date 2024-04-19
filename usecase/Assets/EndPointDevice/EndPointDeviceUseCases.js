@@ -14,7 +14,7 @@ class EndPointDeviceUseCases {
     
     const newDev = new EndPointDev(Data);
     const id = await this.EndPointDevRepository.add(newDev);
-    return {id};
+    return {newDev,id};
   }
 
   async get(Id) {

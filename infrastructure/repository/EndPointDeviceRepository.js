@@ -12,10 +12,46 @@ class EndPointDeviceRepository {
 
   // class functionss
  
- async add(Data) {
+  async add(data) {
+    try
+    {
+    const query = `
+    INSERT INTO endpointdevice (
+      VoIPID,
+      laptopID,
+      printerID,
+      mobilephID
+    ) 
+    VALUES (
+      $1, $2, $3, $4
+    ) 
+    RETURNING id;
     
-  }////////////////////////////////////////////////////////////////
+      
 
+    `;
+    const values = [
+      data.VoIPID,
+      data.laptopID,
+      data.printerID,
+      data.mobilephID
+    ];
+    
+    
+    
+    
+  
+    const result = await this.pool.query(query, values);
+    console.log("Asset added successfully");    
+    const id = result.rows[0].id;
+    console.log('Asset added successfully with ID:', id);
+    return id;
+  }
+  catch (err) {
+    console.error(err);
+    console.log("Not added ");
+  }
+}//////////
  
  async get(Id) {
   
@@ -23,7 +59,15 @@ class EndPointDeviceRepository {
  
 
 async getAll() {
- 
+  const query = 'SELECT * FROM endpointdevice';
+
+  const client = await this.pool.connect();
+  try {
+    const result = await client.query(query);
+    return result.rows;
+  } finally {
+    client.release();
+  }
 }
 
 async delete(Id) {
