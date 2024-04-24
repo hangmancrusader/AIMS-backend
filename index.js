@@ -59,6 +59,9 @@ app.use('/AIMS', assetRoutes);
 //the below code fragment can be found in:
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.send('Welcome to AIMS API');
+});
 
 
 
