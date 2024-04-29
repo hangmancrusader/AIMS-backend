@@ -20,14 +20,16 @@ const {
   newPrinterSchema,
   newMobilePhoneSchema} = require('../middleware/yupConfig.js');
 const validateSchema = require('..//middleware/validateService.js');
+const hashPassword = require('../middleware/hashPassword.js');
 
 
 //USER ADMINISTRATION ROUTES
 //post a user to the database - uses the jwt token of admin created upon admin login
-router.post("/homepage/User_Administration/createnewuser",authenticateToken, async (req, res) => {
+router.post("/homepage/User_Administration/createnewuser",authenticateToken, hashPassword, async (req, res) => {
   try {
     console.log(req.body)
     const userData = req.body;
+    hashPassword
     const newUser = await rootUser.addUser(userData); // Call addUser on userUseCases instance
     res.status(201).json(newUser);
   } catch (error) {
