@@ -7,6 +7,20 @@ const voip = new VoIPUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
+const validateSchema = require('..//middleware/validateService.js');
 //apis for creating a table and then altering the table 
 /*router.post("/createtable", async (req, res) => {
     try {
@@ -25,7 +39,7 @@ const TablesRepository = new TablesRepo();
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addvoip",async (req, res) => {
+  router.post("/addvoip",validateSchema(newVOIPSchema),async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;

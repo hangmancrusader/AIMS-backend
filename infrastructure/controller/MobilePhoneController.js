@@ -7,6 +7,20 @@ const MobilePh = new MobilePhUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
+const validateSchema = require('..//middleware/validateService.js');
 //apis for creating a table and then altering the table 
 /*router.post("/createtable", async (req, res) => {
     try {
@@ -26,7 +40,7 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-  router.post("/addmobilephone",async (req, res) => {
+  router.post("/addmobilephone",validateSchema(newMobilePhoneSchema), async (req, res) => {
     try {
       console.log(req.body)
       const mobileData = req.body;

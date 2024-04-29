@@ -6,7 +6,20 @@ const bcrypt = require("bcryptjs")
 const UserAuthentication = require("../../usecase/User/UserAuthenticationUseCase.js")
 const rootUser = new UserUseCases();
 const authUser = new UserAuthentication()
-
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
+const validateSchema = require('..//middleware/validateService.js');
 
 
 //USER ADMINISTRATION ROUTES

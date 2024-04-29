@@ -4,6 +4,20 @@ const jwt  = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
 const HostingUseCases = require("../../usecase/Assets/Hosting/HostingUseCases.js");
 const Hosting = new HostingUseCases();
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
+const validateSchema = require('..//middleware/validateService.js');
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
@@ -26,11 +40,12 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-  router.post("/addhosting",async (req, res) => {
+  router.post("/addhosting", validateSchema(newHostingSchema),async (req, res) => {
     try {
-      //console.log(req.body)
+      console.log(req.body)
       const data = req.body;
-      const result = await Hosting.add(data);// the db returns the id of new Laptop
+      
+      const result = await Hosting.add(data);// the db returns the id of new Laptop*/
       res.status(201).json(result);
     } catch (error) {
       res.status(400).json({ error: error.message });

@@ -7,6 +7,20 @@ const service = new ServiceUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
+const validateSchema = require('..//middleware/validateService.js');
 //apis for creating a table and then altering the table 
 /*router.post("/createtable", async (req, res) => {
     try {
@@ -26,7 +40,7 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-  router.post("/addservice",async (req, res) => {
+  router.post("/addservice",validateSchema(newServiceSchema),async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;

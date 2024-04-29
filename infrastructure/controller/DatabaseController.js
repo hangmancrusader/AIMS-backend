@@ -4,9 +4,23 @@ const jwt  = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
 const DatabaseUseCases = require("../../usecase/Assets/Database/DatabaseUseCases.js");
 const database = new DatabaseUseCases();
+const {
+  generateSchema,
+  newServiceSchema,
+  newDBSchema,
+  newApplicationSchema,
+  newLaptopSchema,
+  newHostingSchema,
+  newNetworkDeviceSchema,
+  newVMSchema,
+  newSecuritySolutionSchema,
+  newVOIPSchema,
+  newPrinterSchema,
+  newMobilePhoneSchema} = require('../middleware/yupConfig.js');
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
 const TablesRepository = new TablesRepo();
+const validateSchema = require('..//middleware/validateService.js');
 
 //apis for creating a table and then altering the table 
 /*router.post("/createtable", async (req, res) => {
@@ -27,7 +41,7 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-  router.post("/adddatabase",async (req, res) => {
+  router.post("/adddatabase",validateSchema(newDBSchema), async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
