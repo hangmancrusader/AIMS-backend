@@ -13,8 +13,8 @@ class UserUseCases {
     console.log(userData);
     // Logic to add a new user
     const newUser = new User(userData);
-    await this.userRepository.addUser(newUser);
-    return newUser;
+    return await this.userRepository.addUser(newUser);
+    //return newUser;
   }
 
   async getUser(userId) {

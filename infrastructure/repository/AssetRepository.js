@@ -88,8 +88,38 @@ async delete(Id) {
   
 }
 
-async update(Id, Data) {
-  
+async update(Id, data) {
+  const query = `
+  UPDATE asset
+SET 
+    hostingID = $1,
+    vmID = $2,
+    endpointdevID = $3,
+    appID = $4,
+    serviceID = $5,
+    netdevID = $6,
+    secsolID = $7
+WHERE
+    id = $8;
+
+`;
+const values = [
+  Id,
+  data.hostingID,
+        data.vmID,
+        data.endpointdevID,
+        data.appID,
+        data.serviceID,
+        data.netdevID,
+        data.secsolID
+];
+const client = await this.pool.connect();
+try {
+const result = await client.query(query,values);
+return result.rows;
+} finally {
+  client.release();
+}
 }
 
 }

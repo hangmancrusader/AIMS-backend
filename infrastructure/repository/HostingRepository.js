@@ -95,8 +95,79 @@ async delete(Id) {
   
 }
 
-async update(Id, Data) {
-  
+async update(Id, data) {
+  const query = `
+  UPDATE hosting
+SET 
+    vmID = $2,
+    hostname = $3,
+    CloudProv = $4,
+    CloudPlan = $5,
+    SLAdeets = $6,
+    CPAccessURL = $7,
+    CPLoginUserName = $8,
+    CPLoginUserPassword = $9,
+    SSHhn = $10,
+    BillingCycle = $11,
+    NextRenewaldate = $12,
+    BilingContact = $13,
+    BackupFreq = $14,
+    TimeforBACKUP = $15,
+    Timingsfrom = $16,
+    TimingsTo = $17,
+    SSLcertif = $18,
+    CertifExpiry = $19,
+    TechSupportContact = $20,
+    EmergencyContact = $21,
+    SubscriptionStartDate = $22,
+    SubscriptionEnddate = $23,
+    MonthlyCost = $24,
+    AccountID = $25,
+    Hypervisortype = $26,
+    VersionHV = $27,
+    HostHV = $28
+WHERE 
+    id = $1
+RETURNING id;
+
+    `;
+    const values = [
+      Id,
+      data.vmID,
+      data.hostname,
+      data.CloudProv,
+      data.CloudPlan,
+      data.SLAdeets,
+      data.CPAccessURL,
+      data.CPLoginUserName,
+      data.CPLoginUserPassword,
+      data.SSHhn,
+      data.BillingCycle,
+      data.NextRenewaldate,
+      data.BilingContact,
+      data.BackupFreq,
+      data.TimeforBACKUP,
+      data.Timingsfrom,
+      data.TimingsTo,
+      data.SSLcertif,
+      data.CertifExpiry,
+      data.TechSupportContact,
+      data.EmergencyContact,
+      data.SubscriptionStartDate,
+      data.SubscriptionEnddate,
+      data.MonthlyCost,
+      data.AccountID,
+      data.Hypervisortype,
+      data.VersionHV,
+      data.HostHV
+    ];
+  const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

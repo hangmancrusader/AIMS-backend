@@ -102,8 +102,92 @@ async delete(Id) {
   
 }
 
-async update(Id, rData) {
+async update(Id, data) {
+  const query = `
+  UPDATE laptop
+SET 
+    Assetname = $2,
+    SerialNumber = $3,
+    Manufacturer = $4,
+    ModelNo = $5,
+    AssetBarcode = $6,
+    Description = $7,
+    OS = $8,
+    Processor = $9,
+    RAM = $10,
+    Storage = $11,
+    Screensize = $12,
+    Currentlocation = $13,
+    Dept = $14,
+    AssignedUser = $15,
+    "Condition" = $16,
+    Status = $17,
+    AssignmentHistory = $18,
+    Returndate = $19,
+    lastdeptacquired = $20,
+    purchasedate = $21,
+    cost = $22,
+    warrantyinfo = $23,
+    IPAddress = $24,
+    macaddress = $25,
+    installedsSW = $26,
+    Licenses = $27,
+    depmethod = $28,
+    decomissiondate = $29,
+    serviceProv = $30,
+    MaintainceHist = $31,
+    Firewallconfig = $32,
+    SecuritySW = $33,
+    Encryption = $34
+WHERE 
+    id = $1
+RETURNING id;
+
   
+    `;
+    const values = [
+      Id,
+      data.Assetname,
+      data.SerialNumber,
+      data.Manufacturer,
+      data.ModelNo,
+      data.AssetBarcode,
+      data.Description,
+      data.OS,
+      data.Processor,
+      data.RAM,
+      data.Storage,
+      data.Screensize,
+      data.Currentlocation,
+      data.Dept,
+      data.AssignedUser,
+      data.Condition,
+      data.Status,
+      data.AssignmentHistory,
+      data.Returndate,
+      data.lastdeptacquired,
+      data.purchasedate,
+      data.cost,
+      data.warrantyinfo,
+      data.IPAddress,
+      data.macaddress,
+      data.installedsSW,
+      data.Licenses,
+      data.depmethod,
+      data.decomissiondate,
+      data.serviceProv,
+      data.MaintainceHist,
+      data.Firewallconfig,
+      data.SecuritySW,
+      data.Encryption
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

@@ -116,8 +116,68 @@ async delete(Id) {
   
 }
 
-async update(Id, Data) {
-  
+async update(Id, data) {
+  const query = `
+  UPDATE database
+  SET 
+      DBServername = $2,
+      type = $3,
+      ServerIPAdd = $4,
+      Virtual_Machine = $5,
+      DBMStype = $6,
+      DBMSversion = $7,
+      instance = $8,
+      CertifExpiry = $9,
+      DBNames = $10,
+      DBowners = $11,
+      CollationSett = $12,
+      BackupFreq = $13,
+      TimeforBACKUP = $14,
+      RecoveryModel = $15,
+      BackupStorageLocation = $16,
+      ClusteringConfig = $17,
+      ReplicateConfig = $18,
+      VendorContact = $19,
+      SupportContDetails = $20,
+      versionandUpdates = $21,
+      purchasedate = $22,
+      cost = $23
+  WHERE 
+      id = $1
+      RETURNING id;
+    `;
+    const values = [
+      Id,
+      data.DBServername,
+      data.type,
+      data.ServerIPAdd,
+      data.Virtual_Machine,
+      data.DBMStype,
+      data.DBMSversion,
+      data.instance,
+      data.CertifExpiry,
+      data.DBNames,
+      data.DBowners,
+      data.CollationSett,
+      data.BackupFreq,
+      data.TimeforBACKUP,
+      data.RecoveryModel,
+      data.BackupStorageLocation,
+      data.ClusteringConfig,
+      data.ReplicateConfig,
+      data.VendorContact,
+      data.SupportContDetails,
+      data.versionandUpdates,
+      data.purchasedate,
+      data.cost
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows[0];
+    } finally {
+      client.release();
+    }
 }
 
 }

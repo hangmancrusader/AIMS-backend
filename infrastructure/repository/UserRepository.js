@@ -81,7 +81,8 @@ class UserRepository {
       console.log("User added successfully");
     } catch (err) {
       console.error(err);
-      console.log("User not added ");
+      //console.log("User not added ");
+      return ('User not added')
     }
   }//end of addUser function
 
@@ -162,7 +163,8 @@ async getAllUsers() {
 
     const client = await this.pool.connect();
     try {
-      await client.query(query, values);
+      const result = await client.query(query, values);
+      return result.rows[0];
     } finally {
       client.release();
     }
@@ -183,6 +185,18 @@ async getAllUsers() {
   async getUserByEmailforAuth(email) {
     const query = 'SELECT id, currentpassword FROM users WHERE email = $1';
     const values = [email];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
+  }
+  async getUserHashforAuth(email) {
+    const query = 'SELECT id, currentpassword FROM users WHERE email = $1';
+    const values = [email];//value for email from request
 
     const client = await this.pool.connect();
     try {

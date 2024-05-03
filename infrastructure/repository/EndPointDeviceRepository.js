@@ -26,9 +26,6 @@ class EndPointDeviceRepository {
       $1, $2, $3, $4
     ) 
     RETURNING id;
-    
-      
-
     `;
     const values = [
       data.VoIPID,
@@ -37,10 +34,6 @@ class EndPointDeviceRepository {
       data.mobilephID
     ];
     
-    
-    
-    
-  
     const result = await this.pool.query(query, values);
     console.log("Asset added successfully");    
     const id = result.rows[0].id;
@@ -74,8 +67,32 @@ async delete(Id) {
   
 }
 
-async update(Id, rData) {
-  
+async update(Id, data) {
+      const query = `
+      UPDATE endpointdevice
+    SET 
+        VoIPID = $1,
+        laptopID = $2,
+        printerID = $3,
+        mobilephID = $4
+    WHERE
+        id = $5;
+
+    `;
+    const values = [
+      Id,
+      data.VoIPID,
+          data.laptopID,
+          data.printerID,
+          data.mobilephID
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

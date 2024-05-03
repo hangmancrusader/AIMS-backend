@@ -100,8 +100,84 @@ async delete(Id) {
   
 }
 
-async update(Id, rData) {
+async update(Id, data) {
+  const query = `
+  UPDATE voip
+SET 
+    Assetname = $2,
+    SerialNumber = $3,
+    Assigneduser = $4,
+    AssetBarcode = $5,
+    DescriptionandSpecs = $6,
+    OSVersion = $7,
+    Processor = $8,
+    RAM = $9,
+    Storage = $10,
+    Screensize = $11,
+    Currentlocation = $12,
+    Dept = $13,
+    "Condition" = $14,
+    Status = $15,
+    Returndate = $16,
+    purchasedate = $17,
+    cost = $18,
+    warrantyinfo = $19,
+    IPAddress = $20,
+    macaddress = $21,
+    AssignmentHistory = $22,
+    depmethod = $23,
+    decomissiondate = $24,
+    serviceProv = $25,
+    BackupFreq = $26,
+    "Method" = $27,
+    integrationwithtools = $28,
+    mentionif = $29,
+    Snapshotinfo = $30
+WHERE 
+    id = $1
+RETURNING id;
+
   
+    `;
+    const values = [
+      Id,
+      data.Assetname,
+        data.SerialNumber,
+        data.Assigneduser,
+        data.AssetBarcode,
+        data.DescriptionandSpecs,
+        data.OSVersion,
+        data.Processor,
+        data.RAM,
+        data.Storage,
+        data.Screensize,
+        data.Currentlocation,
+        data.Dept,
+        data.Condition,
+        data.Status,
+        data.Returndate,
+        data.purchasedate,
+        data.cost,
+        data.warrantyinfo,
+        data.IPAddress,
+        data.macaddress,
+        data.AssignmentHistory,
+        data.depmethod,
+        data.decomissiondate,
+        data.serviceProv,
+        data.BackupFreq,
+        data.Method,
+        data.integrationwithtools,
+        data.mentionif,
+        data.Snapshotinfo
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

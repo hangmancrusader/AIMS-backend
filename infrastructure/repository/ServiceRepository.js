@@ -130,8 +130,81 @@ async delete(Id) {
   
 }
 
-async update(Id, Data) {
+async update(Id, data) {
+  const query = `
+  UPDATE service
+  SET 
+    servicename = $2,
+    ServiceCustomer = $3,
+    ServiceCustodian = $4,
+    ServiceOwner = $5,
+    OwnerContInfo = $6,
+    Configurationfiles = $7,
+    CustomizationOptions = $8,
+    BriefDescription = $9,
+    detailedDesc = $10,
+    DeployDate = $11,
+    RolloutPlandetails = $12,
+    SecProtocols = $13,
+    SerCreationDate = $14,
+    SerDecommDate = $15,
+    ServiceCategory = $16,
+    ServiceClass = $17,
+    SLAdeets = $18,
+    SLAExpiryDate = $19,
+    VendorContact = $20,
+    SupportContDetails = $21,
+    AccessReq = $22,
+    AuthMethods = $23,
+    purchasedate = $24,
+    Cost = $25,
+    DependencyServ = $26,
+    DependentServ = $27,
+    Applications = $28,
+    Databases = $29
+  WHERE 
+    id = $1
+  RETURNING id;
   
+    `;
+    const values = [
+      Id,
+      data.servicename,
+      data.ServiceCustomer,
+      data.ServiceCustodian,
+      data.ServiceOwner,
+      data.OwnerContInfo,
+      data.Configurationfiles,
+      data.CustomizationOptions,
+      data.BriefDescription,
+      data.detailedDesc,
+      data.DeployDate,
+      data.RolloutPlandetails,
+      data.SecProtocols,
+      data.SerCreationDate,
+      data.SerDecommDate,
+      data.ServiceCategory,
+      data.ServiceClass,
+      data.SLAdeets,
+      data.SLAExpiryDate,
+      data.VendorContact,
+      data.SupportContDetails,
+      data.AccessReq,
+      data.AuthMethods,
+      data.purchasedate,
+      data.Cost,
+      data.DependencyServ,
+      data.DependentServ,
+      data.Applications,
+      data.Databases
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

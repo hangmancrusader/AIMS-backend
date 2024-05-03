@@ -95,8 +95,76 @@ async delete(Id) {
   
 }
 
-async update(Id, rData) {
+async update(Id, data) {
+  const query = `
+  UPDATE printer
+  SET 
+      Assetname = $2,
+      SerialNumber = $3,
+      AssetBarcode = $4,
+      Currentlocation = $5,
+      Dept = $6,
+      "Condition" = $7,
+      Status = $8,
+      Returndate = $9,
+      purchasedate = $10,
+      cost = $11,
+      warrantyinfo = $12,
+      AssignmentHistory = $13,
+      Manufacturer = $14,
+      ModelNo = $15,
+      "Desc" = $16,
+      OS = $17,
+      Port = $18,
+      assigneduser = $19,
+      lastdeptacquired = $20,
+      installedsSW = $21,
+      Licenses = $22,
+      deployement_method = $23,
+      decomissiondate = $24,
+      serviceProv = $25,
+      MaintainceHist = $26
+  WHERE 
+      id = $1
+  RETURNING id;
   
+  
+    `;
+    const values = [
+      Id,
+      data.Assetname,
+        data.SerialNumber,
+        data.AssetBarcode,
+        data.Currentlocation,
+        data.Dept,
+        data.Condition,
+        data.Status,
+        data.Returndate,
+        data.purchasedate,
+        data.cost,
+        data.warrantyinfo,
+        data.AssignmentHistory,
+        data.Manufacturer,
+        data.ModelNo,
+        data.Desc,
+        data.OS,
+        data.Port,
+        data.assigneduser,
+        data.lastdeptacquired,
+        data.installedsSW,
+        data.Licenses,
+        data.deployement_method,
+        data.decomissiondate,
+        data.serviceProv,
+        data.MaintainceHist
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
 }
 
 }

@@ -99,7 +99,7 @@ const validateSchema = require('..//middleware/validateService.js');
       const { id } = req.params;
       const data = req.body;
       const result = await database.update(id, data);
-      res.status(201).json(result,{message:"Database updated successfully"});
+      res.status(201).json({message:"Database updated successfully",result});
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

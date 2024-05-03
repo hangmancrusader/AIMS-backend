@@ -21,6 +21,7 @@ const {
   newMobilePhoneSchema} = require('../middleware/yupConfig.js');
 const validateSchema = require('..//middleware/validateService.js');
 const hashPassword = require('../middleware/hashPassword.js');
+const verifyUser = require('../middleware/verifyUser.js');
 
 
 //USER ADMINISTRATION ROUTES
@@ -29,7 +30,6 @@ router.post("/homepage/User_Administration/createnewuser",authenticateToken, has
   try {
     console.log(req.body)
     const userData = req.body;
-    hashPassword
     const newUser = await rootUser.addUser(userData); // Call addUser on userUseCases instance
     res.status(201).json(newUser);
   } catch (error) {
@@ -100,7 +100,8 @@ router.delete("/homepage/User_Administration/user_management/user_profile/delete
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await authUser.authandlogin(email, password);
+    //const user = await authUser.authandlogin(email, password);
+    const user = await authUser.verifyuserlogin(email, password);
     console.log("user is " +user);
     res.json({message: "Login successful"});
   } catch (error) {

@@ -137,8 +137,86 @@ async delete(Id) {
   
 }
 
-async update(Id, Data) {
-  
+async update(Id, data) {
+  const query = `
+  UPDATE application
+  SET 
+  serviceID = $2,
+  vmID = $3,
+  dbID = $4,
+  ServerName = $5,
+  Servertype = $6,
+  ServerIPAdd = $7,
+  Virtual_Machine = $8,
+  DatabaseServer = $9,
+  BackupFreq = $10,
+  BackupMethods = $11,
+  RecoveryProcedures = $12,
+  ApplicationName = $13,
+  ApplicationVers = $14,
+  ApplicationURL = $15,
+  deploymentMethod = $16,
+  UserRoles = $17,
+  UserPermissions = $18,
+  SSLconfig = $19,
+  WebServerType = $20,
+  WebServerVers = $21,
+  VirtualHostConfig = $22,
+  VendorContact = $23,
+  SupportContDetails = $24,
+  DBconnectdetails = $25,
+  DBnames = $26,
+  CurrentVers = $27,
+  LastUpdate = $28,
+  Monitortools = $29,
+  ifyesExplain = $30,
+  purchasedate = $31,
+  cost = $32
+WHERE
+  id = $1;
+    `;
+    const values = [
+      Id,
+      data.serviceID,
+      data.vmID,
+      data.dbID,
+      data.ServerName,
+      data.Servertype,
+      data.ServerIPAdd,
+      data.Virtual_Machine,
+      data.DatabaseServer,
+      data.BackupFreq,
+      data.BackupMethods,
+      data.RecoveryProcedures,
+      data.ApplicationName,
+      data.ApplicationVers,
+      data.ApplicationURL,
+      data.deploymentMethod,
+      data.UserRoles,
+      data.UserPermissions,
+      data.SSLconfig,
+      data.WebServerType,
+      data.WebServerVers,
+      data.VirtualHostConfig,
+      data.VendorContact,
+      data.SupportContDetails,
+      data.DBconnectdetails,
+      data.DBnames,
+      data.CurrentVers,
+      data.LastUpdate,
+      data.Monitortools,
+      data.ifyesExplain,
+      data.purchasedate,
+      data.cost,
+      
+    ];
+    const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows[0];
+    } finally {
+      client.release();
+    }
 }
 
 }

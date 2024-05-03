@@ -139,7 +139,89 @@ async delete(Id) {
   
 }
 
-async update(Id, rData) {
+async update(Id, data) {
+  const query = `
+  UPDATE networkdevice
+SET 
+    DevName = $2,
+    type = $3,
+    ModelNo = $4,
+    PhysicalLoc = $5,
+    RackandUnit = $6,
+    FirewallRules = $7,
+    DetectionSettings = $8,
+    LoginUN = $9,
+    LoginPassword = $10,
+    SSHconfig = $11,
+    VPNtunnels = $12,
+    VPNsetting = $13,
+    RoutingTables = $14,
+    DynamicRoutingProtocols = $15,
+    OSVersion = $16,
+    Lastupdate = $17,
+    HighAvailConfig = $18,
+    FailOverSettings = $19,
+    InterfacesConfig = $20,
+    MACaddress = $21,
+    PortConfig = $22,
+    logging_config = $23,
+    SNMPConfig = $24,
+    PowerConsumption = $25,
+    TempEnvControls = $26,
+    Configfiles = $27,
+    RunningConfigs = $28,
+    purchasedate = $29,
+    Cost = $30,
+    VendorContact = $31,
+    SupportContDetails = $32,
+    Doclink = $33
+WHERE 
+    id = $1
+RETURNING id;
+
+    `;
+    const values = [
+      Id,
+      data.DevName,
+      data.type,
+      data.ModelNo,
+      data.PhysicalLoc,
+      data.RackandUnit,
+      data.FirewallRules,
+      data.DetectionSettings,
+      data.LoginUN,
+      data.LoginPassword,
+      data.SSHconfig,
+      data.VPNtunnels,
+      data.VPNsetting,
+      data.RoutingTables,
+      data.DynamicRoutingProtocols,
+      data.OSVersion,
+      data.Lastupdate,
+      data.HighAvailConfig,
+      data.FailOverSettings,
+      data.InterfacesConfig,
+      data.MACaddress,
+      data.PortConfig,
+      data.logging_config,
+      data.SNMPConfig,
+      data.PowerConsumption,
+      data.TempEnvControls,
+      data.Configfiles,
+      data.RunningConfigs,
+      data.purchasedate,
+      data.Cost,
+      data.VendorContact,
+      data.SupportContDetails,
+      data.Doclink
+    ];
+  const client = await this.pool.connect();
+    try {
+    const result = await client.query(query,values);
+    return result.rows;
+    } finally {
+      client.release();
+    }
   
 }
 
