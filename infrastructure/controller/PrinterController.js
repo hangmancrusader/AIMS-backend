@@ -40,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });*/
 
-  router.post("/addprinter",validateSchema(newPrinterSchema),async (req, res) => {
+  router.post("/addprinter",validateSchema(newPrinterSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -51,7 +51,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getprinter/:id",async (req, res) => {
+  router.get("/getprinter/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Printer.get(id);
@@ -65,7 +65,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getprinters",async (req, res) => {
+  router.get("/getprinters", authenticateToken, async (req, res) => {
     try {
       
       const result = await Printer.getAll();
@@ -79,7 +79,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deleteprinter/:id",async (req, res) => {
+  router.delete("/deleteprinter/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Printer.delete(id);
@@ -93,7 +93,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updateprinter/:id",async (req, res) => {
+  router.patch("/updateprinter/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

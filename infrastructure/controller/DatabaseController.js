@@ -41,7 +41,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });*/
 
-  router.post("/adddatabase",validateSchema(newDBSchema), async (req, res) => {
+  router.post("/adddatabase",validateSchema(newDBSchema),authenticateToken, async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
@@ -52,7 +52,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getdatabase/:id",async (req, res) => {
+  router.get("/getdatabase/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await database.get(id)
@@ -66,7 +66,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getdatabases",async (req, res) => {
+  router.get("/getdatabases", authenticateToken, async (req, res) => {
     try {
       
       const result = await database.getAll();
@@ -80,7 +80,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deletedatabase/:id",async (req, res) => {
+  router.delete("/deletedatabase/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await database.delete(id);
@@ -94,7 +94,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatedatabase/:id",async (req, res) => {
+  router.patch("/updatedatabase/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const data = req.body;

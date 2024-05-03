@@ -161,7 +161,7 @@ class UserRepository {
     } catch (err) {
       console.error(err);
       //console.log("User not added ");
-      return ('User not added')
+      return ('error');
     }
   }
 

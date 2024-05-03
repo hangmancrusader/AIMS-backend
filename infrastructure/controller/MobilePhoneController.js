@@ -40,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });*/
 
-  router.post("/addmobilephone",validateSchema(newMobilePhoneSchema), async (req, res) => {
+  router.post("/addmobilephone",validateSchema(newMobilePhoneSchema),authenticateToken, async (req, res) => {
     try {
       console.log(req.body)
       const mobileData = req.body;
@@ -51,7 +51,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getmobilephone/:id",async (req, res) => {
+  router.get("/getmobilephone/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await MobilePh.get(id)
@@ -65,7 +65,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getmobilephones",async (req, res) => {
+  router.get("/getmobilephones", authenticateToken, async (req, res) => {
     try {
       
       const result = await MobilePh.getAll()
@@ -79,7 +79,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deletemobilephone/:id",async (req, res) => {
+  router.delete("/deletemobilephone/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await MobilePh.delete(id);
@@ -93,7 +93,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatemobilephone/:id",async (req, res) => {
+  router.patch("/updatemobilephone/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

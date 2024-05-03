@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addapplication",validateSchema(newApplicationSchema), async (req, res) => {
+  router.post("/addapplication",validateSchema(newApplicationSchema), authenticateToken, async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -50,7 +50,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getapplication/:id",async (req, res) => {
+  router.get("/getapplication/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await application.get(id)
@@ -64,7 +64,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getapplications",async (req, res) => {
+  router.get("/getapplications", authenticateToken, async (req, res) => {
     try {
       
       const result = await application.getAll();
@@ -78,7 +78,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deleteapplication/:id",async (req, res) => {
+  router.delete("/deleteapplication/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await application.delete(id);
@@ -92,7 +92,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updateapplication/:id",async (req, res) => {
+  router.patch("/updateapplication/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

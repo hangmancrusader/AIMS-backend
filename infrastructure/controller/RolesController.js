@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs")
 const RoleUseCases = require("../../usecase/Assets/Role/RoleUseCases.js")
 const Role = new RoleUseCases();
 
-router.post("/homepage/newrole", async (req, res) => {
+router.post("/homepage/newrole", authenticateToken,async (req, res) => {
     try {
       const roleData = req.body;
       const newRole = await Role.addRole(roleData); 

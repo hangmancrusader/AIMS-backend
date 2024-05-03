@@ -31,13 +31,19 @@ const upload  = multer({dest:'uploads/'})
 //post a user to the database - uses the jwt token of admin created upon admin login
 router.post("/homepage/User_Administration/createnewuser",upload.single('profilepic'),authenticateToken, hashPassword, async (req, res) => {
   try {
-    console.log(req.body)
+    
     const userData = req.body;
     const imageFile = fs.readFileSync(req.file.path);
     const base64Image = imageFile.toString('base64');
     req.body.profilepic = base64Image;
-    const newUser = await rootUser.addUserwithPic(userData); // Call addUser on userUseCases instance
-    res.status(201).json(newUser);
+    const newUser = await rootUser.addUserwithPic(userData);
+    
+    if(newUser==='error'){
+      res.status(400).json({ error: "User not added, recheck fields" });
+    }
+    else{
+      const id = newUser;
+    res.status(201).json({id})};
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

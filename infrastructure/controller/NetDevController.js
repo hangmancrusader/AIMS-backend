@@ -40,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });
   */
-  router.post("/addnetdev", validateSchema(newNetworkDeviceSchema), async (req, res) => {
+  router.post("/addnetdev", validateSchema(newNetworkDeviceSchema),authenticateToken, async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -51,7 +51,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getnetdev/:id",async (req, res) => {
+  router.get("/getnetdev/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await NetDev.get(id);// the db returns the id of new L
@@ -65,7 +65,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getnetdevs",async (req, res) => {
+  router.get("/getnetdevs", authenticateToken, async (req, res) => {
     try {
       
       const result = await NetDev.getAll();
@@ -79,7 +79,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deletenetdev/:id",async (req, res) => {
+  router.delete("/deletenetdev/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await NetDev.delete(id);
@@ -93,7 +93,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatenetdev/:id",async (req, res) => {
+  router.patch("/updatenetdev/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

@@ -40,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });*/
 
-  router.post("/addservice",validateSchema(newServiceSchema),async (req, res) => {
+  router.post("/addservice",validateSchema(newServiceSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
@@ -51,7 +51,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getservice/:id",async (req, res) => {
+  router.get("/getservice/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await service.get(id)
@@ -65,7 +65,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getservices",async (req, res) => {
+  router.get("/getservices", authenticateToken, async (req, res) => {
     try {
       
       const result = await service.getAll();
@@ -79,7 +79,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deleteservice/:id",async (req, res) => {
+  router.delete("/deleteservice/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await service.delete(id);
@@ -93,7 +93,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updateservice/:id",async (req, res) => {
+  router.patch("/updateservice/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const data = req.body;

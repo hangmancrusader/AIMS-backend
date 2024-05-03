@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addsecsol",validateSchema(newSecuritySolutionSchema),async (req, res) => {
+  router.post("/addsecsol",validateSchema(newSecuritySolutionSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -50,7 +50,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getsecsol/:id",async (req, res) => {
+  router.get("/getsecsol/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await SecSol.get(id)
@@ -64,7 +64,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getsecsols",async (req, res) => {
+  router.get("/getsecsols", authenticateToken, async (req, res) => {
     try {
       
       const result = await SecSol.getAll();
@@ -78,7 +78,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deletesecsol/:id",async (req, res) => {
+  router.delete("/deletesecsol/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await SecSol.delete(id);
@@ -92,7 +92,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatesecsol/:id",async (req, res) => {
+  router.patch("/updatesecsol/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

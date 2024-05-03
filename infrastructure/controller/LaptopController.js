@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addlaptop",validateSchema(newLaptopSchema),async (req, res) => {
+  router.post("/addlaptop",validateSchema(newLaptopSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const laptopData = req.body;
@@ -50,7 +50,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getlaptop/:id",async (req, res) => {
+  router.get("/getlaptop/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Laptop.get(id)
@@ -64,7 +64,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getlaptops",async (req, res) => {
+  router.get("/getlaptops", authenticateToken, async (req, res) => {
     try {
       
       const result = await Laptop.getAll();
@@ -78,7 +78,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deletelaptop/:id",async (req, res) => {
+  router.delete("/deletelaptop/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Laptop.delete(id);
@@ -92,7 +92,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatelaptop/:id",async (req, res) => {
+  router.patch("/updatelaptop/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const laptopData = req.body;

@@ -29,7 +29,7 @@ const newLaptopSchema = yup.object().shape({
   installedsSW: yup.string().required('Installed Software is required'),
   Licenses: yup.string().required('Licenses is required'),
   depmethod: yup.string().required('Deployment Method is required'),
-  decommissiondate: yup.string().required('Decommission Date is required'),
+  decomissiondate: yup.string().required('Decommission Date is required'),
   serviceProv: yup.string().required('Service Provider is required'),
   MaintainceHist: yup.string().required('Maintenance History is required'),
   Firewallconfig: yup.string().required('Firewall Configuration is required'),

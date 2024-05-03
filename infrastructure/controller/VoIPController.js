@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addvoip",validateSchema(newVOIPSchema),async (req, res) => {
+  router.post("/addvoip",validateSchema(newVOIPSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -50,7 +50,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getvoip/:id",async (req, res) => {
+  router.get("/getvoip/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await voip.get(id)
@@ -64,7 +64,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getvoips",async (req, res) => {
+  router.get("/getvoips", authenticateToken, async (req, res) => {
     try {
       
       const result = await voip.getAll();
@@ -78,7 +78,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deletevoip/:id",async (req, res) => {
+  router.delete("/deletevoip/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await voip.delete(id)
@@ -92,7 +92,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatevoip/:id",async (req, res) => {
+  router.patch("/updatevoip/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

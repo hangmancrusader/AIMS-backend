@@ -40,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   });*/
 
-  router.post("/addendpointdev", async (req, res) => {
+  router.post("/addendpointdev", authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
@@ -51,7 +51,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getendpointdev/:id",async (req, res) => {
+  router.get("/getendpointdev/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await EndPointDevice.get(id)
@@ -65,7 +65,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getendpointdev",async (req, res) => {
+  router.get("/getendpointdev", authenticateToken, async (req, res) => {
     try {
       
       const result = await EndPointDevice.getAll();
@@ -79,7 +79,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deleteendpointdev/:id",async (req, res) => {
+  router.delete("/deleteendpointdev/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await EndPointDevice.delete(id);
@@ -93,7 +93,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updateendpointdev/:id",async (req, res) => {
+  router.patch("/updateendpointdev/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const data = req.body;

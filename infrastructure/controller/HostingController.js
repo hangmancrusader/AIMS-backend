@@ -40,7 +40,7 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-  router.post("/addhosting", validateSchema(newHostingSchema),async (req, res) => {
+  router.post("/addhosting", validateSchema(newHostingSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
@@ -52,7 +52,7 @@ const TablesRepository = new TablesRepo();
     }
   } );
 
-  router.get("/gethosting/:id",async (req, res) => {
+  router.get("/gethosting/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Hosting.get(id)
@@ -66,7 +66,7 @@ const TablesRepository = new TablesRepo();
     }
   } );
 
-  router.get("/gethostings",async (req, res) => {
+  router.get("/gethostings", authenticateToken, async (req, res) => {
     try {
       
       const result = await Hosting.getAll();
@@ -80,7 +80,7 @@ const TablesRepository = new TablesRepo();
     }
   } );
 
-  router.delete("/deletehosting/:id",async (req, res) => {
+  router.delete("/deletehosting/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await Hosting.delete(id);
@@ -94,7 +94,7 @@ const TablesRepository = new TablesRepo();
     }
   } );
 
-  router.patch("/updatehosting/:id",async (req, res) => {
+  router.patch("/updatehosting/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const data = req.body;

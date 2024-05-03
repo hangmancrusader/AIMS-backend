@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addvm",validateSchema(newVMSchema),async (req, res) => {
+  router.post("/addvm",validateSchema(newVMSchema),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const data = req.body;
@@ -50,7 +50,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getvm/:id",async (req, res) => {
+  router.get("/getvm/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await VM.get(id)
@@ -64,7 +64,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getvms",async (req, res) => {
+  router.get("/getvms", authenticateToken, async (req, res) => {
     try {
       
       const result = await VM.getAll();
@@ -78,7 +78,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.delete("/deletevm/:id",async (req, res) => {
+  router.delete("/deletevm/:id", authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await VM.delete(id);
@@ -92,7 +92,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatevm/:id",async (req, res) => {
+  router.patch("/updatevm/:id", authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const data = req.body;
