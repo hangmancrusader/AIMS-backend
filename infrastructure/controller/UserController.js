@@ -72,9 +72,13 @@ router.patch("/homepage/User_Administration/user_management/user_profile/:id",au
   try {
     const { id } = req.params;
     const userData = req.body;
-    await rootUser.updateUser(id, userData);
+    const result = await rootUser.updateUser(id, userData);
     //res.status(204).send();
-    res.status(201).json({message:"User updated successfully"});
+    if (result && result.length > 0) {
+      res.status(201).json({message: "Updated Successfully",result});
+    } else {
+      res.status(404).json({ message: "Resource not found" });
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

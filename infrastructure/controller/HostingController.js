@@ -98,8 +98,12 @@ const TablesRepository = new TablesRepo();
     try {
       const { id } = req.params;
       const data = req.body;
-      const result = await Laptop.update(id, data);
-      res.status(201).json(result,{message:"Hosting updated successfully"});
+      const result = await Hosting.update(id, data);
+      if (result && result.length > 0) {
+        res.status(201).json({message: "Updated Successfully",result});
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

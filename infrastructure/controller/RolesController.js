@@ -60,11 +60,12 @@ router.delete("/homepage/deleterole/:id", async (req, res) => {
 router.patch("/homepage/updaterole/:id", async (req, res) => {
   try {
     const {id}= req.params;
-    const role = await Role.updateRole(id);
-    if (role) {
-      res.status(201).json(role);
+    const data =  req.body;
+    const result = await Role.updateRole(id,data);
+    if (result && result.length > 0) {
+      res.status(201).json({message: "Updated Successfully",result});
     } else {
-      res.status(404).json({ message: "Roles not found" });
+      res.status(404).json({ message: "Resource not found" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

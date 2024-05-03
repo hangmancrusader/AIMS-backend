@@ -107,8 +107,9 @@ async updateRole(roleId, roleData) {
   const query = `
     UPDATE role
     SET
-     TypeofRole = $2,
+     TypeofRole = $2
     WHERE id = $1
+    RETURNING id;
   `;
   const values = 
   [

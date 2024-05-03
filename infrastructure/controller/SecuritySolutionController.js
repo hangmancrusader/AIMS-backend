@@ -97,7 +97,11 @@ const validateSchema = require('..//middleware/validateService.js');
       const { id } = req.params;
       const Data = req.body;
       const result = await SecSol.update(id, Data);
-      res.status(201).json(result,{message:"SecSol updated successfully"});
+      if (result && result.length > 0) {
+        res.status(201).json({message: "Updated Successfully",result});
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
