@@ -1265,6 +1265,39 @@ catch (err){
 }////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+async alterUsers()
+{
+  try{ 
+    const checkTableExistsQuery = `
+    SELECT EXISTS (
+      SELECT 1
+      FROM information_schema.tables
+      WHERE table_name = 'users'
+    );
+  `;
+  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+  if (tableExistsResult.rows[0].exists) 
+  try {
+    const query = `
+    ALTER TABLE users
+    ADD COLUMN profilepic BYTEA;
+
+    `;
+    await this.pool.query(query);
+    console.log(' table altered');
+  } catch (err) {
+    console.error(err);
+    console.error(' table creation failed');
+  }
+  else{
+    console.log(" table doesnt exist");
+  }
+}
+catch (err){
+  console.error(err);
+}
+}
+
 }// end of class
 
 module.exports = TablesRepository;

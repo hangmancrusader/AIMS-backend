@@ -21,21 +21,43 @@ const {
   newMobilePhoneSchema} = require('../middleware/yupConfig.js');
 const validateSchema = require('..//middleware/validateService.js');
 const hashPassword = require('../middleware/hashPassword.js');
-const verifyUser = require('../middleware/verifyUser.js');
-
-
+//const verifyUser = require('../middleware/verifyUser.js');
+const fs = require('fs');
+const multer  = require('multer');
+const TablesRepo = require("../repository/TablesRepository")
+const TablesRepository = new TablesRepo();
+const upload  = multer({dest:'uploads/'})
 //USER ADMINISTRATION ROUTES
 //post a user to the database - uses the jwt token of admin created upon admin login
-router.post("/homepage/User_Administration/createnewuser",authenticateToken, hashPassword, async (req, res) => {
+router.post("/homepage/User_Administration/createnewuser",upload.single('profilepic'),authenticateToken, hashPassword, async (req, res) => {
   try {
     console.log(req.body)
     const userData = req.body;
-    const newUser = await rootUser.addUser(userData); // Call addUser on userUseCases instance
+    const imageFile = fs.readFileSync(req.file.path);
+    const base64Image = imageFile.toString('base64');
+    req.body.profilepic = base64Image;
+    const newUser = await rootUser.addUserwithPic(userData); // Call addUser on userUseCases instance
     res.status(201).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
+
+
+//was used to alter users table
+/*
+router.post("/altertable", async (req, res) => {
+  try {
+     const table = await TablesRepository.alterUsers();
+    res.status(201).json({message: "Table altered successfully"});
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+*/
+
+
+
 
 //get a user from the database -this route needs JWT authentication
 router.get("/homepage/User_Administration/user_management/user_profile/:id",authenticateToken, async (req, res) => {

@@ -86,6 +86,86 @@ class UserRepository {
     }
   }//end of addUser function
 
+  async addUserwithPic(user) {
+    
+    console.log(user);
+//create user Table first
+    try{ 
+      const checkTableExistsQuery = `
+      SELECT EXISTS (
+        SELECT 1
+        FROM information_schema.tables
+        WHERE table_name = 'users'
+      );
+    `;
+    const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+    if (!tableExistsResult.rows[0].exists) 
+    try {
+      const query = `
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        firstname VARCHAR(50) NOT NULL,
+        lastname VARCHAR(50) NOT NULL,
+        department VARCHAR(50),
+        securityClearance BOOLEAN NOT NULL,
+        contactNo VARCHAR(20),
+        email VARCHAR(100) UNIQUE NOT NULL,
+        team INTEGER,
+        currentPassword VARCHAR(255) NOT NULL, 
+        newPassword VARCHAR(255),
+        MFAuth VARCHAR(255),
+        userIdStatus VARCHAR(20) NOT NULL CHECK (userIdStatus IN ('active', 'inactive')),
+        profilepic BYTEA
+      );
+      `;
+      await this.pool.query(query);
+      console.log('User table created');
+    } catch (err) {
+      console.error(err);
+      console.error('User table creation failed');
+    }
+    else{
+      console.log("User table already exists");
+    }
+  }
+  catch (err){
+    console.error(err);
+  }
+    
+   try {
+      const query = `
+        INSERT INTO users 
+        (firstname, lastname, department, securityClearance, contactNo, email, team, currentPassword, newPassword, MFAuth, userIdStatus,profilepic) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12) 
+        RETURNING id;
+      `;
+      const values = [
+        user.firstname,
+        user.lastname,
+        user.department,
+        user.securityClearance,
+        user.contactNo,
+        user.email,
+        user.team,
+        user.currentPassword,
+        user.newPassword,
+        user.MFAuth,
+        user.userIdStatus,
+        user.profilepic
+      ];
+  
+      const result = await this.pool.query(query, values);
+      console.log("User added successfully");
+      const id = result.rows[0].id;
+      return id;
+    } catch (err) {
+      console.error(err);
+      //console.log("User not added ");
+      return ('User not added')
+    }
+  }
+
+
  //get user
  async getUser(userId) {
   const query = 'SELECT * FROM users WHERE id = $1';

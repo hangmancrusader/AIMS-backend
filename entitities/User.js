@@ -13,7 +13,8 @@ class User {
     currentPassword,
     newPassword,
     MFAuth,
-    userIdStatus
+    userIdStatus,
+    profilepic
   }) {
     this.id = id;
     this.assetID = assetID;
@@ -29,6 +30,7 @@ class User {
     this.newPassword = newPassword;
     this.MFAuth = MFAuth;
     this.userIdStatus = userIdStatus;
+    this.profilepic = profilepic;
   }
 
   // Getters and setters can be added as needed

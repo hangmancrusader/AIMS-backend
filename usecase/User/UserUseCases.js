@@ -8,12 +8,21 @@ class UserUseCases {
     this.userRepository = new UserRepository();
   }
 
-  async addUser(userData) {
+  /*async addUser(userData) {
     // Log the userData object
     console.log(userData);
     // Logic to add a new user
     const newUser = new User(userData);
     return await this.userRepository.addUser(newUser);
+    //return newUser;
+  }*/
+
+  async addUserwithPic(userData) {
+    // Log the userData object
+    console.log(userData);
+    // Logic to add a new user
+    const newUser = new User(userData);
+    return await this.userRepository.addUserwithPic(newUser);
     //return newUser;
   }
 
