@@ -1278,10 +1278,15 @@ async alterUsers()
   const tableExistsResult = await this.pool.query(checkTableExistsQuery);
   if (tableExistsResult.rows[0].exists) 
   try {
-    const query = `
+    /*const query = `
     ALTER TABLE users
     ADD COLUMN profilepic BYTEA;
 
+    `;*/
+    const query = `
+    ALTER TABLE users
+    ADD COLUMN assetID INT REFERENCES asset(id),
+    ADD COLUMN roleID INT REFERENCES role(id);
     `;
     await this.pool.query(query);
     console.log(' table altered');

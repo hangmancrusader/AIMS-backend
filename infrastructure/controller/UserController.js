@@ -51,7 +51,7 @@ router.post("/homepage/User_Administration/createnewuser",upload.single('profile
 
 
 //was used to alter users table
-/*
+
 router.post("/altertable", async (req, res) => {
   try {
      const table = await TablesRepository.alterUsers();
@@ -60,7 +60,7 @@ router.post("/altertable", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
-*/
+
 
 
 
@@ -133,9 +133,9 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     //const user = await authUser.authandlogin(email, password);
-    const user = await authUser.verifyuserlogin(email, password);
-    console.log("user is " +user);
-    res.json({message: "Login successful"});
+    const usertoken = await authUser.verifyuserlogin(email, password);
+    //console.log("user is " +user);
+    res.json({message: "Login successful",usertoken});
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
