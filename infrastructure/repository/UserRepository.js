@@ -116,6 +116,7 @@ class UserRepository {
         MFAuth VARCHAR(255),
         userIdStatus VARCHAR(20) NOT NULL CHECK (userIdStatus IN ('active', 'inactive')),
         profilepic BYTEA
+        
       );
       `;
       await this.pool.query(query);
@@ -135,8 +136,8 @@ class UserRepository {
    try {
       const query = `
         INSERT INTO users 
-        (firstname, lastname, department, securityClearance, contactNo, email, team, currentPassword, newPassword, MFAuth, userIdStatus,profilepic) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12) 
+        (firstname, lastname, department, securityClearance, contactNo, email, team, currentPassword, newPassword, MFAuth, userIdStatus, profilepic, assetID, roleID) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12, $13, $14) 
         RETURNING id;
       `;
       const values = [
@@ -151,7 +152,9 @@ class UserRepository {
         user.newPassword,
         user.MFAuth,
         user.userIdStatus,
-        user.profilepic
+        user.profilepic,
+        user.assetID,
+        user.roleID
       ];
   
       const result = await this.pool.query(query, values);
@@ -160,7 +163,7 @@ class UserRepository {
       return id;
     } catch (err) {
       console.error(err);
-      //console.log("User not added ");
+      console.log("User not added ");
       return ('error');
     }
   }
