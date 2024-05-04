@@ -37,13 +37,13 @@ router.post("/homepage/User_Administration/createnewuser",upload.single('profile
     const base64Image = imageFile.toString('base64');
     req.body.profilepic = base64Image;
     const newUser = await rootUser.addUserwithPic(userData);
-    
     if(newUser==='error'){
-      res.status(400).json({ error: "User not added, recheck fields" });
+      res.status(400).json({ error: "Not added, recheck fields" });
     }
     else{
       const id = newUser;
-    res.status(201).json({id})};
+    res.status(201).json(id)
+    };
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

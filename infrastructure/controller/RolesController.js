@@ -9,7 +9,14 @@ router.post("/homepage/newrole", authenticateToken,async (req, res) => {
     try {
       const roleData = req.body;
       const newRole = await Role.addRole(roleData); 
-      res.status(201).json(newRole);
+      //res.status(201).json(newRole);
+      if(result==='error'){
+        res.status(400).json({ error: "Not added, recheck fields" });
+      }
+      else{
+        const id = result;
+      res.status(201).json(id)
+      };
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

@@ -65,6 +65,7 @@ class MobilePhoneRepository {
   catch (err) {
     console.error(err);
     console.log("Not added ");
+    return ('error');
   }
   }////////////////////////////////////////////////////////////////
 

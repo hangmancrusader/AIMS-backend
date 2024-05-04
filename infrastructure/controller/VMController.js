@@ -44,7 +44,14 @@ const validateSchema = require('..//middleware/validateService.js');
       console.log(req.body)
       const data = req.body;
       const result = await VM.add(data);// the db returns the id of new Laptop
-      res.status(201).json(result);
+      //res.status(201).json(result);
+      if(result==='error'){
+        res.status(400).json({ error: "Not added, recheck fields" });
+      }
+      else{
+        const id = result;
+      res.status(201).json(id)
+      };
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

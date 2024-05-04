@@ -31,6 +31,13 @@ const TablesRepository = new TablesRepo();
       const data = req.body;
       const result = await Asset.add(data);
       res.status(201).json(result);
+      if(result==='error'){
+        res.status(400).json({ error: "Not added, recheck fields" });
+      }
+      else{
+        const id = result;
+      res.status(201).json(id)
+      };
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

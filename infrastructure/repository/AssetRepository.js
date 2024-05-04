@@ -41,10 +41,6 @@ class AssetRepository {
         data.secsolID
       ];
       
-    
-    
-    
-  
     const result = await this.pool.query(query, values);
     console.log("Asset added successfully");    
     const id = result.rows[0].id;
@@ -54,6 +50,7 @@ class AssetRepository {
   catch (err) {
     console.error(err);
     console.log("Not added ");
+    return ('error');
   }
 }////////////////////////////////////////////////////////////////
 

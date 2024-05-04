@@ -102,7 +102,8 @@ class ApplicationRepository {
   }
   catch (err) {
     console.error(err);
-    console.log("Not added ");
+    console.log("Not added");
+    return ('error');
   }
 }////////////////////////////////////////////////////////////////
 

@@ -61,6 +61,7 @@ class RoleRepository {
     } catch (err) {
       console.error(err);
       console.log("Role not added ");
+      return ('error');
     }
   }////////////////////////////////////////////////////////////////
 
