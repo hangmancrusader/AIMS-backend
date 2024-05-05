@@ -1278,14 +1278,11 @@ async createUsers()
   const tableExistsResult = await this.pool.query(checkTableExistsQuery);
   if (!tableExistsResult.rows[0].exists) 
   try {
-    /*const query = `
-    ALTER TABLE users
-    ADD COLUMN profilepic BYTEA;
-    ADD COLUMN assetID INT REFERENCES asset(id),
-    ADD COLUMN roleID INT REFERENCES role(id);
-
-    `;*/
     const query = `
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY);
+    `;
+    /*const query = `
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
       firstname VARCHAR(50) ,
@@ -1303,7 +1300,7 @@ async createUsers()
       assetID INT REFERENCES asset(id),
       roleID INT REFERENCES role(id)
     );
-    `;
+    `;*/
     await this.pool.query(query);
     console.log(' table altered');
   } catch (err) {
@@ -1320,7 +1317,7 @@ catch (err){
 }
 }
 
-async createUsers()
+async deleteUsers()
 {
   try{ 
     const checkTableExistsQuery = `
@@ -1351,6 +1348,56 @@ catch (err){
   console.error(err);
 }
 }
+
+
+async alterUsers()
+{
+  try{ 
+    const checkTableExistsQuery = `
+    SELECT EXISTS (
+      SELECT 1
+      FROM information_schema.tables
+      WHERE table_name = 'users'
+    );
+  `;
+  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+  if (tableExistsResult.rows[0].exists) 
+  try {
+    
+    const query = `
+    ALTER TABLE users 
+    ADD COLUMN firstname VARCHAR(50) ,
+    ADD COLUMN   lastname VARCHAR(50) ,
+    ADD COLUMN  department VARCHAR(50),
+    ADD COLUMN  securityClearance BOOLEAN ,
+    ADD COLUMN  contactNo VARCHAR(20),
+    ADD COLUMN  email VARCHAR(100) UNIQUE ,
+    ADD COLUMN   team INTEGER,
+    ADD COLUMN   currentPassword VARCHAR(255) , 
+    ADD COLUMN   newPassword VARCHAR(255),
+    ADD COLUMN   MFAuth VARCHAR(255),
+    ADD COLUMN   userIdStatus VARCHAR(20) CHECK (userIdStatus IN ('active', 'inactive')),
+    ADD COLUMN   profilepic BYTEA,
+    ADD COLUMN   assetID INT REFERENCES asset(id),
+    ADD COLUMN   roleID INT REFERENCES role(id);
+    `;
+    await this.pool.query(query);
+    console.log(' table altered');
+  } catch (err) {
+    console.error(err);
+    console.error(' table creation failed');
+  }
+  else{
+    
+    console.log(' table created');
+  }
+}
+catch (err){
+  console.error(err);
+}
+}
+
+
 
 }// end of class
 
