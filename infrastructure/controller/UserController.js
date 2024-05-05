@@ -61,6 +61,23 @@ router.post("/altertable", async (req, res) => {
   }
 });
 
+router.post("/homepage/User_Administration/resetpassword/:id",authenticateToken, hashPassword, async (req, res) => {
+  try {
+    
+    //const {email} = req.body;
+    const {id}=req.params;
+    const userData = req.body;
+    
+    const result = await rootUser.resetPassword(id,userData);
+    if (result && result.length > 0) {
+      res.status(201).json({message: "Updated Successfully",result});
+    } else {
+      res.status(404).json({ message: "Password not updated, incorrect user id" ,result});
+    };
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 
 
 

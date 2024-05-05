@@ -8,11 +8,14 @@ const hashedPasswordMiddleware = async(req,res, next) =>{
         const salt = await bcrypt.genSalt(saltRounds);
         const hashedPassword = await bcrypt.hash(currentPassword, salt);
         req.body.currentPassword = hashedPassword; //update the password to its hash
+        req.body.newPassword = hashedPassword;
         next();
     } catch (error) {
         console.error('Error during password hashing:', error);
         res.status(500).send('Error during password hashing');
     }
 };
+
+
 
 module.exports = hashedPasswordMiddleware;

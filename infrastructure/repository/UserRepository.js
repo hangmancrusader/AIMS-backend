@@ -226,7 +226,10 @@ async getAllUsers() {
         currentPassword = $9,
         newPassword = $10,
         MFAuth = $11,
-        userIdStatus = $12
+        userIdStatus = $12,
+        profilepic=$13,
+        assetID=$14,
+        roleID=$15
       WHERE id = $1
     `;
     const values = [
@@ -241,7 +244,10 @@ async getAllUsers() {
       userData.currentPassword,
       userData.newPassword,
       userData.MFAuth,
-      userData.userIdStatus
+      userData.userIdStatus,
+      userData.profilepic,
+      userData.assetID,
+      userData.roleID
     ];
 
     const client = await this.pool.connect();
@@ -289,6 +295,31 @@ async getAllUsers() {
       client.release();
     }
   }
+
+  async resetPassword(id,userData) {
+    const query = `
+      UPDATE users
+      SET
+      currentPassword = $2,
+      newPassword = $3     
+      WHERE id = $1;
+    `;
+    const values = [
+      id,
+      userData.currentPassword,
+      userData.newPassword
+     ];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      console.log(result);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
+  }
+
 }
 
 module.exports = UserRepository;

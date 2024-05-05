@@ -42,7 +42,7 @@ class UserUseCases {
 
   async updateUser(userId, userData) {
     // Logic to update a user
-    await this.userRepository.updateUser(userId, userData);
+    return await this.userRepository.updateUser(userId, userData);
   }
 
   async login(email, password) {
@@ -56,6 +56,13 @@ class UserUseCases {
       throw new Error('Invalid email or password');
     }
   }//end of login
+
+  async resetPassword(id,data) {
+    
+    console.log(data);
+    return await this.userRepository.resetPassword(id,data);
+   
+  }
 }
 
 module.exports = UserUseCases;
