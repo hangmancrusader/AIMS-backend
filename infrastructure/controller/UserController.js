@@ -29,13 +29,14 @@ const TablesRepository = new TablesRepo();
 const upload  = multer({dest:'uploads/'})
 //USER ADMINISTRATION ROUTES
 //post a user to the database - uses the jwt token of admin created upon admin login
-router.post("/homepage/User_Administration/createnewuser",upload.single('profilepic'),authenticateToken, hashPassword, async (req, res) => {
+router.post("/homepage/User_Administration/createnewuser",upload.single('profilepic'), hashPassword, async (req, res) => {
   try {
     
     const userData = req.body;
+    if(req.body.profilepic){
     const imageFile = fs.readFileSync(req.file.path);
     const base64Image = imageFile.toString('base64');
-    req.body.profilepic = base64Image;
+    req.body.profilepic = base64Image;}
     const newUser = await rootUser.addUserwithPic(userData);
     if(newUser==='error'){
       res.status(400).json({ error: "Not added, recheck fields" });
@@ -54,8 +55,9 @@ router.post("/homepage/User_Administration/createnewuser",upload.single('profile
 
 router.post("/altertable", async (req, res) => {
   try {
-     const table = await TablesRepository.alterUsers();
+     const table = await TablesRepository.createUsers();
     res.status(201).json({message: "Table altered successfully"});
+    //res.status(201).json({message: "Table altered successfully"});
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

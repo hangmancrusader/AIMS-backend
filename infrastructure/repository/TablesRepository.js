@@ -1265,7 +1265,62 @@ catch (err){
 }////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-async alterUsers()
+async createUsers()
+{
+  try{ 
+    const checkTableExistsQuery = `
+    SELECT EXISTS (
+      SELECT 1
+      FROM information_schema.tables
+      WHERE table_name = 'users'
+    );
+  `;
+  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+  if (!tableExistsResult.rows[0].exists) 
+  try {
+    /*const query = `
+    ALTER TABLE users
+    ADD COLUMN profilepic BYTEA;
+    ADD COLUMN assetID INT REFERENCES asset(id),
+    ADD COLUMN roleID INT REFERENCES role(id);
+
+    `;*/
+    const query = `
+    CREATE TABLE users (
+      id SERIAL PRIMARY KEY,
+      firstname VARCHAR(50) ,
+      lastname VARCHAR(50) ,
+      department VARCHAR(50),
+      securityClearance BOOLEAN ,
+      contactNo VARCHAR(20),
+      email VARCHAR(100) UNIQUE ,
+      team INTEGER,
+      currentPassword VARCHAR(255) , 
+      newPassword VARCHAR(255),
+      MFAuth VARCHAR(255),
+      userIdStatus VARCHAR(20) CHECK (userIdStatus IN ('active', 'inactive')),
+      profilepic BYTEA,
+      assetID INT REFERENCES asset(id),
+      roleID INT REFERENCES role(id)
+    );
+    `;
+    await this.pool.query(query);
+    console.log(' table altered');
+  } catch (err) {
+    console.error(err);
+    console.error(' table creation failed');
+  }
+  else{
+    
+    console.log(' table created');
+  }
+}
+catch (err){
+  console.error(err);
+}
+}
+
+async createUsers()
 {
   try{ 
     const checkTableExistsQuery = `
@@ -1278,15 +1333,8 @@ async alterUsers()
   const tableExistsResult = await this.pool.query(checkTableExistsQuery);
   if (tableExistsResult.rows[0].exists) 
   try {
-    /*const query = `
-    ALTER TABLE users
-    ADD COLUMN profilepic BYTEA;
-
-    `;*/
     const query = `
-    ALTER TABLE users
-    ADD COLUMN assetID INT REFERENCES asset(id),
-    ADD COLUMN roleID INT REFERENCES role(id);
+    DROP TABLE users;
     `;
     await this.pool.query(query);
     console.log(' table altered');
@@ -1295,7 +1343,8 @@ async alterUsers()
     console.error(' table creation failed');
   }
   else{
-    console.log(" table doesnt exist");
+    
+    console.log(' table created');
   }
 }
 catch (err){
