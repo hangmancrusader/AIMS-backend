@@ -4,7 +4,28 @@ const jwt  = require("jsonwebtoken");
 const bcrypt = require("bcryptjs")
 const RoleUseCases = require("../../usecase/Assets/Role/RoleUseCases.js")
 const Role = new RoleUseCases();
+//a separate repo only for creating and altering tables
+const TablesRepo = require("../repository/TablesRepository")
+const TablesRepository = new TablesRepo();
 
+/*router.post("/createtable", async (req, res) => {
+    try {
+      
+      const table = await TablesRepository.createRole();
+      res.status(201).json({message: "Table created successfully"});
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+  router.post("/altertable", async (req, res) => {
+    try {
+       const table = await TablesRepository.alterService()
+      res.status(201).json({message: "Table altered successfully"});
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+*/
 router.post("/homepage/newrole", authenticateToken,async (req, res) => {
     try {
       const roleData = req.body;

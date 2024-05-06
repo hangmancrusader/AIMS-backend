@@ -1397,6 +1397,39 @@ catch (err){
 }
 }
 
+async createRole()
+{
+  try{ 
+    const checkTableExistsQuery = `
+    SELECT EXISTS (
+      SELECT 1
+      FROM information_schema.tables
+      WHERE table_name = 'role'
+    );
+  `;
+  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+  if (!tableExistsResult.rows[0].exists) 
+  try {
+        const query = `
+        CREATE TABLE role (
+        id SERIAL PRIMARY KEY,
+        TypeofRole VARCHAR(255) NOT NULL UNIQUE        
+      );
+      `;
+    await this.pool.query(query);
+    console.log('role table created');
+  } catch (err) {
+    console.error(err);
+    console.error('role table creation failed');
+  }
+  else{
+    console.log("role table already exists");
+  }
+}
+catch (err){
+  console.error(err);
+}
+}
 
 
 }// end of class
