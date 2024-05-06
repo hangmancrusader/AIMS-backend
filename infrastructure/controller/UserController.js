@@ -51,9 +51,7 @@ router.post("/homepage/User_Administration/createnewuser",upload.single('profile
 });
 
 
-//was used to alter users table
-
-router.post("/createuserrtable", async (req, res) => {
+/*router.post("/createuserrtable", async (req, res) => {
   try {
      const table = await TablesRepository.createUsers();
     res.status(201).json({message: "Table altered successfully"});
@@ -71,6 +69,15 @@ router.post("/deleteusertable", async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+router.post("/alterusertable", async (req, res) => {
+  try {
+     const table = await TablesRepository.alterUsers();
+    res.status(201).json({message: "Table altered successfully"});
+    //res.status(201).json({message: "Table altered successfully"});
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});*/
 router.post("/homepage/User_Administration/resetpassword/:id",authenticateToken, hashPassword, async (req, res) => {
   try {
     

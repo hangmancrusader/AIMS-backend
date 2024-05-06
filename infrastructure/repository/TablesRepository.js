@@ -1282,25 +1282,7 @@ async createUsers()
     CREATE TABLE users (
       id SERIAL PRIMARY KEY);
     `;
-    /*const query = `
-    CREATE TABLE users (
-      id SERIAL PRIMARY KEY,
-      firstname VARCHAR(50) ,
-      lastname VARCHAR(50) ,
-      department VARCHAR(50),
-      securityClearance BOOLEAN ,
-      contactNo VARCHAR(20),
-      email VARCHAR(100) UNIQUE ,
-      team INTEGER,
-      currentPassword VARCHAR(255) , 
-      newPassword VARCHAR(255),
-      MFAuth VARCHAR(255),
-      userIdStatus VARCHAR(20) CHECK (userIdStatus IN ('active', 'inactive')),
-      profilepic BYTEA,
-      assetID INT REFERENCES asset(id),
-      roleID INT REFERENCES role(id)
-    );
-    `;*/
+    
     await this.pool.query(query);
     console.log(' table altered');
   } catch (err) {
