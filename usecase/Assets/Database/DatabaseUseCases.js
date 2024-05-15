@@ -1,27 +1,23 @@
 // UseCases for User Administration done by a Root/Other Role
-const DBRepository = require('../../../infrastructure/repository/DatabaseRepository.js');
-const DB = require('../../../entitities/Database.js')
+const DBRepository = require("../../../infrastructure/repository/DatabaseRepository.js");
+const DB = require("../../../entitities/Database.js");
 class DatabaseUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.dbRepository = new DBRepository();
   }
 
   async add(Data) {
-    
     console.log(Data);
     // Logic to add a new user
     const newDB = new DB(Data);
-   const  id = await this.dbRepository.add(newDB);
-    return {newDB,id};
+    const id = await this.dbRepository.add(newDB);
+    return { newDB, id };
   }
 
   async get(Id) {
     console.log(Id);
     return await this.dbRepository.get(Id);
   }
-
 
   async getAll() {
     return await this.dbRepository.getAll();
@@ -31,17 +27,9 @@ class DatabaseUseCases {
     return await this.dbRepository.delete(userId);
   }
 
-  async update(Id,Data) {
-   
+  async update(Id, Data) {
     return await this.dbRepository.update(Id, Data);
   }
-
 }
 
-module.exports =DatabaseUseCases;
-
-
-
-
-
-  
+module.exports = DatabaseUseCases;

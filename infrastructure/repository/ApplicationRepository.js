@@ -1,20 +1,18 @@
-const connectionOptions = require('../connection/db.js')
-const express = require('express')
-const app =express();
+const connectionOptions = require("../connection/db.js");
+const express = require("express");
+const app = express();
 app.use(express.json());
 //the connectoptions will be initilized with dbconfig when dbconfig is imported in index.js
 class ApplicationRepository {
   constructor() {
     this.pool = connectionOptions;
   }
-  
 
   // class functionss
- 
+
   async add(data) {
-    try
-    {
-    const query = `
+    try {
+      const query = `
     INSERT INTO application (
       serviceID,
       vmID,
@@ -57,89 +55,81 @@ class ApplicationRepository {
     
 
     `;
-    const values = [
-      data.serviceID,
-      data.vmID,
-      data.dbID,
-      data.ServerName,
-      data.Servertype,
-      data.ServerIPAdd,
-      data.Virtual_Machine,
-      data.DatabaseServer,
-      data.BackupFreq,
-      data.BackupMethods,
-      data.RecoveryProcedures,
-      data.ApplicationName,
-      data.ApplicationVers,
-      data.ApplicationURL,
-      data.deploymentMethod,
-      data.UserRoles,
-      data.UserPermissions,
-      data.SSLconfig,
-      data.WebServerType,
-      data.WebServerVers,
-      data.VirtualHostConfig,
-      data.VendorContact,
-      data.SupportContDetails,
-      data.DBconnectdetails,
-      data.DBnames,
-      data.CurrentVers,
-      data.LastUpdate,
-      data.Monitortools,
-      data.ifyesExplain,
-      data.purchasedate,
-      data.cost
-    ];
-    
-    
-    
-  
-    const result = await this.pool.query(query, values);
-    console.log("Application added successfully");    
-    const id = result.rows[0].id;
-    console.log('Application added successfully with ID:', id);
-    return id;
+      const values = [
+        data.serviceID,
+        data.vmID,
+        data.dbID,
+        data.ServerName,
+        data.Servertype,
+        data.ServerIPAdd,
+        data.Virtual_Machine,
+        data.DatabaseServer,
+        data.BackupFreq,
+        data.BackupMethods,
+        data.RecoveryProcedures,
+        data.ApplicationName,
+        data.ApplicationVers,
+        data.ApplicationURL,
+        data.deploymentMethod,
+        data.UserRoles,
+        data.UserPermissions,
+        data.SSLconfig,
+        data.WebServerType,
+        data.WebServerVers,
+        data.VirtualHostConfig,
+        data.VendorContact,
+        data.SupportContDetails,
+        data.DBconnectdetails,
+        data.DBnames,
+        data.CurrentVers,
+        data.LastUpdate,
+        data.Monitortools,
+        data.ifyesExplain,
+        data.purchasedate,
+        data.cost
+      ];
+
+      const result = await this.pool.query(query, values);
+      console.log("Application added successfully");
+      const id = result.rows[0].id;
+      console.log("Application added successfully with ID:", id);
+      return id;
+    } catch (err) {
+      console.error(err);
+      console.log("Not added");
+      return "error";
+    }
+  } ////////////////////////////////////////////////////////////////
+
+  async get(Id) {
+    const query = "SELECT * FROM application WHERE id = $1";
+    const values = [Id];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
-  catch (err) {
-    console.error(err);
-    console.log("Not added");
-    return ('error');
+
+  async getAll() {
+    const query = "SELECT * FROM application;";
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
   }
-}////////////////////////////////////////////////////////////////
 
- 
- async get(Id) {
-  const query = 'SELECT * FROM application WHERE id = $1';
-  const values = [Id];
+  async delete(Id) {}
 
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query, values);
-    return result.rows[0];
-  } finally {
-    client.release();
-  }
-}
- 
-
-async getAll() {
-  const query = 'SELECT * FROM application;';
-
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query);
-    return result.rows;
-  } finally {
-    client.release();
-  }
-}
-
-async delete(Id) {
-  
-}
-
-async update(Id, data) {
-  const query = `
+  async update(Id, data) {
+    const query = `
   UPDATE application
   SET 
   serviceID = $2,
@@ -208,21 +198,16 @@ WHERE
       data.Monitortools,
       data.ifyesExplain,
       data.purchasedate,
-      data.cost,
-      
+      data.cost
     ];
     const client = await this.pool.connect();
     try {
-    const result = await client.query(query,values);
-    return result.rows[0];
+      const result = await client.query(query, values);
+      return result.rows[0];
     } finally {
       client.release();
     }
+  }
 }
 
-}
-  
 module.exports = ApplicationRepository;
-
-
-

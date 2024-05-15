@@ -29,7 +29,7 @@ const TablesRepository = new TablesRepo();
 router.post("/homepage/newrole", authenticateToken,async (req, res) => {
     try {
       const roleData = req.body;
-      const newRole = await Role.addRole(roleData); 
+      const result = await Role.addRole(roleData); 
       //res.status(201).json(newRole);
       if(result==='error'){
         res.status(400).json({ error: "Not added, recheck fields" });

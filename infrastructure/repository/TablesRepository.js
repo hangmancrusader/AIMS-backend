@@ -1,493 +1,463 @@
 //const { Pool } = require('pg');
-const port = 8080
-const connectionOptions = require('../connection/db.js')
-const express = require('express')
-const app =express();
+const port = 8080;
+const connectionOptions = require("../connection/db.js");
+const express = require("express");
+const app = express();
 app.use(express.json());
 //the connectoptions will be initilized with dbconfig when dbconfig is imported in index.js
 class TablesRepository {
   constructor() {
     this.pool = connectionOptions;
   }
-  
-//this repo is only for managing DB tables and their coolumns
-async createHosting()
-{
-  try{ 
-    const checkTableExistsQuery = `
+
+  //this repo is only for managing DB tables and their coolumns
+  async createHosting() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'hosting'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE hosting (
       id SERIAL PRIMARY KEY    
     );
     `;
-    await this.pool.query(query);
-    console.log('Hosting table created');
-  } catch (err) {
-    console.error(err);
-    console.error('Hosting table creation failed');
-  }
-  else{
-    console.log("Hositng table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("Hosting table created");
+        } catch (err) {
+          console.error(err);
+          console.error("Hosting table creation failed");
+        }
+      else {
+        console.log("Hositng table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async createVM()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createVM() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'virtualmachine'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE virtualmachine (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('VM table created');
-  } catch (err) {
-    console.error(err);
-    console.error('VM table creation failed');
-  }
-  else{
-    console.log("VM table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("VM table created");
+        } catch (err) {
+          console.error(err);
+          console.error("VM table creation failed");
+        }
+      else {
+        console.log("VM table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async createDatabase()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createDatabase() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'database'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE database (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('Database table created');
-  } catch (err) {
-    console.error(err);
-    console.error('Database table creation failed');
-  }
-  else{
-    console.log("Database table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("Database table created");
+        } catch (err) {
+          console.error(err);
+          console.error("Database table creation failed");
+        }
+      else {
+        console.log("Database table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-async createNetDev()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createNetDev() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'networkdevice'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE networkdevice (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('networkdevice table created');
-  } catch (err) {
-    console.error(err);
-    console.error('networkdevice table creation failed');
-  }
-  else{
-    console.log("networkdevice table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("networkdevice table created");
+        } catch (err) {
+          console.error(err);
+          console.error("networkdevice table creation failed");
+        }
+      else {
+        console.log("networkdevice table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async createApplication()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createApplication() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'application'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE application (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('application table created');
-  } catch (err) {
-    console.error(err);
-    console.error('application table creation failed');
-  }
-  else{
-    console.log("application table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("application table created");
+        } catch (err) {
+          console.error(err);
+          console.error("application table creation failed");
+        }
+      else {
+        console.log("application table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async createService()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createService() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'service'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE service (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('service table created');
-  } catch (err) {
-    console.error(err);
-    console.error('service table creation failed');
+          await this.pool.query(query);
+          console.log("service table created");
+        } catch (err) {
+          console.error(err);
+          console.error("service table creation failed");
+        }
+      else {
+        console.log("service table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("service table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createLaptop()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createLaptop() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'laptop'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE laptop (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('laptop table created');
-  } catch (err) {
-    console.error(err);
-    console.error('laptop table creation failed');
+          await this.pool.query(query);
+          console.log("laptop table created");
+        } catch (err) {
+          console.error(err);
+          console.error("laptop table creation failed");
+        }
+      else {
+        console.log("laptop table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("laptop table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createPrinter()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createPrinter() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'printer'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE printer (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('printer table created');
-  } catch (err) {
-    console.error(err);
-    console.error('printer table creation failed');
+          await this.pool.query(query);
+          console.log("printer table created");
+        } catch (err) {
+          console.error(err);
+          console.error("printer table creation failed");
+        }
+      else {
+        console.log("printer table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("printer table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createMphone()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createMphone() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'mobilephone'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE mobilephone (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('mobilephone table created');
-  } catch (err) {
-    console.error(err);
-    console.error('mobilephone table creation failed');
+          await this.pool.query(query);
+          console.log("mobilephone table created");
+        } catch (err) {
+          console.error(err);
+          console.error("mobilephone table creation failed");
+        }
+      else {
+        console.log("mobilephone table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("mobilephone table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createVOIP()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createVOIP() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'voip'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE voip (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('voip table created');
-  } catch (err) {
-    console.error(err);
-    console.error('voip table creation failed');
+          await this.pool.query(query);
+          console.log("voip table created");
+        } catch (err) {
+          console.error(err);
+          console.error("voip table creation failed");
+        }
+      else {
+        console.log("voip table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("voip table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createSecSol()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createSecSol() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'securitysolution'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE securitysolution (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('securitysolution table created');
-  } catch (err) {
-    console.error(err);
-    console.error('securitysolution table creation failed');
+          await this.pool.query(query);
+          console.log("securitysolution table created");
+        } catch (err) {
+          console.error(err);
+          console.error("securitysolution table creation failed");
+        }
+      else {
+        console.log("securitysolution table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("securitysolution table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createTicket()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createTicket() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'ticket'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE ticket (
       id SERIAL PRIMARY KEY         
     );
     `;
-    await this.pool.query(query);
-    console.log('ticket table created');
-  } catch (err) {
-    console.error(err);
-    console.error('ticket table creation failed');
+          await this.pool.query(query);
+          console.log("ticket table created");
+        } catch (err) {
+          console.error(err);
+          console.error("ticket table creation failed");
+        }
+      else {
+        console.log("ticket table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("ticket table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createAsset()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createAsset() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'asset'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE asset (
       id SERIAL PRIMARY KEY    
     );
     `;
-    await this.pool.query(query);
-    console.log('asset table created');
-  } catch (err) {
-    console.error(err);
-    console.error('asset table creation failed');
-  }
-  else{
-    console.log("asset table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("asset table created");
+        } catch (err) {
+          console.error(err);
+          console.error("asset table creation failed");
+        }
+      else {
+        console.log("asset table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async createEndPointDev()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createEndPointDev() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'endpointdevice'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
       CREATE TABLE endpointdevice (
       id SERIAL PRIMARY KEY    
     );
     `;
-    await this.pool.query(query);
-    console.log('endpointdevice table created');
-  } catch (err) {
-    console.error(err);
-    console.error('endpointdevice table creation failed');
-  }
-  else{
-    console.log("endpointdevice table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}///
+          await this.pool.query(query);
+          console.log("endpointdevice table created");
+        } catch (err) {
+          console.error(err);
+          console.error("endpointdevice table creation failed");
+        }
+      else {
+        console.log("endpointdevice table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ///
 
-async alterAsset()//done
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterAsset() { //done
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'asset'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE asset
     ADD COLUMN hostingID SERIAL REFERENCES hosting(id),
     ADD COLUMN vmID SERIAL REFERENCES virtualmachine(id),
@@ -497,35 +467,33 @@ async alterAsset()//done
     ADD COLUMN netdevID SERIAL REFERENCES networkdevice(id),
     ADD COLUMN secsolID SERIAL REFERENCES securitysolution(id);
     `;
-    await this.pool.query(query);
-    console.log('asset table altered');
-  } catch (err) {
-    console.error(err);
-    console.error('asset table creation failed');
-  }
-  else{
-    console.log("asset table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("asset table altered");
+        } catch (err) {
+          console.error(err);
+          console.error("asset table creation failed");
+        }
+      else {
+        console.log("asset table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterHosting()//done
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterHosting() { //done
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'hosting'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE hosting
     
     ADD COLUMN vmID SERIAL REFERENCES virtualmachine(id),
@@ -557,35 +525,33 @@ async alterHosting()//done
     ADD COLUMN HostHV VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log('hosting table altered');
-  } catch (err) {
-    console.error(err);
-    console.error('hosting table alteration failed');
-  }
-  else{
-    console.log("hsoting table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("hosting table altered");
+        } catch (err) {
+          console.error(err);
+          console.error("hosting table alteration failed");
+        }
+      else {
+        console.log("hsoting table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterVM()//add cols
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterVM() { //add cols
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'virtualmachine'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE virtualmachine
     ADD COLUMN netdevID SERIAL REFERENCES networkdevice(id),
     ADD COLUMN secsolID SERIAL REFERENCES securitysolution(id),
@@ -626,35 +592,33 @@ async alterVM()//add cols
     ADD COLUMN cost DECIMAL;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table alteration failed');
-  }
-  else{
-    console.log("asset table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table alteration failed");
+        }
+      else {
+        console.log("asset table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterNetDev()//edited
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterNetDev() { //edited
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'networkdevice'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE networkdevice
     ADD COLUMN DevName VARCHAR,
     ADD COLUMN type VARCHAR,
@@ -689,35 +653,33 @@ async alterNetDev()//edited
     ADD COLUMN SupportContDetails VARCHAR,
     ADD COLUMN Doclink VARCHAR;
     `;
-    await this.pool.query(query);
-    console.log('table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log("table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterSecSol()//edited
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterSecSol() { //edited
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'securitysolution'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE securitysolution
     ADD COLUMN product_name VARCHAR,
     ADD COLUMN vendor VARCHAR,
@@ -742,35 +704,33 @@ async alterSecSol()//edited
     ADD COLUMN purchase_date DATE,
     ADD COLUMN cost DECIMAL;
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterDatabase()//edited
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterDatabase() { //edited
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'database'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE database
     ADD COLUMN DBServername VARCHAR,
     ADD COLUMN type VARCHAR,
@@ -796,35 +756,33 @@ async alterDatabase()//edited
     ADD COLUMN cost DECIMAL;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterApplication()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterApplication() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'application'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE application
     
     ADD COLUMN serviceID SERIAL REFERENCES service(id),
@@ -860,35 +818,33 @@ async alterApplication()
     ADD COLUMN cost DECIMAL;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterService()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterService() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'service'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE service
     ADD COLUMN servicename VARCHAR,
     ADD COLUMN ServiceCustomer VARCHAR,
@@ -920,35 +876,33 @@ async alterService()
     ADD COLUMN Databases VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterTicket()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterTicket() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'ticket'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE ticket
     ADD COLUMN userid SERIAL REFERENCES users(id),
     ADD COLUMN assetid SERIAL REFERENCES asset(id),
@@ -965,35 +919,33 @@ async alterTicket()
     ADD COLUMN Observer VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterEndPointDev()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterEndPointDev() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'endpointdevice'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE endpointdevice
     
     ADD COLUMN VoIPId INT REFERENCES voip(id),
@@ -1002,35 +954,33 @@ async alterEndPointDev()
     ADD COLUMN mobilephId INT REFERENCES mobilephone(id);
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterMphone()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterMphone() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'mobilephone'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE mobilephone
     
     ADD COLUMN Assetname VARCHAR,
@@ -1064,35 +1014,33 @@ async alterMphone()
     ADD COLUMN AssignmentHistory VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterLaptop()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterLaptop() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'laptop'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE laptop
     
     ADD COLUMN Assetname VARCHAR,
@@ -1130,35 +1078,33 @@ async alterLaptop()
     ADD COLUMN Encryption VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterPrinter()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterPrinter() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'printer'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE printer
     
     ADD COLUMN Assetname VARCHAR,
@@ -1188,35 +1134,33 @@ async alterPrinter()
     ADD COLUMN MaintainceHist VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-async alterVOIP()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterVOIP() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'voip'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE voip
     ADD COLUMN Assetname VARCHAR,
     ADD COLUMN SerialNumber VARCHAR,
@@ -1249,104 +1193,93 @@ async alterVOIP()
     ADD COLUMN Snapshotinfo VARCHAR;
 
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    console.log(" table doesnt exist");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}////////////////////////////////////////////////////////////////////////////////////////////////
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table doesnt exist");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-async createUsers()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createUsers() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'users'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     CREATE TABLE users (
       id SERIAL PRIMARY KEY);
     `;
-    
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
-  }
-  else{
-    
-    console.log(' table created');
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async deleteUsers()
-{
-  try{ 
-    const checkTableExistsQuery = `
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table created");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async deleteUsers() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'users'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     DROP TABLE users;
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table created");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    
-    console.log(' table created');
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-
-async alterUsers()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async alterUsers() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'users'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (tableExistsResult.rows[0].exists) 
-  try {
-    
-    const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (tableExistsResult.rows[0].exists)
+        try {
+          const query = `
     ALTER TABLE users 
     ADD COLUMN firstname VARCHAR(50) ,
     ADD COLUMN   lastname VARCHAR(50) ,
@@ -1363,57 +1296,51 @@ async alterUsers()
     ADD COLUMN   assetID INT REFERENCES asset(id),
     ADD COLUMN   roleID INT REFERENCES role(id);
     `;
-    await this.pool.query(query);
-    console.log(' table altered');
-  } catch (err) {
-    console.error(err);
-    console.error(' table creation failed');
+          await this.pool.query(query);
+          console.log(" table altered");
+        } catch (err) {
+          console.error(err);
+          console.error(" table creation failed");
+        }
+      else {
+        console.log(" table created");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    
-    console.log(' table created');
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
 
-async createRole()
-{
-  try{ 
-    const checkTableExistsQuery = `
+  async createRole() {
+    try {
+      const checkTableExistsQuery = `
     SELECT EXISTS (
       SELECT 1
       FROM information_schema.tables
       WHERE table_name = 'role'
     );
   `;
-  const tableExistsResult = await this.pool.query(checkTableExistsQuery);
-  if (!tableExistsResult.rows[0].exists) 
-  try {
-        const query = `
+      const tableExistsResult = await this.pool.query(checkTableExistsQuery);
+      if (!tableExistsResult.rows[0].exists)
+        try {
+          const query = `
         CREATE TABLE role (
         id SERIAL PRIMARY KEY,
         TypeofRole VARCHAR(255) NOT NULL UNIQUE        
       );
       `;
-    await this.pool.query(query);
-    console.log('role table created');
-  } catch (err) {
-    console.error(err);
-    console.error('role table creation failed');
+          await this.pool.query(query);
+          console.log("role table created");
+        } catch (err) {
+          console.error(err);
+          console.error("role table creation failed");
+        }
+      else {
+        console.log("role table already exists");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
-  else{
-    console.log("role table already exists");
-  }
-}
-catch (err){
-  console.error(err);
-}
-}
-
-
-}// end of class
+} // end of class
 
 module.exports = TablesRepository;

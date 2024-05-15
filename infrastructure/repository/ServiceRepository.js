@@ -1,21 +1,19 @@
 //const { Pool } = require('pg');
-const port = 8080
-const connectionOptions = require('../connection/db.js')
-const express = require('express')
-const app =express();
+const port = 8080;
+const connectionOptions = require("../connection/db.js");
+const express = require("express");
+const app = express();
 app.use(express.json());
 //the connectoptions will be initilized with dbconfig when dbconfig is imported in index.js
 class ServiceRepository {
   constructor() {
     this.pool = connectionOptions;
   }
-  
 
   // class functionss
   async add(data) {
-    try
-    {
-    const query = `
+    try {
+      const query = `
     INSERT INTO service (
       servicename,
       ServiceCustomer,
@@ -54,85 +52,78 @@ class ServiceRepository {
     RETURNING id;
     
     `;
-    const values = [
-      data.servicename,
-      data.ServiceCustomer,
-      data.ServiceCustodian,
-      data.ServiceOwner,
-      data.OwnerContInfo,
-      data.Configurationfiles,
-      data.CustomizationOptions,
-      data.BriefDescription,
-      data.detailedDesc,
-      data.DeployDate,
-      data.RolloutPlandetails,
-      data.SecProtocols,
-      data.SerCreationDate,
-      data.SerDecommDate,
-      data.ServiceCategory,
-      data.ServiceClass,
-      data.SLAdeets,
-      data.SLAExpiryDate,
-      data.VendorContact,
-      data.SupportContDetails,
-      data.AccessReq,
-      data.AuthMethods,
-      data.purchasedate,
-      data.Cost,
-      data.DependencyServ,
-      data.DependentServ,
-      data.Applications,
-      data.Databases
-    ];
-    
-    
-  
-    const result = await this.pool.query(query, values);
-    console.log("Service added successfully");    
-    const id = result.rows[0].id;
-    console.log('Service added successfully with ID:', id);
-    return id;
+      const values = [
+        data.servicename,
+        data.ServiceCustomer,
+        data.ServiceCustodian,
+        data.ServiceOwner,
+        data.OwnerContInfo,
+        data.Configurationfiles,
+        data.CustomizationOptions,
+        data.BriefDescription,
+        data.detailedDesc,
+        data.DeployDate,
+        data.RolloutPlandetails,
+        data.SecProtocols,
+        data.SerCreationDate,
+        data.SerDecommDate,
+        data.ServiceCategory,
+        data.ServiceClass,
+        data.SLAdeets,
+        data.SLAExpiryDate,
+        data.VendorContact,
+        data.SupportContDetails,
+        data.AccessReq,
+        data.AuthMethods,
+        data.purchasedate,
+        data.Cost,
+        data.DependencyServ,
+        data.DependentServ,
+        data.Applications,
+        data.Databases
+      ];
+
+      const result = await this.pool.query(query, values);
+      console.log("Service added successfully");
+      const id = result.rows[0].id;
+      console.log("Service added successfully with ID:", id);
+      return id;
+    } catch (err) {
+      console.error(err);
+      console.log("Not added ");
+      return "error";
+    }
+  } ////////////////////////////////////////////////////////////////
+
+  async get(Id) {
+    const query = "SELECT * FROM service WHERE id = $1";
+
+    const values = [Id];
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
-  catch (err) {
-    console.error(err);
-    console.log("Not added ");
-    return('error');
+
+  async getAll() {
+    const query = "SELECT * FROM service";
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
   }
-}////////////////////////////////////////////////////////////////
 
- 
- async get(Id) {
-  const query = 'SELECT * FROM service WHERE id = $1';
-  
-  const values = [Id];
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query, values);
-    return result.rows[0];
-  } finally {
-    client.release();
-  }
-}
- 
+  async delete(Id) {}
 
-async getAll() {
-  const query = 'SELECT * FROM service';
-
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query);
-    return result.rows;
-  } finally {
-    client.release();
-  }
-}
-
-async delete(Id) {
-  
-}
-
-async update(Id, data) {
-  const query = `
+  async update(Id, data) {
+    const query = `
   UPDATE service
   SET 
     servicename = $2,
@@ -201,16 +192,12 @@ async update(Id, data) {
     ];
     const client = await this.pool.connect();
     try {
-    const result = await client.query(query,values);
-    return result.rows;
+      const result = await client.query(query, values);
+      return result.rows;
     } finally {
       client.release();
     }
+  }
 }
 
-}
-  
 module.exports = ServiceRepository;
-
-
-

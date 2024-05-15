@@ -1,21 +1,19 @@
-const port = 8080
-const connectionOptions = require('../connection/db.js')
-const express = require('express')
-const app =express();
+const port = 8080;
+const connectionOptions = require("../connection/db.js");
+const express = require("express");
+const app = express();
 app.use(express.json());
 //the connectoptions will be initilized with dbconfig when dbconfig is imported in index.js
 class SecuritySolutionRepository {
   constructor() {
     this.pool = connectionOptions;
   }
-  
 
   // class functionss
- 
- async add(data) {
-  try
-  {
-  const query = `
+
+  async add(data) {
+    try {
+      const query = `
   INSERT INTO securitysolution (
     product_name,
     vendor,
@@ -47,79 +45,72 @@ class SecuritySolutionRepository {
   RETURNING id;
   
   `;
-  const values = [
-    data.product_name,
-    data.vendor,
-    data.subscriptionID,
-    data.license_expiry_date,
-    data.current_version,
-    data.last_updated,
-    data.deployement_method,
-    data.policy_settings,
-    data.exclusion_list,
-    data.logging_config,
-    data.even_log_storage_location,
-    data.scan_frequency,
-    data.scan_time,
-    data.scan_custom_config,
-    data.integration_SEM,
-    data.integration_EP_management,
-    data.threat_feeds,
-    data.ioc_management,
-    data.vendor_contact,
-    data.documentation_links,
-    data.purchase_date,
-    data.cost
-  ];
-  
-  
+      const values = [
+        data.product_name,
+        data.vendor,
+        data.subscriptionID,
+        data.license_expiry_date,
+        data.current_version,
+        data.last_updated,
+        data.deployement_method,
+        data.policy_settings,
+        data.exclusion_list,
+        data.logging_config,
+        data.even_log_storage_location,
+        data.scan_frequency,
+        data.scan_time,
+        data.scan_custom_config,
+        data.integration_SEM,
+        data.integration_EP_management,
+        data.threat_feeds,
+        data.ioc_management,
+        data.vendor_contact,
+        data.documentation_links,
+        data.purchase_date,
+        data.cost
+      ];
 
-  const result = await this.pool.query(query, values);
-  console.log("SecSol added successfully");    
-  const id = result.rows[0].id;
-  console.log('SecSol added successfully with ID:', id);
-  return id;
-}
-catch (err) {
-  console.error(err);
-  console.log("Not added ");
-  return ('error');
-}
-  }////////////////////////////////////////////////////////////////
+      const result = await this.pool.query(query, values);
+      console.log("SecSol added successfully");
+      const id = result.rows[0].id;
+      console.log("SecSol added successfully with ID:", id);
+      return id;
+    } catch (err) {
+      console.error(err);
+      console.log("Not added ");
+      return "error";
+    }
+  } ////////////////////////////////////////////////////////////////
 
- 
- async get(Id) {
-  const query = 'SELECT * FROM securitysolution WHERE id = $1';
-  const values = [Id];
+  async get(Id) {
+    const query = "SELECT * FROM securitysolution WHERE id = $1";
+    const values = [Id];
 
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query, values);
-    return result.rows[0];
-  } finally {
-    client.release();
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
   }
-}
- 
 
-async getAll() {
-  const query = 'SELECT * FROM securitysolution';
+  async getAll() {
+    const query = "SELECT * FROM securitysolution";
 
-  const client = await this.pool.connect();
-  try {
-    const result = await client.query(query);
-    return result.rows;
-  } finally {
-    client.release();
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
   }
-}
 
-async delete(Id) {
-  
-}
+  async delete(Id) {}
 
-async update(Id, data) {
-  const query = `
+  async update(Id, data) {
+    const query = `
   UPDATE securitysolution
 SET 
     product_name = $2,
@@ -152,38 +143,37 @@ RETURNING id;
     `;
     const values = [
       Id,
-    data.product_name,
-    data.vendor,
-    data.subscriptionID,
-    data.license_expiry_date,
-    data.current_version,
-    data.last_updated,
-    data.deployement_method,
-    data.policy_settings,
-    data.exclusion_list,
-    data.logging_config,
-    data.even_log_storage_location,
-    data.scan_frequency,
-    data.scan_time,
-    data.scan_custom_config,
-    data.integration_SEM,
-    data.integration_EP_management,
-    data.threat_feeds,
-    data.ioc_management,
-    data.vendor_contact,
-    data.documentation_links,
-    data.purchase_date,
-    data.cost
-  ];
-  
+      data.product_name,
+      data.vendor,
+      data.subscriptionID,
+      data.license_expiry_date,
+      data.current_version,
+      data.last_updated,
+      data.deployement_method,
+      data.policy_settings,
+      data.exclusion_list,
+      data.logging_config,
+      data.even_log_storage_location,
+      data.scan_frequency,
+      data.scan_time,
+      data.scan_custom_config,
+      data.integration_SEM,
+      data.integration_EP_management,
+      data.threat_feeds,
+      data.ioc_management,
+      data.vendor_contact,
+      data.documentation_links,
+      data.purchase_date,
+      data.cost
+    ];
+
     const client = await this.pool.connect();
     try {
-    const result = await client.query(query,values);
-    return result.rows;
+      const result = await client.query(query, values);
+      return result.rows;
     } finally {
       client.release();
     }
-}
-
+  }
 }
 module.exports = SecuritySolutionRepository;

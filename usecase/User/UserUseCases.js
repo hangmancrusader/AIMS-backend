@@ -1,10 +1,8 @@
 // UseCases for User Administration done by a Root/Other Role
-const UserRepository = require('../../infrastructure/repository/UserRepository.js');
-const User = require('../../entitities/User.js')
+const UserRepository = require("../../infrastructure/repository/UserRepository.js");
+const User = require("../../entitities/User.js");
 class UserUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.userRepository = new UserRepository();
   }
 
@@ -31,7 +29,6 @@ class UserUseCases {
     return await this.userRepository.getUser(userId);
   }
 
-
   async getAllUsers() {
     return await this.userRepository.getAllUsers();
   }
@@ -42,10 +39,12 @@ class UserUseCases {
 
   async updateUser(userId, userData) {
     // Logic to update a user
-    return await this.userRepository.updateUser(userId, userData);
+    const error = await this.userRepository.updateUser(userId, userData);
+    console.log(error);
+    return error;
   }
 
-  async login(email, password) {
+  /* async login(email, password) {
     // Logic to authenticate a user
     
     const {currentpassword} = await this.userRepository.getUserByEmail(email);
@@ -55,20 +54,21 @@ class UserUseCases {
     else{
       throw new Error('Invalid email or password');
     }
-  }//end of login
+  }//end of login*/
+  async logout(email) {
+    //logout if current password is valid/notnull
+    const { currentpassword } = await this.userRepository.getUserByEmail(email);
+    if (currentpassword) {
+      return true;
+    } else {
+      return false;
+    }
+  } //end of login
 
-  async resetPassword(id,data) {
-    
+  async resetPassword(id, data) {
     console.log(data);
-    return await this.userRepository.resetPassword(id,data);
-   
+    return await this.userRepository.resetPassword(id, data);
   }
 }
 
 module.exports = UserUseCases;
-
-
-
-
-
-  

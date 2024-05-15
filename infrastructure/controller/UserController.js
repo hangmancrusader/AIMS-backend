@@ -21,6 +21,7 @@ const {
   newMobilePhoneSchema} = require('../middleware/yupConfig.js');
 const validateSchema = require('..//middleware/validateService.js');
 const hashPassword = require('../middleware/hashPassword.js');
+const authorizeUserRole = require('../middleware/authorizeUserRole.js');
 //const verifyUser = require('../middleware/verifyUser.js');
 const fs = require('fs');
 const multer  = require('multer');
@@ -86,7 +87,7 @@ router.post("/homepage/User_Administration/resetpassword/:id",authenticateToken,
     const userData = req.body;
     
     const result = await rootUser.resetPassword(id,userData);
-    if (result && result.length > 0) {
+    if (result ||result.length > 0) {
       res.status(201).json({message: "Updated Successfully",result});
     } else {
       res.status(404).json({ message: "Password not updated, incorrect user id" ,result});
@@ -115,7 +116,7 @@ router.get("/homepage/User_Administration/user_management/user_profile/:id",auth
 });
 
 //get all users from the database -this route needs JWT authentication
-router.get("/homepage/User_Administration/user_management/user_profile/",authenticateToken, async (req, res) => {
+router.get("/homepage/User_Administration/user_management/user_profile/",authenticateToken,authorizeUserRole('RootUser'), async (req, res) => {
   try {
     
     const user = await rootUser.getAllUsers();
@@ -130,13 +131,14 @@ router.get("/homepage/User_Administration/user_management/user_profile/",authent
 });
 
 //update a user in the database -this route needs JWT authentication
-router.patch("/homepage/User_Administration/user_management/user_profile/:id",authenticateToken, async (req, res) => {
+router.patch("/homepage/User_Administration/user_management/user_profile/:id",authenticateToken,hashPassword, async (req, res) => {
   try {
     const { id } = req.params;
     const userData = req.body;
     const result = await rootUser.updateUser(id, userData);
     //res.status(204).send();
-    if (result && result.length > 0) {
+    console.log(result);
+    if (result || result.length > 0) {
       res.status(201).json({message: "Updated Successfully",result});
     } else {
       res.status(404).json({ message: "Resource not found" });
@@ -162,18 +164,34 @@ router.delete("/homepage/User_Administration/user_management/user_profile/delete
 //USER LOGIN ROUTES 
 //- requires JWT authentication and OTP verification
 
-//should return JWT token and user ROLE ID to frontend
+//should return JWT token and userid and ROLE to frontend
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     //const user = await authUser.authandlogin(email, password);
     const usertoken = await authUser.verifyuserlogin(email, password);
-    //console.log("user is " +user);
     res.json({message: "Login successful",usertoken});
   } catch (error) {
     res.status(401).json({ error: error.message });
   }
 });
+
+router.post("/logout", async (req, res) => {
+  try {
+    const { email } = req.body;
+    //const user = await authUser.authandlogin(email, password);
+    const condition = await rootUser.logout(email);
+    if(condition){
+    res.json({message: "Logged Out"});}
+    else{
+      res.status(401).json({ message:"User not found" });
+      
+    }
+  } catch (error) {
+    res.status(401).json({ error: error.message });
+  }
+});
+
 
 
 router.post("/login/verify_acc/phone_verification", async (req, res) => {
@@ -253,7 +271,21 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
+function authorize(allowedRoles) {
+  return (req, res, next) => {
+      const token = req.headers['authorization'] && req.headers['authorization'].split(' ')[1];
+      if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+          if (err) return res.status(403).json({ message: 'Forbidden' });
+          if (!allowedRoles.includes(user.userRole)) {
+              return res.status(403).json({ message: 'Forbidden' });
+          }
+          req.user = user;
+          next();
+      });
+  };
+}
 
 
 
