@@ -192,13 +192,14 @@ class UserRepository {
 
   //delete user
   async deleteUser(userId) {
-    const query = "DELETE FROM users WHERE id = $1";
+    const query = "DELETE FROM users WHERE id = $1 RETURNING id;";
     const values = [userId];
 
     const client = await this.pool.connect();
     try {
       const result = await client.query(query, values);
-      if (result) {
+      
+      if (result !== null) {
         return true;
       } else {
         false;

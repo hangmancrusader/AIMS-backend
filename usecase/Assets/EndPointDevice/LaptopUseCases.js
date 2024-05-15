@@ -1,27 +1,23 @@
 // UseCases for User Administration done by a Root/Other Role
-const LaptopRepository = require('../../../infrastructure/repository/LaptopRepository.js');
-const Laptop = require("../../../entitities/Laptop.js")
+const LaptopRepository = require("../../../infrastructure/repository/LaptopRepository.js");
+const Laptop = require("../../../entitities/Laptop.js");
 class LaptopUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.laptopRepo = new LaptopRepository();
   }
 
   async add(Data) {
-    
     console.log(Data);
-    
+
     const newLaptop = new Laptop(Data);
     const id = await this.laptopRepo.add(newLaptop);
-    return {id};
+    return { id };
   }
 
   async get(Id) {
     console.log(Id);
     return await this.laptopRepo.get(Id);
   }
-
 
   async getAll() {
     return await this.laptopRepo.getAll();
@@ -32,17 +28,8 @@ class LaptopUseCases {
   }
 
   async update(Id, Data) {
-    
-    return await this.laptopRepo.update(Id,Data);
+    return await this.laptopRepo.update(Id, Data);
   }
-
-
 }
 
 module.exports = LaptopUseCases;
-
-
-
-
-
-  

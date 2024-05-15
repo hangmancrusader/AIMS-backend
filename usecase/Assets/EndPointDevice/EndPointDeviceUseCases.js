@@ -1,27 +1,23 @@
 // UseCases for User Administration done by a Root/Other Role
-const EndPointDevRepository = require('../../../infrastructure/repository/EndPointDeviceRepository.js');
-const EndPointDev = require("../../../entitities/EndPointDevice.js")
+const EndPointDevRepository = require("../../../infrastructure/repository/EndPointDeviceRepository.js");
+const EndPointDev = require("../../../entitities/EndPointDevice.js");
 class EndPointDeviceUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.EndPointDevRepository = new EndPointDevRepository();
   }
 
   async add(Data) {
-    
     console.log(Data);
-    
+
     const newDev = new EndPointDev(Data);
     const id = await this.EndPointDevRepository.add(newDev);
-    return {newDev,id};
+    return { newDev, id };
   }
 
   async get(Id) {
     console.log(Id);
     return await this.EndPointDevRepository.get(Id);
   }
-
 
   async getAll() {
     return await this.EndPointDevRepository.getAll();
@@ -32,17 +28,8 @@ class EndPointDeviceUseCases {
   }
 
   async update(Id, Data) {
-    
-    return await this.EndPointDevRepository.update(Id,Data);
+    return await this.EndPointDevRepository.update(Id, Data);
   }
-
-
 }
 
 module.exports = EndPointDeviceUseCases;
-
-
-
-
-
-  

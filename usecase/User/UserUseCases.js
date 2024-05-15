@@ -34,7 +34,7 @@ class UserUseCases {
   }
 
   async deleteUser(userId) {
-    await this.userRepository.deleteUser(userId);
+    return await this.userRepository.deleteUser(userId);
   }
 
   async updateUser(userId, userData) {
