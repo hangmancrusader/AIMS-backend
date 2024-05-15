@@ -8,30 +8,16 @@ class UserAuthentication {
     this.userRepository = new UserRepository();
     this.authtoken = new authtoken();
   }
-  /*async authandlogin(email, password) {   
-    const {id, currentpassword} = await this.userRepository.getUserByEmailforAuth(email);
-       console.log({id, currentpassword});
-       if(!currentpassword === password) {
-        throw new Error('Invalid email or password');
-      }
-      else{
-       const token = this.authtoken.createToken({id}, email);
-       return token
-      }
-      
-      }//NOT NEEDED ANYMORE FOR USER AUTHENTICATION
-      */
 
   async verifyuserlogin(email, password) {
     // Logic to authenticate a user using bcrypt
-
     try {
       const userinput = password;
       const { id, currentpassword, roleid } =
-        await this.userRepository.getUserHashforAuth(email);
+        await this.userRepository.getUserHashforAuth(email);// reurns userid, password, and roleid
       console.log(id);
       console.log(roleid);
-      const { typeofrole } = await this.userRepository.assignedRole(roleid);
+      const { typeofrole } = await this.userRepository.assignedRole(roleid);// returns type of role attached to user's roleid
       console.log(typeofrole); //return this to user controller to validate apis
       const hashedpassword = currentpassword;
 
@@ -47,6 +33,20 @@ class UserAuthentication {
       console.error("Error during password comparison:", error);
     }
   } // DOES USER AUTHENTICATION AND RETURNS JWT TOKEN
-}
+} /////////////////////////////////////////////////////////
 
 module.exports = UserAuthentication;
+
+/*async authandlogin(email, password) {   
+    const {id, currentpassword} = await this.userRepository.getUserByEmailforAuth(email);
+       console.log({id, currentpassword});
+       if(!currentpassword === password) {
+        throw new Error('Invalid email or password');
+      }
+      else{
+       const token = this.authtoken.createToken({id}, email);
+       return token
+      }
+      
+      }//NOT NEEDED ANYMORE FOR USER AUTHENTICATION
+      */

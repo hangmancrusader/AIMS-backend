@@ -22,8 +22,7 @@ const {
 } = require("../middleware/yupConfig.js");
 const validateSchema = require("..//middleware/validateService.js");
 const hashPassword = require("../middleware/hashPassword.js");
-const authorizeUserRole = require("../middleware/authorizeUserRole.js");
-//const verifyUser = require('../middleware/verifyUser.js');
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const fs = require("fs");
 const multer = require("multer");
 const TablesRepo = require("../repository/TablesRepository");
@@ -87,6 +86,7 @@ router.post(
   "/homepage/User_Administration/resetpassword/:id",
   authenticateToken,
   hashPassword,
+  authorizeUserRole("RootUser"),
   async (req, res) => {
     try {
       //const {email} = req.body;
@@ -111,6 +111,7 @@ router.post(
 router.get(
   "/homepage/User_Administration/user_management/user_profile/:id",
   authenticateToken,
+  authorizeUserRole("RootUser"),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -204,7 +205,6 @@ router.post("/login", async (req, res) => {
 router.post("/logout", async (req, res) => {
   try {
     const { email } = req.body;
-    //const user = await authUser.authandlogin(email, password);
     const condition = await rootUser.logout(email);
     if (condition) {
       res.json({ message: "Logged Out" });
@@ -305,23 +305,5 @@ function authenticateToken(req, res, next) {
     next();
   });
 }
-function authorize(allowedRoles) {
-  return (req, res, next) => {
-    const token =
-      req.headers["authorization"] &&
-      req.headers["authorization"].split(" ")[1];
-    if (!token) return res.status(401).json({ message: "Unauthorized" });
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-      if (err) return res.status(403).json({ message: "Forbidden" });
-      if (!allowedRoles.includes(user.userRole)) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-      req.user = user;
-      next();
-    });
-  };
-}
-
 // exports the User cpntroller
 module.exports = router;
