@@ -91,9 +91,9 @@ const validateSchema = require('..//middleware/validateService.js');
       const {id}= req.params;
       const result = await service.delete(id);
       if (result) {
-        res.status(201).json(result,{ message: "Service deleted" });
+        res.status(201).json({ message: "Deleted successfully" });
       } else {
-        res.status(404).json({ message: "Service not found" });
+        res.status(404).json({ message: "Asset not found" });
       }
     } catch (error) {
       res.status(500).json({ error: error.message });

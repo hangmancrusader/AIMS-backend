@@ -27,7 +27,7 @@ class UserAuthentication {
         throw new Error("Invalid email or password");
       } else {
         const token = this.authtoken.createToken({ id }, email);
-        return { token, typeofrole };
+        return { id, token, typeofrole };
       }
     } catch (error) {
       console.error("Error during password comparison:", error);

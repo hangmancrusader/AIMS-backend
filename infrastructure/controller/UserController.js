@@ -151,6 +151,7 @@ router.patch(
   "/homepage/User_Administration/user_management/user_profile/:id",
   authenticateToken,
   hashPassword,
+  authorizeUserRole("RootUser"),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -172,6 +173,7 @@ router.patch(
 router.delete(
   "/homepage/User_Administration/user_management/user_profile/deleteuser/:id",
   authenticateToken,
+  authorizeUserRole("RootUser"),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -196,7 +198,11 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     //const user = await authUser.authandlogin(email, password);
     const usertoken = await authUser.verifyuserlogin(email, password);
-    res.json({ message: "Login successful", usertoken });
+    if (usertoken === "undefined") {
+      res.status(401).json({ error: error.message });
+    } else {
+      res.json({ message: "Login successful", usertoken });
+    }
   } catch (error) {
     res.status(401).json({ error: error.message });
   }

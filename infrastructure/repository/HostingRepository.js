@@ -84,7 +84,23 @@ class HostingRepository {
     }
   }
 
-  async delete(Id) {}
+  async delete(Id) {
+    const query = "DELETE FROM hosting WHERE id = $1 RETURNING id;";
+    const values = [Id];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+
+      if (result !== null) {
+        return true;
+      } else {
+        false;
+      }
+    } finally {
+      client.release();
+    }
+  }
 
   async update(Id, data) {
     const query = `

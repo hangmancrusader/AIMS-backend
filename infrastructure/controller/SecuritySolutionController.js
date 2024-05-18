@@ -90,9 +90,9 @@ const validateSchema = require('..//middleware/validateService.js');
       const {id}= req.params;
       const result = await SecSol.delete(id);
       if (result) {
-        res.status(201).json(result,{ message: "SecSol deleted" });
+        res.status(201).json({ message: "Deleted successfully" });
       } else {
-        res.status(404).json({ message: "SecSol not found" });
+        res.status(404).json({ message: "Asset not found" });
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
