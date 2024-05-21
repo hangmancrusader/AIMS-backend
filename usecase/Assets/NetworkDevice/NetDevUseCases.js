@@ -1,27 +1,23 @@
 // UseCases for User Administration done by a Root/Other Role
-const NetDevRepository = require('../../../infrastructure/repository/NetDevRepository.js');
-const NetDev = require("../../../entitities/NetworkDevice.js")
+const NetDevRepository = require("../../../infrastructure/repository/NetDevRepository.js");
+const NetDev = require("../../../entitities/NetworkDevice.js");
 class NetDevUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.netdevRepo = new NetDevRepository();
   }
 
   async add(Data) {
-    
     console.log(Data);
-    
+
     const newNetDev = new NetDev(Data);
-    await this.netdevRepo.add(newNetDev);
-    return newNetDev;
+    const id = await this.netdevRepo.add(newNetDev);
+    return { newNetDev, id };
   }
 
   async get(Id) {
     console.log(Id);
     return await this.netdevRepo.get(Id);
   }
-
 
   async getAll() {
     return await this.netdevRepo.getAll();
@@ -32,17 +28,8 @@ class NetDevUseCases {
   }
 
   async update(Id, Data) {
-    
-    return await this.netdevRepo.update(Id,Data);
+    return await this.netdevRepo.update(Id, Data);
   }
-
-
 }
 
 module.exports = NetDevUseCases;
-
-
-
-
-
-  

@@ -445,7 +445,8 @@ class TablesRepository {
     }
   } ///
 
-  async alterAsset() { //done
+  async alterAsset() {
+    //done
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -481,7 +482,8 @@ class TablesRepository {
     }
   } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async alterHosting() { //done
+  async alterHosting() {
+    //done
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -493,7 +495,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /*const query = `
     ALTER TABLE hosting
     
     ADD COLUMN vmID SERIAL REFERENCES virtualmachine(id),
@@ -524,6 +526,11 @@ class TablesRepository {
     ADD COLUMN VersionHV VARCHAR,
     ADD COLUMN HostHV VARCHAR;
 
+    `;*/
+          const query = `
+    ALTER TABLE hosting
+    ALTER COLUMN vmID TYPE INTEGER,
+    ALTER COLUMN vmID DROP NOT NULL;
     `;
           await this.pool.query(query);
           console.log("hosting table altered");
@@ -539,7 +546,8 @@ class TablesRepository {
     }
   } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async alterVM() { //add cols
+  async alterVM() {
+    //add cols
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -551,7 +559,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /*const query = `
     ALTER TABLE virtualmachine
     ADD COLUMN netdevID SERIAL REFERENCES networkdevice(id),
     ADD COLUMN secsolID SERIAL REFERENCES securitysolution(id),
@@ -591,6 +599,17 @@ class TablesRepository {
     ADD COLUMN purchasedate DATE,
     ADD COLUMN cost DECIMAL;
 
+    `;*/
+          const query = `
+    ALTER TABLE virtualmachine
+    ALTER COLUMN netdevID TYPE INTEGER,
+    ALTER COLUMN netdevID DROP NOT NULL,
+    ALTER COLUMN secsolID TYPE INTEGER,
+    ALTER COLUMN secsolID DROP NOT NULL,
+    ALTER COLUMN appID TYPE INTEGER,
+    ALTER COLUMN appID DROP NOT NULL,
+    ALTER COLUMN dbID TYPE INTEGER,
+    ALTER COLUMN dbID DROP NOT NULL;
     `;
           await this.pool.query(query);
           console.log(" table altered");
@@ -606,7 +625,8 @@ class TablesRepository {
     }
   } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async alterNetDev() { //edited
+  async alterNetDev() {
+    //edited
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -667,7 +687,8 @@ class TablesRepository {
     }
   } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async alterSecSol() { //edited
+  async alterSecSol() {
+    //edited
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -718,7 +739,8 @@ class TablesRepository {
     }
   } ////////////////////////////////////////////////////////////////////////////////////////////////
 
-  async alterDatabase() { //edited
+  async alterDatabase() {
+    //edited
     try {
       const checkTableExistsQuery = `
     SELECT EXISTS (
@@ -782,7 +804,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /*const query = `
     ALTER TABLE application
     
     ADD COLUMN serviceID SERIAL REFERENCES service(id),
@@ -817,6 +839,15 @@ class TablesRepository {
     ADD COLUMN purchasedate DATE,
     ADD COLUMN cost DECIMAL;
 
+    `;*/
+          const query = `
+    ALTER TABLE application
+    ALTER COLUMN serviceID TYPE INTEGER,
+    ALTER COLUMN serviceID DROP NOT NULL,
+    ALTER COLUMN vmID  TYPE INTEGER,
+    ALTER COLUMN vmID  DROP NOT NULL,
+    ALTER COLUMN dbID  TYPE INTEGER,
+    ALTER COLUMN dbID  DROP NOT NULL;
     `;
           await this.pool.query(query);
           console.log(" table altered");
