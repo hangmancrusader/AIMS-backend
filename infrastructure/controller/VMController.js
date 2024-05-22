@@ -89,6 +89,19 @@ router.get("/getvms", authenticateToken, async (req, res) => {
   }
 });
 
+router.get("/get-hosting-for-vm", async (req, res) => {
+  try {
+    const result = await VM.gethostingforvm();
+    if (result) {
+      res.status(201).json(result);
+    } else {
+      res.status(404).json({ message: "VMs not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete("/deletevm/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;

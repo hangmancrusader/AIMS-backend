@@ -528,9 +528,7 @@ class TablesRepository {
 
     `;*/
           const query = `
-    ALTER TABLE hosting
-    ALTER COLUMN vmID TYPE INTEGER,
-    ALTER COLUMN vmID DROP NOT NULL;
+    ALTER TABLE hosting DROP COLUMN vmID;
     `;
           await this.pool.query(query);
           console.log("hosting table altered");
@@ -600,7 +598,7 @@ class TablesRepository {
     ADD COLUMN cost DECIMAL;
 
     `;*/
-          const query = `
+          /* const query = `
     ALTER TABLE virtualmachine
     ALTER COLUMN netdevID TYPE INTEGER,
     ALTER COLUMN netdevID DROP NOT NULL,
@@ -610,6 +608,17 @@ class TablesRepository {
     ALTER COLUMN appID DROP NOT NULL,
     ALTER COLUMN dbID TYPE INTEGER,
     ALTER COLUMN dbID DROP NOT NULL;
+    `;*/
+          const query = `
+          ALTER TABLE virtualmachine
+          ADD COLUMN hostingID INTEGER REFERENCES hosting(id);
+      
+      ALTER TABLE virtualmachine
+          DROP COLUMN appID;
+      
+      ALTER TABLE virtualmachine
+          DROP COLUMN dbID;
+      
     `;
           await this.pool.query(query);
           console.log(" table altered");
@@ -752,7 +761,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /*const query = `
     ALTER TABLE database
     ADD COLUMN DBServername VARCHAR,
     ADD COLUMN type VARCHAR,
@@ -777,6 +786,10 @@ class TablesRepository {
     ADD COLUMN purchasedate DATE,
     ADD COLUMN cost DECIMAL;
 
+    `;*/
+          const query = `
+          ALTER TABLE database
+          ADD COLUMN vmID INTEGER REFERENCES virtualmachine(id);
     `;
           await this.pool.query(query);
           console.log(" table altered");
@@ -875,7 +888,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /*const query = `
     ALTER TABLE service
     ADD COLUMN servicename VARCHAR,
     ADD COLUMN ServiceCustomer VARCHAR,
@@ -906,7 +919,17 @@ class TablesRepository {
     ADD COLUMN Applications VARCHAR,
     ADD COLUMN Databases VARCHAR;
 
-    `;
+    `;*/
+          /*const query = `
+    ALTER TABLE service
+    ADD COLUMN appID INTEGER REFERENCES application(id);
+    ALTER TABLE service
+    ADD COLUMN dbID INTEGER REFERENCES database(id);
+`;*/
+          const query = `
+    ALTER TABLE service
+    ADD COLUMN dbID INTEGER REFERENCES database(id);
+`;
           await this.pool.query(query);
           console.log(" table altered");
         } catch (err) {

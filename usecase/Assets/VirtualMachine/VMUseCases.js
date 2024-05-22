@@ -1,20 +1,17 @@
 // UseCases for User Administration done by a Root/Other Role
-const VMRepository = require('../../../infrastructure/repository/VMRepository.js');
-const VM = require("../../../entitities/VirtualMachine.js")
+const VMRepository = require("../../../infrastructure/repository/VMRepository.js");
+const VM = require("../../../entitities/VirtualMachine.js");
 class VMUseCases {
-
-  constructor()
-  {
+  constructor() {
     this.vmRepository = new VMRepository();
   }
 
   async add(Data) {
-    
     console.log(Data);
-    
+
     const newVM = new VM(Data);
     const id = await this.vmRepository.add(newVM);
-    return {id};
+    return { id };
   }
 
   async get(Id) {
@@ -22,6 +19,9 @@ class VMUseCases {
     return await this.vmRepository.get(Id);
   }
 
+  async gethostingforvm() {
+    return await this.vmRepository.getHostingForVM();
+  }
 
   async getAll() {
     return await this.vmRepository.getAll();
@@ -32,17 +32,8 @@ class VMUseCases {
   }
 
   async update(Id, Data) {
-    
-    return await this.vmRepository.update(Id,Data);
+    return await this.vmRepository.update(Id, Data);
   }
-
-
 }
 
 module.exports = VMUseCases;
-
-
-
-
-
-  

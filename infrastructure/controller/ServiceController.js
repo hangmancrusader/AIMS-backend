@@ -39,8 +39,8 @@ const validateSchema = require("..//middleware/validateService.js");
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
-  });*/
-
+  });
+*/
 router.post(
   "/addservice",
   validateSchema(newServiceSchema),

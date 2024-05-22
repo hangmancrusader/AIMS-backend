@@ -16,10 +16,9 @@ class VMRepository {
     try {
       const query = `
     INSERT INTO virtualmachine (
+      hostingID,
       netdevID,
       secsolID,
-      appID,
-      dbID,
       VMname,
       Hostname,
       CPUconfig,
@@ -58,16 +57,15 @@ class VMRepository {
       $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
       $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
       $21, $22, $23, $24, $25, $26, $27, $28, $29, $30,
-      $31, $32, $33, $34, $35, $36, $37
+      $31, $32, $33, $34, $35, $36
     )
     RETURNING id;
 
     `;
       const values = [
+        data.hostingID,
         data.netdevID,
         data.secsolID,
-        data.appID,
-        data.dbID,
         data.VMname,
         data.Hostname,
         data.CPUconfig,
@@ -122,6 +120,20 @@ class VMRepository {
     const client = await this.pool.connect();
     try {
       const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
+  }
+
+  async getHostingForVM() {
+    const query =
+      "SELECT * FROM hosting LEFT JOIN virtualmachine ON hosting.id = virtualmachine.hostingID GROUP BY hosting.id;";
+    //const values = [Id];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
       return result.rows[0];
     } finally {
       client.release();
