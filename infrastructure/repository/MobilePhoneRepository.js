@@ -192,7 +192,7 @@ class MobilePhoneRepository {
     const client = await this.pool.connect();
     try {
       const result = await client.query(query, values);
-      return result.rows[0];
+      return result.rows;
     } finally {
       client.release();
     }
