@@ -114,7 +114,8 @@ class VMRepository {
   } /////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM virtualmachine WHERE id = $1";
+    const query =
+      "SELECT *,TO_CHAR(decomissionDate, 'yyyy-MM-dd') AS decomissionDate,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate FROM virtualmachine WHERE id = $1";
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -141,7 +142,8 @@ class VMRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM virtualmachine";
+    const query =
+      "SELECT *,TO_CHAR(decomissionDate, 'yyyy-MM-dd') AS decomissionDate,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate FROM virtualmachine";
 
     const client = await this.pool.connect();
     try {

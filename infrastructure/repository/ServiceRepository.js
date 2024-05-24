@@ -100,7 +100,13 @@ class ServiceRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM service WHERE id = $1";
+    const query = `SELECT *,
+      TO_CHAR(DeployDate, 'yyyy-MM-dd') AS DeployDate,
+      TO_CHAR(SerCreationDate, 'yyyy-MM-dd') AS SerCreationDate,
+      TO_CHAR(SerDecommDate, 'yyyy-MM-dd') AS SerDecommDate,
+      TO_CHAR(SLAExpiryDate, 'yyyy-MM-dd') AS SLAExpiryDate,
+      TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate  FROM service WHERE id = $1;
+      `;
 
     const values = [Id];
     const client = await this.pool.connect();
@@ -113,7 +119,13 @@ class ServiceRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM service";
+    const query = `SELECT *,
+    TO_CHAR(DeployDate, 'yyyy-MM-dd') AS DeployDate,
+    TO_CHAR(SerCreationDate, 'yyyy-MM-dd') AS SerCreationDate,
+    TO_CHAR(SerDecommDate, 'yyyy-MM-dd') AS SerDecommDate,
+    TO_CHAR(SLAExpiryDate, 'yyyy-MM-dd') AS SLAExpiryDate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate FROM service;
+    `;
 
     const client = await this.pool.connect();
     try {

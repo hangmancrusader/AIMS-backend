@@ -65,7 +65,13 @@ class MobilePhoneRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM mobilephone WHERE id = $1";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM mobilephone WHERE id = $1; 
+    `;
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -78,7 +84,13 @@ class MobilePhoneRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM mobilephone";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM mobilephone; 
+    `;
 
     const client = await this.pool.connect();
     try {

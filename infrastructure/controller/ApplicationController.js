@@ -42,7 +42,7 @@ const validateSchema = require("..//middleware/validateService.js");
   });*/
 router.post(
   "/addapplication",
-  validateSchema(newApplicationSchema),
+  
   authenticateToken,
   async (req, res) => {
     try {

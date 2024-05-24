@@ -60,7 +60,13 @@ class PrinterRepository {
   } //////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM printer WHERE id = $1";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM printer WHERE id = $1; 
+    `;
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -73,7 +79,13 @@ class PrinterRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM printer";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM printer; 
+    `;
 
     const client = await this.pool.connect();
     try {

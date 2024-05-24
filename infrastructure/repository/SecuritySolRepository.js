@@ -83,7 +83,10 @@ class SecuritySolutionRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM securitysolution WHERE id = $1";
+    const query = `SELECT * ,
+    TO_CHAR(license_expiry_date, 'yyyy-MM-dd') AS license_expiry_date,
+    TO_CHAR(purchase_date, 'yyyy-MM-dd') AS purchase_date FROM securitysolution WHERE id =$1;
+    `;
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -96,7 +99,10 @@ class SecuritySolutionRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM securitysolution";
+    const query = `SELECT * ,
+    TO_CHAR(license_expiry_date, 'yyyy-MM-dd') AS license_expiry_date,
+    TO_CHAR(purchase_date, 'yyyy-MM-dd') AS purchase_date FROM securitysolution;
+    `;
 
     const client = await this.pool.connect();
     try {

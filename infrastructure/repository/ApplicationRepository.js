@@ -102,7 +102,8 @@ class ApplicationRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM application WHERE id = $1";
+    const query =
+      "SELECT *,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate, TO_CHAR(LastUpdate, 'yyyy-MM-dd) AS LastUpdate FROM application WHERE id = $1";
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -115,7 +116,8 @@ class ApplicationRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM application;";
+    const query =
+      "SELECT *,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate, TO_CHAR(LastUpdate, 'yyyy-MM-dd') AS LastUpdate  FROM application;";
 
     const client = await this.pool.connect();
     try {

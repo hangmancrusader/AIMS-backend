@@ -105,7 +105,8 @@ class NetDevRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM networkdevice WHERE id = $1";
+    const query =
+      "SELECT *,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate, TO_CHAR(LastUpdate, 'yyyy-MM-dd') AS LastUpdate FROM networkdevice WHERE id = $1";
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -118,7 +119,8 @@ class NetDevRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM networkdevice";
+    const query =
+      "SELECT *,TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,  TO_CHAR(LastUpdate, 'yyyy-MM-dd') AS LastUpdate FROM networkdevice";
 
     const client = await this.pool.connect();
     try {

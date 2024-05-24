@@ -86,7 +86,8 @@ class DatabaseRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM database WHERE id = $1";
+    const query =
+      "SELECT *, TO_CHAR(CertifExpiry, 'yyyy-MM-dd') AS CertifExpiry, TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate FROM database WHERE id = $1";
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -99,7 +100,8 @@ class DatabaseRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM database;";
+    const query =
+      "SELECT * , TO_CHAR(CertifExpiry, 'yyyy-MM-dd') AS CertifExpiry, TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate FROM database;";
 
     const client = await this.pool.connect();
     try {

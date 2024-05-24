@@ -59,7 +59,12 @@ class HostingRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = "SELECT * FROM hosting WHERE id = $1";
+    const query = `SELECT *,
+    TO_CHAR(NextRenewaldate, 'yyyy-MM-dd') AS NextRenewalDate,
+    TO_CHAR(CertifExpiry, 'yyyy-MM-dd'') AS CertifExpiry,
+    TO_CHAR(SubscriptionStartDate, 'yyyy-MM-dd') AS SubscriptionStartDate,
+    TO_CHAR(SubscriptionEnddate, 'yyyy-MM-dd') AS SubscriptionEnddate FROM hosting WHERE id = $1;
+    `;
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -72,7 +77,12 @@ class HostingRepository {
   }
 
   async getAll() {
-    const query = "SELECT * FROM hosting;";
+    const query = `SELECT *,
+    TO_CHAR(NextRenewaldate, 'yyyy-MM-dd') AS NextRenewalDate,
+    TO_CHAR(CertifExpiry, 'yyyy-MM-dd') AS CertifExpiry,
+    TO_CHAR(SubscriptionStartDate, 'yyyy-MM-dd') AS SubscriptionStartDate,
+    TO_CHAR(SubscriptionEnddate, 'yyyy-MM-dd') AS SubscriptionEnddate FROM hosting;
+    `;
 
     const client = await this.pool.connect();
     try {

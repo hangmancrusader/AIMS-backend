@@ -65,7 +65,13 @@ RETURNING id;
   } //
 
   async get(Id) {
-    const query = "SELECT * FROM voip WHERE id = $1";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM voip WHERE id = $1; 
+    `;
     const values = [Id];
 
     const client = await this.pool.connect();
@@ -78,7 +84,13 @@ RETURNING id;
   }
 
   async getAll() {
-    const query = "SELECT * FROM voip";
+    const query = ` 
+    SELECT *, 
+    TO_CHAR(Returndate, 'yyyy-MM-dd') AS Returndate,
+    TO_CHAR(purchasedate, 'yyyy-MM-dd') AS purchasedate,
+    TO_CHAR(decomissiondate, 'yyyy-MM-dd') AS decomissiondate 
+    FROM voip; 
+    `;
 
     const client = await this.pool.connect();
     try {
