@@ -17,6 +17,7 @@ class ServiceRepository {
     INSERT INTO service (
       appID,
       dbID,
+      userID,
       servicename,
       ServiceCustomer,
       ServiceCustodian,
@@ -49,7 +50,7 @@ class ServiceRepository {
     VALUES (
       $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
       $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
-      $21, $22, $23, $24, $25, $26, $27, $28,$29,$30
+      $21, $22, $23, $24, $25, $26, $27, $28,$29,$30,$31
     ) 
     RETURNING id;
     
@@ -57,6 +58,7 @@ class ServiceRepository {
       const values = [
         data.appID,
         data.dbID,
+        data.userID,
         data.servicename,
         data.ServiceCustomer,
         data.ServiceCustodian,
@@ -226,6 +228,21 @@ class ServiceRepository {
     try {
       const result = await client.query(query, values);
       return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+
+  async assignedServiceOwner(roleId) {
+    //displays all users that can be selected - this should be changed to display only those users that are service customers
+    const query =
+      "SELECT * FROM users INNER JOIN on service WHERE users.id = service.userID ";
+    const values = [roleId];
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
     } finally {
       client.release();
     }
