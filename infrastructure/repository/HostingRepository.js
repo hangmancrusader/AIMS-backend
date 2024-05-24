@@ -61,7 +61,7 @@ class HostingRepository {
   async get(Id) {
     const query = `SELECT *,
     TO_CHAR(NextRenewaldate, 'yyyy-MM-dd') AS NextRenewalDate,
-    TO_CHAR(CertifExpiry, 'yyyy-MM-dd'') AS CertifExpiry,
+    TO_CHAR(CertifExpiry, 'yyyy-MM-dd') AS CertifExpiry,
     TO_CHAR(SubscriptionStartDate, 'yyyy-MM-dd') AS SubscriptionStartDate,
     TO_CHAR(SubscriptionEnddate, 'yyyy-MM-dd') AS SubscriptionEnddate FROM hosting WHERE id = $1;
     `;

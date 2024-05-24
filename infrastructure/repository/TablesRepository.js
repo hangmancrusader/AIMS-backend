@@ -1333,7 +1333,7 @@ class TablesRepository {
       const tableExistsResult = await this.pool.query(checkTableExistsQuery);
       if (tableExistsResult.rows[0].exists)
         try {
-          const query = `
+          /* const query = `
     ALTER TABLE users 
     ADD COLUMN firstname VARCHAR(50) ,
     ADD COLUMN   lastname VARCHAR(50) ,
@@ -1349,6 +1349,10 @@ class TablesRepository {
     ADD COLUMN   profilepic BYTEA,
     ADD COLUMN   assetID INT REFERENCES asset(id),
     ADD COLUMN   roleID INT REFERENCES role(id);
+    `;*/
+          const query = `
+    ALTER TABLE users 
+    ADD COLUMN serviceID INT REFERENCES service(id);
     `;
           await this.pool.query(query);
           console.log(" table altered");

@@ -131,8 +131,8 @@ class UserRepository {
     try {
       const query = `
         INSERT INTO users 
-        (firstname, lastname, department, securityClearance, contactNo, email, team, currentPassword, newPassword, MFAuth, userIdStatus, profilepic, assetID, roleID) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12, $13, $14) 
+        (firstname, lastname, department, securityClearance, contactNo, email, team, currentPassword, newPassword, MFAuth, userIdStatus, profilepic, assetID, roleID, serviceID) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12, $13, $14,$15) 
         RETURNING id;
       `;
       const values = [
@@ -149,7 +149,8 @@ class UserRepository {
         user.userIdStatus,
         user.profilepic,
         user.assetID,
-        user.roleID
+        user.roleID,
+        user.serviceID
       ];
 
       const result = await this.pool.query(query, values);

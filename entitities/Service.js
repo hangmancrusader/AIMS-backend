@@ -3,6 +3,7 @@ class Service {
     id,
     appID,
     dbID,
+    userID,
     servicename,
     ServiceCustomer,
     ServiceCustodian,
@@ -35,6 +36,7 @@ class Service {
     this.id = id;
     this.appID = appID;
     this.dbID = dbID;
+    this.userID = userID;
     this.servicename = servicename;
     this.ServiceCustomer = ServiceCustomer;
     this.ServiceCustodian = ServiceCustodian;

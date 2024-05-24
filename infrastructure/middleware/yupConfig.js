@@ -348,8 +348,8 @@ const newNetworkDeviceSchema = yup.object().shape({
   Cost: yup.string().required(),
   DependencyServ: yup.string().required(),
   DependentServ: yup.string().required(),
-  Applications: yup.string().required(),
-  Databases: yup.string().required(),
+  Applications: yup.array().of(yup.string()),
+  Databases: yup.array().of(yup.string()),
 });
 
  const generateSchema = (fields) => {

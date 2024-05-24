@@ -3,6 +3,7 @@ class User {
     id,
     assetID,
     roleID,
+    serviceID,
     firstname,
     lastname,
     department,
@@ -19,6 +20,7 @@ class User {
     this.id = id;
     this.assetID = assetID;
     this.roleID = roleID;
+    this.serviceID = serviceID;
     this.firstname = firstname;
     this.lastname = lastname;
     this.department = department;
@@ -36,5 +38,3 @@ class User {
   // Getters and setters can be added as needed
 }
 module.exports = User;
-
-
