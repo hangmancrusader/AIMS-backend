@@ -22,6 +22,11 @@ const {
   newMobilePhoneSchema
 } = require("../middleware/yupConfig.js");
 const validateSchema = require("..//middleware/validateService.js");
+const fs = require("fs");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fastcsv = require("fast-csv");
+
 //apis for creating a table and then altering the table
 /*router.post("/createtable", async (req, res) => {
     try {
@@ -40,27 +45,22 @@ const validateSchema = require("..//middleware/validateService.js");
       res.status(400).json({ error: error.message });
     }
   });*/
-router.post(
-  "/addlaptop",
-  validateSchema(newLaptopSchema),
-  authenticateToken,
-  async (req, res) => {
-    try {
-      console.log(req.body);
-      const laptopData = req.body;
-      const result = await Laptop.add(laptopData); // the db returns the id of new Laptop
-      //res.status(201).json(result);
-      if (result === "error") {
-        res.status(400).json({ error: "Not added, recheck fields" });
-      } else {
-        const id = result;
-        res.status(201).json(id);
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+router.post("/addlaptop", authenticateToken, async (req, res) => {
+  try {
+    console.log(req.body);
+    const laptopData = req.body;
+    const result = await Laptop.add(laptopData); // the db returns the id of new Laptop
+    //res.status(201).json(result);
+    if (result === "error") {
+      res.status(400).json({ error: "Not added, recheck fields" });
+    } else {
+      const id = result;
+      res.status(201).json(id);
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-);
+});
 
 router.get("/getlaptop/:id", authenticateToken, async (req, res) => {
   try {
@@ -117,6 +117,49 @@ router.patch("/updatelaptop/:id", authenticateToken, async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 });
+
+router.post(
+  "/upload-laptop-csv",
+  upload.single("csvfile"),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).send("No CSV file uploaded");
+      }
+
+      const csvData = [];
+      const filePath = req.file.path;
+
+      const csvStream = fastcsv
+        .parse()
+        .on("data", function (data) {
+          csvData.push(data);
+        })
+        .on("end", async function () {
+          csvData.shift(); // Remove header
+
+          try {
+            await Laptop.processCSV(csvData);
+            res.status(200).send("CSV data uploaded successfully");
+          } catch (error) {
+            console.error(error);
+            res.status(500).send("Error processing CSV data");
+          } finally {
+            // Cleanup: remove uploaded file
+            //fs.unlinkSync(filePath);
+            console.log("File hellooooooooo");
+          }
+        });
+
+      const readStream = fs.createReadStream(filePath);
+      readStream.pipe(csvStream);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal server error");
+    }
+  }
+);
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

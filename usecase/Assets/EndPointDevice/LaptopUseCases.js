@@ -30,6 +30,11 @@ class LaptopUseCases {
   async update(Id, Data) {
     return await this.laptopRepo.update(Id, Data);
   }
+
+  async processCSV(csvdata){
+    console.log(csvdata);
+    return await this.laptopRepo.processCSV(csvdata);
+  }
 }
 
 module.exports = LaptopUseCases;

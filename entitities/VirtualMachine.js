@@ -36,7 +36,10 @@ class VirtualMachine {
     Status,
     Condition,
     purchasedate,
-    cost
+    cost,
+    NetworkDeviceName,
+    NetworkDeviceType,
+    NetworkDeviceModelNumber
   }) {
     this.id = id;
     this.hostingID = hostingID;
@@ -75,6 +78,9 @@ class VirtualMachine {
     this.Condition = Condition;
     this.purchasedate = purchasedate;
     this.cost = cost;
+    this.NetworkDeviceName = NetworkDeviceName;
+    this.NetworkDeviceType = NetworkDeviceType;
+    this.NetworkDeviceModelNumber = NetworkDeviceModelNumber;
   }
 
   // Getters and setters can be added as needed

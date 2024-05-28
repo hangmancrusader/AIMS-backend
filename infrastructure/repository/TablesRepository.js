@@ -609,7 +609,7 @@ class TablesRepository {
     ALTER COLUMN dbID TYPE INTEGER,
     ALTER COLUMN dbID DROP NOT NULL;
     `;*/
-          const query = `
+          /*const query = `
           ALTER TABLE virtualmachine
           ADD COLUMN hostingID INTEGER REFERENCES hosting(id);
       
@@ -619,7 +619,13 @@ class TablesRepository {
       ALTER TABLE virtualmachine
           DROP COLUMN dbID;
       
-    `;
+    `;*/
+          const query = `
+      ALTER TABLE virtualmachine
+      ADD COLUMN NetworkDeviceName VARCHAR,
+      ADD COLUMN NetworkDeviceType VARCHAR,
+      ADD COLUMN NetworkDeviceModelNumber VARCHAR;
+      `;
           await this.pool.query(query);
           console.log(" table altered");
         } catch (err) {
@@ -787,9 +793,13 @@ class TablesRepository {
     ADD COLUMN cost DECIMAL;
 
     `;*/
-          const query = `
+          /* const query = `
           ALTER TABLE database
           ADD COLUMN vmID INTEGER REFERENCES virtualmachine(id);
+    `;*/
+          const query = `
+          ALTER TABLE database
+          ADD COLUMN userID INTEGER REFERENCES users(id);
     `;
           await this.pool.query(query);
           console.log(" table altered");
@@ -1335,12 +1345,12 @@ class TablesRepository {
         try {
           /* const query = `
     ALTER TABLE users 
-    ADD COLUMN firstname VARCHAR(50) ,
+    ADD COLUMN   firstname VARCHAR(50) ,
     ADD COLUMN   lastname VARCHAR(50) ,
-    ADD COLUMN  department VARCHAR(50),
-    ADD COLUMN  securityClearance BOOLEAN ,
-    ADD COLUMN  contactNo VARCHAR(20),
-    ADD COLUMN  email VARCHAR(100) UNIQUE ,
+    ADD COLUMN   department VARCHAR(50),
+    ADD COLUMN   securityClearance BOOLEAN ,
+    ADD COLUMN   contactNo VARCHAR(20),
+    ADD COLUMN   email VARCHAR(100) UNIQUE ,
     ADD COLUMN   team INTEGER,
     ADD COLUMN   currentPassword VARCHAR(255) , 
     ADD COLUMN   newPassword VARCHAR(255),

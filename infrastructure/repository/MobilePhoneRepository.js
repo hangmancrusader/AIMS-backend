@@ -197,6 +197,20 @@ class MobilePhoneRepository {
       client.release();
     }
   }
+  async processCSV(csvdata) {
+    const query = `
+    INSERT INTO mobilephone (Assetname, SerialNumber, Processor, RAM, Storage, Screensize, Currentlocation, Dept, "Condition", Status, Returndate, purchasedate, cost, warrantyinfo, IPAddress, macaddress, depmethod, decomissiondate, serviceProv, DescriptionandSpecs, Assigneduser, AssetBarcode, OSVersion, Snapshotinfo, BackupFreq, "Method", integrationwithtools, mentionif, AssignmentHistory)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25, $26, $27, $28, $29);
+    `;
+    const client = await this.pool.connect();
+    try {
+      for (const row of csvdata) {
+        await client.query(query, row);
+      }
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = MobilePhoneRepository;

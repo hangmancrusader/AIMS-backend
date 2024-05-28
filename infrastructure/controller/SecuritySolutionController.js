@@ -39,7 +39,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addsecsol",validateSchema(newSecuritySolutionSchema),authenticateToken,async (req, res) => {
+  router.post("/addsecsol",authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;

@@ -2,6 +2,7 @@ class Database {
   constructor({
     id,
     vmID,
+    userID,
     DBServername,
     type,
     ServerIPAdd,
@@ -27,6 +28,7 @@ class Database {
   }) {
     this.id = id;
     this.vmID = vmID;
+    this.userID = userID;
     this.DBServername = DBServername;
     this.type = type;
     this.ServerIPAdd = ServerIPAdd;

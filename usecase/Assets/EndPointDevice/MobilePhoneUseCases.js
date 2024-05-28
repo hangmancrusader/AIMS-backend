@@ -30,6 +30,11 @@ class MobilePhoneUseCases {
   async update(Id, Data) {
     return await this.mobPhoneRepo.update(Id, Data);
   }
+
+  async processCSV(csvdata) {
+    console.log(csvdata);
+    return await this.mobPhoneRepo.processCSV(csvdata);
+  }
 }
 
 module.exports = MobilePhoneUseCases;

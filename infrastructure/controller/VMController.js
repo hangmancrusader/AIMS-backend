@@ -40,27 +40,22 @@ const validateSchema = require("..//middleware/validateService.js");
       res.status(400).json({ error: error.message });
     }
   });*/
-router.post(
-  "/addvm",
-  validateSchema(newVMSchema),
-  authenticateToken,
-  async (req, res) => {
-    try {
-      console.log(req.body);
-      const data = req.body;
-      const result = await VM.add(data); // the db returns the id of new Laptop
-      //res.status(201).json(result);
-      if (result === "error") {
-        res.status(400).json({ error: "Not added, recheck fields" });
-      } else {
-        const id = result;
-        res.status(201).json(id);
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+router.post("/addvm", authenticateToken, async (req, res) => {
+  try {
+    console.log(req.body);
+    const data = req.body;
+    const result = await VM.add(data); // the db returns the id of new Laptop
+    //res.status(201).json(result);
+    if (result === "error") {
+      res.status(400).json({ error: "Not added, recheck fields" });
+    } else {
+      const id = result;
+      res.status(201).json(id);
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-);
+});
 
 router.get("/getvm/:id", authenticateToken, async (req, res) => {
   try {

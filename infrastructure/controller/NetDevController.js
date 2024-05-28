@@ -41,27 +41,22 @@ const validateSchema = require("..//middleware/validateService.js");
     }
   });
   */
-router.post(
-  "/addnetdev",
-  validateSchema(newNetworkDeviceSchema),
-  authenticateToken,
-  async (req, res) => {
-    try {
-      console.log(req.body);
-      const Data = req.body;
-      const result = await NetDev.add(Data); // the db returns the id of new Laptop
-      //res.status(201).json(result);
-      if (result === "error") {
-        res.status(400).json({ error: "Not added, recheck fields" });
-      } else {
-        const id = result;
-        res.status(201).json(id);
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+router.post("/addnetdev", authenticateToken, async (req, res) => {
+  try {
+    console.log(req.body);
+    const Data = req.body;
+    const result = await NetDev.add(Data); // the db returns the id of new Laptop
+    //res.status(201).json(result);
+    if (result === "error") {
+      res.status(400).json({ error: "Not added, recheck fields" });
+    } else {
+      const id = result;
+      res.status(201).json(id);
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-);
+});
 
 router.get("/getnetdev/:id", authenticateToken, async (req, res) => {
   try {

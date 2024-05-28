@@ -42,27 +42,22 @@ const validateSchema = require("..//middleware/validateService.js");
     }
   });*/
 
-router.post(
-  "/adddatabase",
-  validateSchema(newDBSchema),
-  authenticateToken,
-  async (req, res) => {
-    try {
-      console.log(req.body);
-      const data = req.body;
-      const result = await database.add(data);
-      //res.status(201).json(result);
-      if (result === "error") {
-        res.status(400).json({ error: "Not added, recheck fields" });
-      } else {
-        const id = result;
-        res.status(201).json(id);
-      }
-    } catch (error) {
-      res.status(400).json({ error: error.message });
+router.post("/adddatabase", authenticateToken, async (req, res) => {
+  try {
+    console.log(req.body);
+    const data = req.body;
+    const result = await database.add(data);
+    //res.status(201).json(result);
+    if (result === "error") {
+      res.status(400).json({ error: "Not added, recheck fields" });
+    } else {
+      const id = result;
+      res.status(201).json(id);
     }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
-);
+});
 
 router.get("/getdatabase/:id", authenticateToken, async (req, res) => {
   try {

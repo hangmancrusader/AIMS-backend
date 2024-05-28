@@ -30,6 +30,11 @@ class PrinterUseCases {
   async update(Id, Data) {
     return await this.printerRepo.update(Id, Data);
   }
+
+  async processCSV(csvdata) {
+    console.log(csvdata);
+    return await this.printerRepo.processCSV(csvdata);
+  }
 }
 
 module.exports = PrinterUseCases;

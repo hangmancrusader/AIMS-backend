@@ -185,6 +185,20 @@ class PrinterRepository {
       client.release();
     }
   }
+  async processCSV(csvdata) {
+    const query = `
+      INSERT INTO printer ( Assetname, SerialNumber, AssetBarcode, Currentlocation, Dept, "Condition", Status, Returndate, purchasedate, cost, warrantyinfo, AssignmentHistory, Manufacturer, ModelNo, "Desc", OS, Port, assigneduser, lastdeptacquired, installedsSW, Licenses, deployement_method, decomissiondate, serviceProv, MaintainceHist)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24, $25);
+      `;
+    const client = await this.pool.connect();
+    try {
+      for (const row of csvdata) {
+        await client.query(query, row);
+      }
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = PrinterRepository;
