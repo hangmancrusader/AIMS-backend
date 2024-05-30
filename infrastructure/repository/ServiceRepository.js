@@ -264,6 +264,58 @@ class ServiceRepository {
       client.release();
     }
   }
+
+  async getClassification() {
+    const query = `SELECT 
+    s.servicename, 
+    s.ServiceOwner, 
+    s.ServiceClass,
+    CONCAT(u.firstname, ' ', u.lastname) AS Service_Custodian
+    FROM 
+        service s
+    JOIN 
+        users u ON s.userID= u.id
+    JOIN 
+        role r ON u.roleID = r.id
+    WHERE 
+    s.ServiceClass = 'Yes' 
+    OR r.TypeofRole = 'Service Custodian';
+
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+
+  async getReclassification() {
+    const query = `SELECT 
+    s.servicename, 
+    s.ServiceOwner, 
+    s.ServiceClass,
+    CONCAT(u.firstname, ' ', u.lastname) AS Service_Custodian
+    FROM 
+        service s
+    JOIN 
+        users u ON s.userID= u.id
+    JOIN 
+        role r ON u.roleID = r.id
+    WHERE 
+    s.ServiceClass = 'No' 
+    OR r.TypeofRole = 'Service Custodian';
+
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = ServiceRepository;

@@ -24,7 +24,7 @@ const {
 } = require("../middleware/yupConfig.js");
 const validateSchema = require("..//middleware/validateService.js");
 //apis for creating a table and then altering the table
-router.post("/createtable", async (req, res) => {
+/*router.post("/createtable", async (req, res) => {
     try {
       
       const table = await TablesRepository.createService() 
@@ -41,7 +41,7 @@ router.post("/createtable", async (req, res) => {
       res.status(400).json({ error: error.message });
     }
   });
-
+*/
 router.post(
   "/addservice",
   authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
@@ -147,6 +147,51 @@ router.patch(
     }
   }
 );
+
+router.get(
+  "/getclassified",
+  authorizeUserRole([
+    "RootUser",
+    "Applications and Services Custodian",
+    "View Only User"
+  ]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await service.getClassification();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Services not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+router.get(
+  "/getreclassified",
+  authorizeUserRole([
+    "RootUser",
+    "Applications and Services Custodian",
+    "View Only User"
+  ]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await service.getReclassification();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Services not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

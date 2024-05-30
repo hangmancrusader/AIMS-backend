@@ -30,6 +30,12 @@ class ServiceUseCases {
   async update(Id, Data) {
     return await this.serviceRepository.update(Id, Data);
   }
+  async getClassification() {
+    return await this.serviceRepository.getClassification();
+  }
+  async getReclassification() {
+    return await this.serviceRepository.getReclassification();
+  }
 }
 
 module.exports = ServiceUseCases;
