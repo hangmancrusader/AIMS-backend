@@ -102,8 +102,7 @@ class ServiceRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = 
-     `SELECT *,
+    const query = `SELECT *,
       TO_CHAR(DeployDate, 'yyyy-MM-dd') AS DeployDate,
       TO_CHAR(SerCreationDate, 'yyyy-MM-dd') AS SerCreationDate,
       TO_CHAR(SerDecommDate, 'yyyy-MM-dd') AS SerDecommDate,
@@ -161,34 +160,37 @@ class ServiceRepository {
     const query = `
   UPDATE service
   SET 
-    servicename = $2,
-    ServiceCustomer = $3,
-    ServiceCustodian = $4,
-    ServiceOwner = $5,
-    OwnerContInfo = $6,
-    Configurationfiles = $7,
-    CustomizationOptions = $8,
-    BriefDescription = $9,
-    detailedDesc = $10,
-    DeployDate = $11,
-    RolloutPlandetails = $12,
-    SecProtocols = $13,
-    SerCreationDate = $14,
-    SerDecommDate = $15,
-    ServiceCategory = $16,
-    ServiceClass = $17,
-    SLAdeets = $18,
-    SLAExpiryDate = $19,
-    VendorContact = $20,
-    SupportContDetails = $21,
-    AccessReq = $22,
-    AuthMethods = $23,
-    purchasedate = $24,
-    Cost = $25,
-    DependencyServ = $26,
-    DependentServ = $27,
-    Applications = $28,
-    Databases = $29
+    appID = $2,
+    dbID = $3,
+    userID = $4,
+    servicename = $5,
+    ServiceCustomer = $6,
+    ServiceCustodian = $7,
+    ServiceOwner = $8,
+    OwnerContInfo = $9,
+    Configurationfiles = $10,
+    CustomizationOptions = $11,
+    BriefDescription = $12,
+    detailedDesc = $13,
+    DeployDate = $14,
+    RolloutPlandetails = $15,
+    SecProtocols = $16,
+    SerCreationDate = $17,
+    SerDecommDate = $18,
+    ServiceCategory = $19,
+    ServiceClass = $20,
+    SLAdeets = $21,
+    SLAExpiryDate = $22,
+    VendorContact = $23,
+    SupportContDetails = $24,
+    AccessReq = $25,
+    AuthMethods = $26,
+    purchasedate = $27,
+    Cost = $28,
+    DependencyServ = $29,
+    DependentServ = $30,
+    Applications = $31,
+    Databases = $32
   WHERE 
     id = $1
   RETURNING id;
@@ -196,6 +198,9 @@ class ServiceRepository {
     `;
     const values = [
       Id,
+      data.appID,
+      data.dbID,
+      data.userID,
       data.servicename,
       data.ServiceCustomer,
       data.ServiceCustodian,

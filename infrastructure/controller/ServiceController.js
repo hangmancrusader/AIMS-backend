@@ -136,7 +136,7 @@ router.patch(
     try {
       const { id } = req.params;
       const data = req.body;
-      const result = await Laptop.update(id, data);
+      const result = await service.update(id, data);
       if (result && result.length > 0) {
         res.status(201).json({ message: "Updated Successfully", result });
       } else {
