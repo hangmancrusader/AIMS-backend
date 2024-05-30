@@ -180,50 +180,51 @@ class VMRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE virtualmachine
-SET 
-    hostingID = $2,
-    netdevID = $3,
-    secsolID = $4,
-    VMname = $5,
-    Hostname = $6,
-    CPUconfig = $7,
-    AssetBarcode = $8,
-    StorageConfigSpecs = $9,
-    type = $10,
-    version = $11,
-    host = $12,
-    OStype = $13,
-    License = $14,
-    Firewallconfig = $15,
-    SecSW = $16,
-    SecSoln = $17,
-    Encryption = $18,
-    IPAddress = $19,
-    macaddress = $20,
-    DNS = $21,
-    Subnet = $22,
-    Gateway = $23,
-    deploymentMethod = $24,
-    decomissionDate = $25,
-    serviceProv = $26,
-    SSinfo = $27,
-    BackupFreq = $28,
-    "Method" = $29,
-    integrationwithtools = $30,
-    mentionif = $31,
-    Currentlocation = $32,
-    Dept = $33,
-    Status = $34,
-    "Condition" = $35,
-    purchasedate = $36,
-    cost = $37,
-    NetworkDeviceName = $38,
-    NetworkDeviceType = $39,
-    NetworkDeviceModelNumber = $40
-WHERE 
-    id = $1
-RETURNING id;
+    UPDATE virtualmachine
+    SET
+      hostingID = COALESCE($2, hostingID),
+      netdevID = COALESCE($3, netdevID),
+      secsolID = COALESCE($4, secsolID),
+      VMname = COALESCE($5, VMname),
+      Hostname = COALESCE($6, Hostname),
+      CPUconfig = COALESCE($7, CPUconfig),
+      AssetBarcode = COALESCE($8, AssetBarcode),
+      StorageConfigSpecs = COALESCE($9, StorageConfigSpecs),
+      type = COALESCE($10, type),
+      version = COALESCE($11, version),
+      host = COALESCE($12, host),
+      OStype = COALESCE($13, OStype),
+      License = COALESCE($14, License),
+      Firewallconfig = COALESCE($15, Firewallconfig),
+      SecSW = COALESCE($16, SecSW),
+      SecSoln = COALESCE($17, SecSoln),
+      Encryption = COALESCE($18, Encryption),
+      IPAddress = COALESCE($19, IPAddress),
+      macaddress = COALESCE($20, macaddress),
+      DNS = COALESCE($21, DNS),
+      Subnet = COALESCE($22, Subnet),
+      Gateway = COALESCE($23, Gateway),
+      deploymentMethod = COALESCE($24, deploymentMethod),
+      decomissionDate = COALESCE($25, decomissionDate),
+      serviceProv = COALESCE($26, serviceProv),
+      SSinfo = COALESCE($27, SSinfo),
+      BackupFreq = COALESCE($28, BackupFreq),
+      "Method" = COALESCE($29, "Method"),
+      integrationwithtools = COALESCE($30, integrationwithtools),
+      mentionif = COALESCE($31, mentionif),
+      Currentlocation = COALESCE($32, Currentlocation),
+      Dept = COALESCE($33, Dept),
+      Status = COALESCE($34, Status),
+      "Condition" = COALESCE($35, "Condition"),
+      purchasedate = COALESCE($36, purchasedate),
+      cost = COALESCE($37, cost),
+      NetworkDeviceName = COALESCE($38, NetworkDeviceName),
+      NetworkDeviceType = COALESCE($39, NetworkDeviceType),
+      NetworkDeviceModelNumber = COALESCE($40, NetworkDeviceModelNumber)
+    WHERE
+      id = $1
+    RETURNING id;
+    
 
 
     `;

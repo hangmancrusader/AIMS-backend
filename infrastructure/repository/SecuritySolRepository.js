@@ -133,35 +133,34 @@ class SecuritySolutionRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE securitysolution
-SET 
-    product_name = $2,
-    vendor = $3,
-    subscriptionID = $4,
-    license_expiry_date = $5,
-    current_version = $6,
-    last_updated = $7,
-    deployement_method = $8,
-    policy_settings = $9,
-    exclusion_list = $10,
-    logging_config = $11,
-    even_log_storage_location = $12,
-    scan_frequency = $13,
-    scan_time = $14,
-    scan_custom_config = $15,
-    integration_SEM = $16,
-    integration_EP_management = $17,
-    threat_feeds = $18,
-    ioc_management = $19,
-    vendor_contact = $20,
-    documentation_links = $21,
-    purchase_date = $22,
-    cost = $23
-WHERE 
-    id = $1
-RETURNING id;
-
-  
+    UPDATE securitysolution
+    SET
+      product_name = COALESCE($2, product_name),
+      vendor = COALESCE($3, vendor),
+      subscriptionID = COALESCE($4, subscriptionID),
+      license_expiry_date = COALESCE($5, license_expiry_date),
+      current_version = COALESCE($6, current_version),
+      last_updated = COALESCE($7, last_updated),
+      deployement_method = COALESCE($8, deployement_method),
+      policy_settings = COALESCE($9, policy_settings),
+      exclusion_list = COALESCE($10, exclusion_list),
+      logging_config = COALESCE($11, logging_config),
+      even_log_storage_location = COALESCE($12, even_log_storage_location),
+      scan_frequency = COALESCE($13, scan_frequency),
+      scan_time = COALESCE($14, scan_time),
+      scan_custom_config = COALESCE($15, scan_custom_config),
+      integration_SEM = COALESCE($16, integration_SEM),
+      integration_EP_management = COALESCE($17, integration_EP_management),
+      threat_feeds = COALESCE($18, threat_feeds),
+      ioc_management = COALESCE($19, ioc_management),
+      vendor_contact = COALESCE($20, vendor_contact),
+      documentation_links = COALESCE($21, documentation_links),
+      purchase_date = COALESCE($22, purchase_date),
+      cost = COALESCE($23, cost)
+    WHERE
+      id = $1
+    RETURNING id;
+    
     `;
     const values = [
       Id,

@@ -2,10 +2,13 @@ const express = require("express");
 const UserUseCases = require("../../usecase/User/UserUseCases.js");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+//
 const UserAuthentication = require("../../usecase/User/UserAuthenticationUseCase.js");
 const rootUser = new UserUseCases();
 const authUser = new UserAuthentication();
+const bodyParser = require('body-parser');
+const app = express();
+app.use(express.json());
 const {
   generateSchema,
   newServiceSchema,
@@ -149,6 +152,7 @@ router.get(
 //update a user in the database -this route needs JWT authentication
 router.patch(
   "/homepage/User_Administration/user_management/user_profile/:id",
+  upload.single("profilepic"),
   authenticateToken,
   hashPassword,
   authorizeUserRole(["RootUser", "User Admin"]),
@@ -156,6 +160,12 @@ router.patch(
     try {
       const { id } = req.params;
       const userData = req.body;
+      if (req.body.profilepic) {
+        const imageFile = fs.readFileSync(req.file.path);
+        const base64Image = imageFile.toString("base64");
+        req.body.profilepic = base64Image;
+      }
+      console.log(userData);
       const result = await rootUser.updateUser(id, userData);
       //res.status(204).send();
       console.log(result);

@@ -116,38 +116,36 @@ class PrinterRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE printer
-  SET 
-      Assetname = $2,
-      SerialNumber = $3,
-      AssetBarcode = $4,
-      Currentlocation = $5,
-      Dept = $6,
-      "Condition" = $7,
-      Status = $8,
-      Returndate = $9,
-      purchasedate = $10,
-      cost = $11,
-      warrantyinfo = $12,
-      AssignmentHistory = $13,
-      Manufacturer = $14,
-      ModelNo = $15,
-      "Desc" = $16,
-      OS = $17,
-      Port = $18,
-      assigneduser = $19,
-      lastdeptacquired = $20,
-      installedsSW = $21,
-      Licenses = $22,
-      deployement_method = $23,
-      decomissiondate = $24,
-      serviceProv = $25,
-      MaintainceHist = $26
-  WHERE 
+    UPDATE printer
+    SET
+      Assetname = COALESCE($2, Assetname),
+      SerialNumber = COALESCE($3, SerialNumber),
+      AssetBarcode = COALESCE($4, AssetBarcode),
+      Currentlocation = COALESCE($5, Currentlocation),
+      Dept = COALESCE($6, Dept),
+      "Condition" = COALESCE($7, "Condition"),
+      Status = COALESCE($8, Status),
+      Returndate = COALESCE($9, Returndate),
+      purchasedate = COALESCE($10, purchasedate),
+      cost = COALESCE($11, cost),
+      warrantyinfo = COALESCE($12, warrantyinfo),
+      AssignmentHistory = COALESCE($13, AssignmentHistory),
+      Manufacturer = COALESCE($14, Manufacturer),
+      ModelNo = COALESCE($15, ModelNo),
+      "Desc" = COALESCE($16, "Desc"),
+      OS = COALESCE($17, OS),
+      Port = COALESCE($18, Port),
+      assigneduser = COALESCE($19, assigneduser),
+      lastdeptacquired = COALESCE($20, lastdeptacquired),
+      installedsSW = COALESCE($21, installedsSW),
+      Licenses = COALESCE($22, Licenses),
+      deployement_method = COALESCE($23, deployement_method),
+      decomissiondate = COALESCE($24, decomissiondate),
+      serviceProv = COALESCE($25, serviceProv),
+      MaintainceHist = COALESCE($26, MaintainceHist)
+    WHERE
       id = $1
-  RETURNING id;
-  
-  
+    RETURNING id;
     `;
     const values = [
       Id,

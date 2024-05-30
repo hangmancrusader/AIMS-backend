@@ -113,39 +113,39 @@ class HostingRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE hosting
-SET 
-    vmID = $2,
-    hostname = $3,
-    CloudProv = $4,
-    CloudPlan = $5,
-    SLAdeets = $6,
-    CPAccessURL = $7,
-    CPLoginUserName = $8,
-    CPLoginUserPassword = $9,
-    SSHhn = $10,
-    BillingCycle = $11,
-    NextRenewaldate = $12,
-    BilingContact = $13,
-    BackupFreq = $14,
-    TimeforBACKUP = $15,
-    Timingsfrom = $16,
-    TimingsTo = $17,
-    SSLcertif = $18,
-    CertifExpiry = $19,
-    TechSupportContact = $20,
-    EmergencyContact = $21,
-    SubscriptionStartDate = $22,
-    SubscriptionEnddate = $23,
-    MonthlyCost = $24,
-    AccountID = $25,
-    Hypervisortype = $26,
-    VersionHV = $27,
-    HostHV = $28
-WHERE 
-    id = $1
-RETURNING id;
-
+    UPDATE hosting
+    SET
+      vmID = COALESCE($2, vmID),
+      hostname = COALESCE($3, hostname),
+      CloudProv = COALESCE($4, CloudProv),
+      CloudPlan = COALESCE($5, CloudPlan),
+      SLAdeets = COALESCE($6, SLAdeets),
+      CPAccessURL = COALESCE($7, CPAccessURL),
+      CPLoginUserName = COALESCE($8, CPLoginUserName),
+      CPLoginUserPassword = COALESCE($9, CPLoginUserPassword),
+      SSHhn = COALESCE($10, SSHhn),
+      BillingCycle = COALESCE($11, BillingCycle),
+      NextRenewaldate = COALESCE($12, NextRenewaldate),
+      BilingContact = COALESCE($13, BilingContact),
+      BackupFreq = COALESCE($14, BackupFreq),
+      TimeforBACKUP = COALESCE($15, TimeforBACKUP),
+      Timingsfrom = COALESCE($16, Timingsfrom),
+      TimingsTo = COALESCE($17, TimingsTo),
+      SSLcertif = COALESCE($18, SSLcertif),
+      CertifExpiry = COALESCE($19, CertifExpiry),
+      TechSupportContact = COALESCE($20, TechSupportContact),
+      EmergencyContact = COALESCE($21, EmergencyContact),
+      SubscriptionStartDate = COALESCE($22, SubscriptionStartDate),
+      SubscriptionEnddate = COALESCE($23, SubscriptionEnddate),
+      MonthlyCost = COALESCE($24, MonthlyCost),
+      AccountID = COALESCE($25, AccountID),
+      Hypervisortype = COALESCE($26, Hypervisortype),
+      VersionHV = COALESCE($27, VersionHV),
+      HostHV = COALESCE($28, HostHV)
+    WHERE
+      id = $1
+    RETURNING id;
+    
     `;
     const values = [
       Id,

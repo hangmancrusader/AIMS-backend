@@ -125,44 +125,45 @@ class LaptopRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE laptop
-SET 
-    Assetname = $2,
-    SerialNumber = $3,
-    Manufacturer = $4,
-    ModelNo = $5,
-    AssetBarcode = $6,
-    Description = $7,
-    OS = $8,
-    Processor = $9,
-    RAM = $10,
-    Storage = $11,
-    Screensize = $12,
-    Currentlocation = $13,
-    Dept = $14,
-    AssignedUser = $15,
-    "Condition" = $16,
-    Status = $17,
-    AssignmentHistory = $18,
-    Returndate = $19,
-    lastdeptacquired = $20,
-    purchasedate = $21,
-    cost = $22,
-    warrantyinfo = $23,
-    IPAddress = $24,
-    macaddress = $25,
-    installedsSW = $26,
-    Licenses = $27,
-    depmethod = $28,
-    decomissiondate = $29,
-    serviceProv = $30,
-    MaintainceHist = $31,
-    Firewallconfig = $32,
-    SecuritySW = $33,
-    Encryption = $34
-WHERE 
-    id = $1
-RETURNING id;
+    UPDATE laptop
+    SET
+      Assetname = COALESCE($2, Assetname),
+      SerialNumber = COALESCE($3, SerialNumber),
+      Manufacturer = COALESCE($4, Manufacturer),
+      ModelNo = COALESCE($5, ModelNo),
+      AssetBarcode = COALESCE($6, AssetBarcode),
+      Description = COALESCE($7, Description),
+      OS = COALESCE($8, OS),
+      Processor = COALESCE($9, Processor),
+      RAM = COALESCE($10, RAM),
+      Storage = COALESCE($11, Storage),
+      Screensize = COALESCE($12, Screensize),
+      Currentlocation = COALESCE($13, Currentlocation),
+      Dept = COALESCE($14, Dept),
+      AssignedUser = COALESCE($15, AssignedUser),
+      "Condition" = COALESCE($16, "Condition"),
+      Status = COALESCE($17, Status),
+      AssignmentHistory = COALESCE($18, AssignmentHistory),
+      Returndate = COALESCE($19, Returndate),
+      lastdeptacquired = COALESCE($20, lastdeptacquired),
+      purchasedate = COALESCE($21, purchasedate),
+      cost = COALESCE($22, cost),
+      warrantyinfo = COALESCE($23, warrantyinfo),
+      IPAddress = COALESCE($24, IPAddress),
+      macaddress = COALESCE($25, macaddress),
+      installedsSW = COALESCE($26, installedsSW),
+      Licenses = COALESCE($27, Licenses),
+      depmethod = COALESCE($28, depmethod),
+      decomissiondate = COALESCE($29, decomissiondate),
+      serviceProv = COALESCE($30, serviceProv),
+      MaintainceHist = COALESCE($31, MaintainceHist),
+      Firewallconfig = COALESCE($32, Firewallconfig),
+      SecuritySW = COALESCE($33, SecuritySW),
+      Encryption = COALESCE($34, Encryption)
+    WHERE
+      id = $1
+    RETURNING id;
+    
     `;
     const values = [
       Id,

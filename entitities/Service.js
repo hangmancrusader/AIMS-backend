@@ -31,7 +31,10 @@ class Service {
     DependencyServ,
     DependentServ,
     Applications,
-    Databases
+    Databases,
+    ConfidentialityRequirement,
+    IntegrityRequirement,
+    AvailabilityRequirement
   }) {
     this.id = id;
     this.appID = appID;
@@ -65,6 +68,9 @@ class Service {
     this.DependentServ = DependentServ;
     this.Applications = Applications;
     this.Databases = Databases;
+    this.ConfidentialityRequirement = ConfidentialityRequirement;
+    this.IntegrityRequirement = IntegrityRequirement;
+    this.AvailabilityRequirement = AvailabilityRequirement;
   }
 
   // Getters and setters can be added as needed

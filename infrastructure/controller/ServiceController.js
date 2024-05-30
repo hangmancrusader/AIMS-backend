@@ -24,7 +24,7 @@ const {
 } = require("../middleware/yupConfig.js");
 const validateSchema = require("..//middleware/validateService.js");
 //apis for creating a table and then altering the table
-/*router.post("/createtable", async (req, res) => {
+router.post("/createtable", async (req, res) => {
     try {
       
       const table = await TablesRepository.createService() 
@@ -41,7 +41,7 @@ const validateSchema = require("..//middleware/validateService.js");
       res.status(400).json({ error: error.message });
     }
   });
-*/
+
 router.post(
   "/addservice",
   authorizeUserRole(["RootUser", "Applications and Services Custodian"]),

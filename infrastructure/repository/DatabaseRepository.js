@@ -118,35 +118,36 @@ class DatabaseRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE database
-  SET 
-      vmID = $2,
-      userID = $3,
-      DBServername = $4,
-      type = $5,
-      ServerIPAdd = $6,
-      Virtual_Machine = $7,
-      DBMStype = $8,
-      DBMSversion = $9,
-      instance = $10,
-      CertifExpiry = $11,
-      DBNames = $12,
-      DBowners = $13,
-      CollationSett = $14,
-      BackupFreq = $15,
-      TimeforBACKUP = $16,
-      RecoveryModel = $17,
-      BackupStorageLocation = $18,
-      ClusteringConfig = $19,
-      ReplicateConfig = $20,
-      VendorContact = $21,
-      SupportContDetails = $22,
-      versionandUpdates = $23,
-      purchasedate = $24,
-      cost = $25
-  WHERE 
+    UPDATE database
+    SET 
+      vmID = COALESCE($2, vmID),
+      userID = COALESCE($3, userID),
+      DBServername = COALESCE($4, DBServername),
+      type = COALESCE($5, type),
+      ServerIPAdd = COALESCE($6, ServerIPAdd),
+      Virtual_Machine = COALESCE($7, Virtual_Machine),
+      DBMStype = COALESCE($8, DBMStype),
+      DBMSversion = COALESCE($9, DBMSversion),
+      instance = COALESCE($10, instance),
+      CertifExpiry = COALESCE($11, CertifExpiry),
+      DBNames = COALESCE($12, DBNames),
+      DBowners = COALESCE($13, DBowners),
+      CollationSett = COALESCE($14, CollationSett),
+      BackupFreq = COALESCE($15, BackupFreq),
+      TimeforBACKUP = COALESCE($16, TimeforBACKUP),
+      RecoveryModel = COALESCE($17, RecoveryModel),
+      BackupStorageLocation = COALESCE($18, BackupStorageLocation),
+      ClusteringConfig = COALESCE($19, ClusteringConfig),
+      ReplicateConfig = COALESCE($20, ReplicateConfig),
+      VendorContact = COALESCE($21, VendorContact),
+      SupportContDetails = COALESCE($22, SupportContDetails),
+      versionandUpdates = COALESCE($23, versionandUpdates),
+      purchasedate = COALESCE($24, purchasedate),
+      cost = COALESCE($25, cost)
+    WHERE 
       id = $1
-      RETURNING id;
+    RETURNING id;
+    
     `;
     const values = [
       Id,

@@ -10,6 +10,7 @@ class UserRepository {
     //this.pool = new Pool(connectionOptions);
     this.pool = connectionOptions;
   }
+  
 
   // class functionss
   //add user
@@ -199,7 +200,7 @@ class UserRepository {
     const client = await this.pool.connect();
     try {
       const result = await client.query(query, values);
-      
+
       if (result !== null) {
         return true;
       } else {
@@ -212,24 +213,25 @@ class UserRepository {
 
   async updateUser(userId, userData) {
     const query = `
-      UPDATE users
-      SET
-        firstname = $2,
-        lastname = $3,
-        department = $4,
-        securityClearance = $5,
-        contactNo = $6,
-        email = $7,
-        team = $8,
-        currentPassword = $9,
-        newPassword = $10,
-        MFAuth = $11,
-        userIdStatus = $12,
-        profilepic=$13,
-        assetID=$14,
-        roleID=$15
-      WHERE id = $1
-      RETURNING id;
+    UPDATE users
+    SET
+    firstname = COALESCE($2, firstname),
+    lastname = COALESCE($3, lastname),
+    department = COALESCE($4, department),
+    securityClearance = COALESCE($5, securityClearance),
+    contactNo = COALESCE($6, contactNo),
+    email = COALESCE($7, email),
+    team = COALESCE($8, team),
+    currentPassword = COALESCE($9, currentPassword),
+    newPassword = COALESCE($10, newPassword),
+    MFAuth = COALESCE($11, MFAuth),
+    userIdStatus = COALESCE($12, userIdStatus),
+    profilepic = COALESCE($13, profilepic),
+    assetID = COALESCE($14, assetID),
+    roleID = COALESCE($15, roleID),
+    serviceID = COALESCE($16, serviceID)
+    WHERE id = $1
+   RETURNING id;
     `;
     const values = [
       userId,
@@ -246,7 +248,8 @@ class UserRepository {
       userData.userIdStatus,
       userData.profilepic,
       userData.assetID,
-      userData.roleID
+      userData.roleID,
+      userData.serviceID
     ];
     const client = await this.pool.connect();
     try {

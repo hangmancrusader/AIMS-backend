@@ -121,40 +121,41 @@ class MobilePhoneRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE mobilephone
-  SET 
-      Assetname = $2,
-      SerialNumber = $3,
-      Processor = $4,
-      RAM = $5,
-      Storage = $6,
-      Screensize = $7,
-      Currentlocation = $8,
-      Dept = $9,
-      "Condition" = $10,
-      Status = $11,
-      Returndate = $12,
-      purchasedate = $13,
-      cost = $14,
-      warrantyinfo = $15,
-      IPAddress = $16,
-      macaddress = $17,
-      depmethod = $18,
-      decomissiondate = $19,
-      serviceProv = $20,
-      DescriptionandSpecs = $21,
-      Assigneduser = $22,
-      AssetBarcode = $23,
-      OSVersion = $24,
-      Snapshotinfo = $25,
-      BackupFreq = $26,
-      "Method" = $27,
-      integrationwithtools = $28,
-      mentionif = $29,
-      AssignmentHistory = $30
-  WHERE 
+    UPDATE mobilephone
+    SET
+      Assetname = COALESCE($2, Assetname),
+      SerialNumber = COALESCE($3, SerialNumber),
+      Processor = COALESCE($4, Processor),
+      RAM = COALESCE($5, RAM),
+      Storage = COALESCE($6, Storage),
+      Screensize = COALESCE($7, Screensize),
+      Currentlocation = COALESCE($8, Currentlocation),
+      Dept = COALESCE($9, Dept),
+      "Condition" = COALESCE($10, "Condition"),
+      Status = COALESCE($11, Status),
+      Returndate = COALESCE($12, Returndate),
+      purchasedate = COALESCE($13, purchasedate),
+      cost = COALESCE($14, cost),
+      warrantyinfo = COALESCE($15, warrantyinfo),
+      IPAddress = COALESCE($16, IPAddress),
+      macaddress = COALESCE($17, macaddress),
+      depmethod = COALESCE($18, depmethod),
+      decomissiondate = COALESCE($19, decomissiondate),
+      serviceProv = COALESCE($20, serviceProv),
+      DescriptionandSpecs = COALESCE($21, DescriptionandSpecs),
+      Assigneduser = COALESCE($22, Assigneduser),
+      AssetBarcode = COALESCE($23, AssetBarcode),
+      OSVersion = COALESCE($24, OSVersion),
+      Snapshotinfo = COALESCE($25, Snapshotinfo),
+      BackupFreq = COALESCE($26, BackupFreq),
+      "Method" = COALESCE($27, "Method"),
+      integrationwithtools = COALESCE($28, integrationwithtools),
+      mentionif = COALESCE($29, mentionif),
+      AssignmentHistory = COALESCE($30, AssignmentHistory)
+    WHERE
       id = $1
-  RETURNING id;
+    RETURNING id;
+    
   
     `;
     const values = [

@@ -121,42 +121,40 @@ RETURNING id;
 
   async update(Id, data) {
     const query = `
-  UPDATE voip
-SET 
-    Assetname = $2,
-    SerialNumber = $3,
-    Assigneduser = $4,
-    AssetBarcode = $5,
-    DescriptionandSpecs = $6,
-    OSVersion = $7,
-    Processor = $8,
-    RAM = $9,
-    Storage = $10,
-    Screensize = $11,
-    Currentlocation = $12,
-    Dept = $13,
-    "Condition" = $14,
-    Status = $15,
-    Returndate = $16,
-    purchasedate = $17,
-    cost = $18,
-    warrantyinfo = $19,
-    IPAddress = $20,
-    macaddress = $21,
-    AssignmentHistory = $22,
-    depmethod = $23,
-    decomissiondate = $24,
-    serviceProv = $25,
-    BackupFreq = $26,
-    "Method" = $27,
-    integrationwithtools = $28,
-    mentionif = $29,
-    Snapshotinfo = $30
-WHERE 
-    id = $1
-RETURNING id;
-
-  
+    UPDATE voip
+    SET
+      Assetname = COALESCE($2, Assetname),
+      SerialNumber = COALESCE($3, SerialNumber),
+      Assigneduser = COALESCE($4, Assigneduser),
+      AssetBarcode = COALESCE($5, AssetBarcode),
+      DescriptionandSpecs = COALESCE($6, DescriptionandSpecs),
+      OSVersion = COALESCE($7, OSVersion),
+      Processor = COALESCE($8, Processor),
+      RAM = COALESCE($9, RAM),
+      Storage = COALESCE($10, Storage),
+      Screensize = COALESCE($11, Screensize),
+      Currentlocation = COALESCE($12, Currentlocation),
+      Dept = COALESCE($13, Dept),
+      "Condition" = COALESCE($14, "Condition"),
+      Status = COALESCE($15, Status),
+      Returndate = COALESCE($16, Returndate),
+      purchasedate = COALESCE($17, purchasedate),
+      cost = COALESCE($18, cost),
+      warrantyinfo = COALESCE($19, warrantyinfo),
+      IPAddress = COALESCE($20, IPAddress),
+      macaddress = COALESCE($21, macaddress),
+      AssignmentHistory = COALESCE($22, AssignmentHistory),
+      depmethod = COALESCE($23, depmethod),
+      decomissiondate = COALESCE($24, decomissiondate),
+      serviceProv = COALESCE($25, serviceProv),
+      BackupFreq = COALESCE($26, BackupFreq),
+      "Method" = COALESCE($27, "Method"),
+      integrationwithtools = COALESCE($28, integrationwithtools),
+      mentionif = COALESCE($29, mentionif),
+      Snapshotinfo = COALESCE($30, Snapshotinfo)
+    WHERE
+      id = $1
+    RETURNING id;
     `;
     const values = [
       Id,

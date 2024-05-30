@@ -45,12 +45,15 @@ class ServiceRepository {
       DependencyServ,
       DependentServ,
       Applications,
-      Databases
+      Databases,
+      ConfidentialityRequirement,
+      IntegrityRequirement,
+      AvailabilityRequirement
     ) 
     VALUES (
       $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
       $11, $12, $13, $14, $15, $16, $17, $18, $19, $20,
-      $21, $22, $23, $24, $25, $26, $27, $28,$29,$30,$31
+      $21, $22, $23, $24, $25, $26, $27, $28,$29,$30,$31,$32,$33,$34
     ) 
     RETURNING id;
     
@@ -86,7 +89,10 @@ class ServiceRepository {
         data.DependencyServ,
         data.DependentServ,
         data.Applications,
-        data.Databases
+        data.Databases,
+        data.ConfidentialityRequirement,
+        data.IntegrityRequirement,
+        data.AvailabilityRequirement
       ];
 
       const result = await this.pool.query(query, values);
@@ -158,43 +164,45 @@ class ServiceRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE service
-  SET 
-    appID = $2,
-    dbID = $3,
-    userID = $4,
-    servicename = $5,
-    ServiceCustomer = $6,
-    ServiceCustodian = $7,
-    ServiceOwner = $8,
-    OwnerContInfo = $9,
-    Configurationfiles = $10,
-    CustomizationOptions = $11,
-    BriefDescription = $12,
-    detailedDesc = $13,
-    DeployDate = $14,
-    RolloutPlandetails = $15,
-    SecProtocols = $16,
-    SerCreationDate = $17,
-    SerDecommDate = $18,
-    ServiceCategory = $19,
-    ServiceClass = $20,
-    SLAdeets = $21,
-    SLAExpiryDate = $22,
-    VendorContact = $23,
-    SupportContDetails = $24,
-    AccessReq = $25,
-    AuthMethods = $26,
-    purchasedate = $27,
-    Cost = $28,
-    DependencyServ = $29,
-    DependentServ = $30,
-    Applications = $31,
-    Databases = $32
-  WHERE 
-    id = $1
-  RETURNING id;
-  
+    UPDATE service
+    SET 
+        appID = COALESCE($2, appID),
+        dbID = COALESCE($3, dbID),
+        userID = COALESCE($4, userID),
+        servicename = COALESCE($5, servicename),
+        ServiceCustomer = COALESCE($6, ServiceCustomer),
+        ServiceCustodian = COALESCE($7, ServiceCustodian),
+        ServiceOwner = COALESCE($8, ServiceOwner),
+        OwnerContInfo = COALESCE($9, OwnerContInfo),
+        Configurationfiles = COALESCE($10, Configurationfiles),
+        CustomizationOptions = COALESCE($11, CustomizationOptions),
+        BriefDescription = COALESCE($12, BriefDescription),
+        detailedDesc = COALESCE($13, detailedDesc),
+        DeployDate = COALESCE($14, DeployDate),
+        RolloutPlandetails = COALESCE($15, RolloutPlandetails),
+        SecProtocols = COALESCE($16, SecProtocols),
+        SerCreationDate = COALESCE($17, SerCreationDate),
+        SerDecommDate = COALESCE($18, SerDecommDate),
+        ServiceCategory = COALESCE($19, ServiceCategory),
+        ServiceClass = COALESCE($20, ServiceClass),
+        SLAdeets = COALESCE($21, SLAdeets),
+        SLAExpiryDate = COALESCE($22, SLAExpiryDate),
+        VendorContact = COALESCE($23, VendorContact),
+        SupportContDetails = COALESCE($24, SupportContDetails),
+        AccessReq = COALESCE($25, AccessReq),
+        AuthMethods = COALESCE($26, AuthMethods),
+        purchasedate = COALESCE($27, purchasedate),
+        Cost = COALESCE($28, Cost),
+        DependencyServ = COALESCE($29, DependencyServ),
+        DependentServ = COALESCE($30, DependentServ),
+        Applications = COALESCE($31, Applications),
+        Databases = COALESCE($32, Databases),
+        ConfidentialityRequirement = COALESCE($33, ConfidentialityRequirement),
+        IntegrityRequirement = COALESCE($34, IntegrityRequirement),
+        AvailabilityRequirement = COALESCE($35, AvailabilityRequirement)
+    WHERE 
+        id = $1
+    RETURNING id;
     `;
     const values = [
       Id,
@@ -228,7 +236,10 @@ class ServiceRepository {
       data.DependencyServ,
       data.DependentServ,
       data.Applications,
-      data.Databases
+      data.Databases,
+      data.ConfidentialityRequirement,
+      data.IntegrityRequirement,
+      data.AvailabilityRequirement
     ];
     const client = await this.pool.connect();
     try {

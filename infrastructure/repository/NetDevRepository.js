@@ -151,43 +151,44 @@ class NetDevRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE networkdevice
-SET 
-    DevName = $2,
-    type = $3,
-    ModelNo = $4,
-    PhysicalLoc = $5,
-    RackandUnit = $6,
-    FirewallRules = $7,
-    DetectionSettings = $8,
-    LoginUN = $9,
-    LoginPassword = $10,
-    SSHconfig = $11,
-    VPNtunnels = $12,
-    VPNsetting = $13,
-    RoutingTables = $14,
-    DynamicRoutingProtocols = $15,
-    OSVersion = $16,
-    Lastupdate = $17,
-    HighAvailConfig = $18,
-    FailOverSettings = $19,
-    InterfacesConfig = $20,
-    MACaddress = $21,
-    PortConfig = $22,
-    logging_config = $23,
-    SNMPConfig = $24,
-    PowerConsumption = $25,
-    TempEnvControls = $26,
-    Configfiles = $27,
-    RunningConfigs = $28,
-    purchasedate = $29,
-    Cost = $30,
-    VendorContact = $31,
-    SupportContDetails = $32,
-    Doclink = $33
-WHERE 
-    id = $1
-RETURNING id;
+    UPDATE networkdevice
+    SET
+      DevName = COALESCE($2, DevName),
+      type = COALESCE($3, type),
+      ModelNo = COALESCE($4, ModelNo),
+      PhysicalLoc = COALESCE($5, PhysicalLoc),
+      RackandUnit = COALESCE($6, RackandUnit),
+      FirewallRules = COALESCE($7, FirewallRules),
+      DetectionSettings = COALESCE($8, DetectionSettings),
+      LoginUN = COALESCE($9, LoginUN),
+      LoginPassword = COALESCE($10, LoginPassword),
+      SSHconfig = COALESCE($11, SSHconfig),
+      VPNtunnels = COALESCE($12, VPNtunnels),
+      VPNsetting = COALESCE($13, VPNsetting),
+      RoutingTables = COALESCE($14, RoutingTables),
+      DynamicRoutingProtocols = COALESCE($15, DynamicRoutingProtocols),
+      OSVersion = COALESCE($16, OSVersion),
+      Lastupdate = COALESCE($17, Lastupdate),
+      HighAvailConfig = COALESCE($18, HighAvailConfig),
+      FailOverSettings = COALESCE($19, FailOverSettings),
+      InterfacesConfig = COALESCE($20, InterfacesConfig),
+      MACaddress = COALESCE($21, MACaddress),
+      PortConfig = COALESCE($22, PortConfig),
+      logging_config = COALESCE($23, logging_config),
+      SNMPConfig = COALESCE($24, SNMPConfig),
+      PowerConsumption = COALESCE($25, PowerConsumption),
+      TempEnvControls = COALESCE($26, TempEnvControls),
+      Configfiles = COALESCE($27, Configfiles),
+      RunningConfigs = COALESCE($28, RunningConfigs),
+      purchasedate = COALESCE($29, purchasedate),
+      Cost = COALESCE($30, Cost),
+      VendorContact = COALESCE($31, VendorContact),
+      SupportContDetails = COALESCE($32, SupportContDetails),
+      Doclink = COALESCE($33, Doclink)
+    WHERE
+      id = $1
+    RETURNING id;
+    
 
     `;
     const values = [

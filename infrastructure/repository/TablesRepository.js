@@ -936,9 +936,15 @@ class TablesRepository {
     ALTER TABLE service
     ADD COLUMN dbID INTEGER REFERENCES database(id);
 `;*/
-          const query = `
+          /*const query = `
     ALTER TABLE service
     ADD COLUMN userID INTEGER REFERENCES users(id);
+`;*/
+          const query = `
+    ALTER TABLE service
+    ADD COLUMN ConfidentialityRequirement VARCHAR,  
+    ADD COLUMN IntegrityRequirement VARCHAR,
+    ADD COLUMN AvailabilityRequirement VARCHAR;
 `;
           await this.pool.query(query);
           console.log(" table altered");

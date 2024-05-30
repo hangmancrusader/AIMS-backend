@@ -132,41 +132,43 @@ class ApplicationRepository {
 
   async update(Id, data) {
     const query = `
-  UPDATE application
-  SET 
-  serviceID = $2,
-  vmID = $3,
-  dbID = $4,
-  ServerName = $5,
-  Servertype = $6,
-  ServerIPAdd = $7,
-  Virtual_Machine = $8,
-  DatabaseServer = $9,
-  BackupFreq = $10,
-  BackupMethods = $11,
-  RecoveryProcedures = $12,
-  ApplicationName = $13,
-  ApplicationVers = $14,
-  ApplicationURL = $15,
-  deploymentMethod = $16,
-  UserRoles = $17,
-  UserPermissions = $18,
-  SSLconfig = $19,
-  WebServerType = $20,
-  WebServerVers = $21,
-  VirtualHostConfig = $22,
-  VendorContact = $23,
-  SupportContDetails = $24,
-  DBconnectdetails = $25,
-  DBnames = $26,
-  CurrentVers = $27,
-  LastUpdate = $28,
-  Monitortools = $29,
-  ifyesExplain = $30,
-  purchasedate = $31,
-  cost = $32
-WHERE
-  id = $1;
+    UPDATE application
+    SET 
+      serviceID = COALESCE($2, serviceID),
+      vmID = COALESCE($3, vmID),
+      dbID = COALESCE($4, dbID),
+      ServerName = COALESCE($5, ServerName),
+      Servertype = COALESCE($6, Servertype),
+      ServerIPAdd = COALESCE($7, ServerIPAdd),
+      Virtual_Machine = COALESCE($8, Virtual_Machine),
+      DatabaseServer = COALESCE($9, DatabaseServer),
+      BackupFreq = COALESCE($10, BackupFreq),
+      BackupMethods = COALESCE($11, BackupMethods),
+      RecoveryProcedures = COALESCE($12, RecoveryProcedures),
+      ApplicationName = COALESCE($13, ApplicationName),
+      ApplicationVers = COALESCE($14, ApplicationVers),
+      ApplicationURL = COALESCE($15, ApplicationURL),
+      deploymentMethod = COALESCE($16, deploymentMethod),
+      UserRoles = COALESCE($17, UserRoles),
+      UserPermissions = COALESCE($18, UserPermissions),
+      SSLconfig = COALESCE($19, SSLconfig),
+      WebServerType = COALESCE($20, WebServerType),
+      WebServerVers = COALESCE($21, WebServerVers),
+      VirtualHostConfig = COALESCE($22, VirtualHostConfig),
+      VendorContact = COALESCE($23, VendorContact),
+      SupportContDetails = COALESCE($24, SupportContDetails),
+      DBconnectdetails = COALESCE($25, DBconnectdetails),
+      DBnames = COALESCE($26, DBnames),
+      CurrentVers = COALESCE($27, CurrentVers),
+      LastUpdate = COALESCE($28, LastUpdate),
+      Monitortools = COALESCE($29, Monitortools),
+      ifyesExplain = COALESCE($30, ifyesExplain),
+      purchasedate = COALESCE($31, purchasedate),
+      cost = COALESCE($32, cost)
+    WHERE
+      id = $1
+    RETURNING id;
+    
     `;
     const values = [
       Id,
