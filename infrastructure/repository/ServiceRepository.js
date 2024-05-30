@@ -267,6 +267,7 @@ class ServiceRepository {
 
   async getClassification() {
     const query = `SELECT 
+    s.id,
     s.servicename, 
     s.ServiceOwner, 
     s.ServiceClass,
@@ -278,7 +279,7 @@ class ServiceRepository {
     JOIN 
         role r ON u.roleID = r.id
     WHERE 
-    s.ServiceClass = 'Yes' 
+    s.ServiceClass = 'No' 
     OR r.TypeofRole = 'Service Custodian';
 
     `;
@@ -293,6 +294,7 @@ class ServiceRepository {
 
   async getReclassification() {
     const query = `SELECT 
+    s.id,
     s.servicename, 
     s.ServiceOwner, 
     s.ServiceClass,
@@ -304,7 +306,7 @@ class ServiceRepository {
     JOIN 
         role r ON u.roleID = r.id
     WHERE 
-    s.ServiceClass = 'No' 
+    s.ServiceClass = 'Yes' 
     OR r.TypeofRole = 'Service Custodian';
 
     `;
