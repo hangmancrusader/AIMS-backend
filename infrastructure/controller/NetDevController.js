@@ -6,6 +6,7 @@ const NetDevUseCases = require("../../usecase/Assets/NetworkDevice/NetDevUseCase
 const NetDev = new NetDevUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const TablesRepository = new TablesRepo();
 const {
   generateSchema,
@@ -41,78 +42,103 @@ const validateSchema = require("..//middleware/validateService.js");
     }
   });
   */
-router.post("/addnetdev", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const Data = req.body;
-    const result = await NetDev.add(Data); // the db returns the id of new Laptop
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+router.post(
+  "/addnetdev",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const Data = req.body;
+      const result = await NetDev.add(Data); // the db returns the id of new Laptop
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/getnetdev/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await NetDev.get(id); // the db returns the id of new L
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Net Dev not found" });
+router.get(
+  "/getnetdev/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await NetDev.get(id); // the db returns the id of new L
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Net Dev not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getnetdevs", authenticateToken, async (req, res) => {
-  try {
-    const result = await NetDev.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Net Devs not found" });
+router.get(
+  "/getnetdevs",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await NetDev.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Net Devs not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deletenetdev/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await NetDev.delete(id);
-    if (result) {
-      res.status(201).json({ message: "Deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Asset not found" });
+router.delete(
+  "/deletenetdev/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await NetDev.delete(id);
+      if (result) {
+        res.status(201).json({ message: "Deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Asset not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updatenetdev/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const Data = req.body;
-    const result = await NetDev.update(id, Data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updatenetdev/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const Data = req.body;
+      const result = await NetDev.update(id, Data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

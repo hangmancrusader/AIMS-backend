@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const HostingUseCases = require("../../usecase/Assets/Hosting/HostingUseCases.js");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const Hosting = new HostingUseCases();
 const {
   generateSchema,
@@ -41,79 +42,104 @@ const TablesRepository = new TablesRepo();
     }
   });*/
 
-router.post("/addhosting", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const data = req.body;
+router.post(
+  "/addhosting",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const data = req.body;
 
-    const result = await Hosting.add(data); // the db returns the id of new Laptop*/
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+      const result = await Hosting.add(data); // the db returns the id of new Laptop*/
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/gethosting/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Hosting.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Hosting not found" });
+router.get(
+  "/gethosting/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Hosting.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Hosting not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/gethostings", authenticateToken, async (req, res) => {
-  try {
-    const result = await Hosting.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Hosting not found" });
+router.get(
+  "/gethostings",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await Hosting.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Hosting not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deletehosting/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Hosting.delete(id);
-    if (result) {
-      res.status(201).json({ message: "Deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Asset not found" });
+router.delete(
+  "/deletehosting/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Hosting.delete(id);
+      if (result) {
+        res.status(201).json({ message: "Deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Asset not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updatehosting/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const result = await Hosting.update(id, data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updatehosting/:id",
+  authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+      const result = await Hosting.update(id, data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

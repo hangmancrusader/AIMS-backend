@@ -102,7 +102,8 @@ class ServiceRepository {
   } ////////////////////////////////////////////////////////////////
 
   async get(Id) {
-    const query = `SELECT *,
+    const query = 
+     `SELECT *,
       TO_CHAR(DeployDate, 'yyyy-MM-dd') AS DeployDate,
       TO_CHAR(SerCreationDate, 'yyyy-MM-dd') AS SerCreationDate,
       TO_CHAR(SerDecommDate, 'yyyy-MM-dd') AS SerDecommDate,

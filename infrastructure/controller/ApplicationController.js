@@ -6,6 +6,7 @@ const ApplicationUseCases = require("../../usecase/Assets/Application/Applicatio
 const application = new ApplicationUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const TablesRepository = new TablesRepo();
 const {
   generateSchema,
@@ -43,6 +44,7 @@ const validateSchema = require("..//middleware/validateService.js");
 router.post(
   "/addapplication",
   authenticateToken,
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
   async (req, res) => {
     try {
       console.log(req.body);
@@ -61,61 +63,89 @@ router.post(
   }
 );
 
-router.get("/getapplication/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await application.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Application not found" });
+router.get(
+  "/getapplication/:id",
+  authorizeUserRole([
+    "RootUser",
+    "Applications and Services Custodian",
+    "View Only User"
+  ]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await application.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Application not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getapplications", authenticateToken, async (req, res) => {
-  try {
-    const result = await application.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Application not found" });
+router.get(
+  "/getapplications",
+  authorizeUserRole([
+    "RootUser",
+    "Applications and Services Custodian",
+    "View Only User"
+  ]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await application.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Application not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deleteapplication/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await application.delete(id);
-    if (result) {
-      res.status(201).json(result, { message: "Application deleted" });
-    } else {
-      res.status(404).json({ message: "Application not found" });
+router.delete(
+  "/deleteapplication/:id",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await application.delete(id);
+      if (result) {
+        res.status(201).json(result, { message: "Application deleted" });
+      } else {
+        res.status(404).json({ message: "Application not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updateapplication/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const Data = req.body;
-    const result = await application.update(id, Data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updateapplication/:id",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const Data = req.body;
+      const result = await application.update(id, Data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

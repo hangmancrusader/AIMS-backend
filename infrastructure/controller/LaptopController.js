@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const LaptopUseCases = require("../../usecase/Assets/EndPointDevice/LaptopUseCases.js");
 const Laptop = new LaptopUseCases();
-
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository");
 const TablesRepository = new TablesRepo();
@@ -45,82 +45,108 @@ const fastcsv = require("fast-csv");
       res.status(400).json({ error: error.message });
     }
   });*/
-router.post("/addlaptop", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const laptopData = req.body;
-    const result = await Laptop.add(laptopData); // the db returns the id of new Laptop
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+router.post(
+  "/addlaptop",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const laptopData = req.body;
+      const result = await Laptop.add(laptopData); // the db returns the id of new Laptop
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/getlaptop/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Laptop.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Laptop not found" });
+router.get(
+  "/getlaptop/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Laptop.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Laptop not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getlaptops", authenticateToken, async (req, res) => {
-  try {
-    const result = await Laptop.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Laptops not found" });
+router.get(
+  "/getlaptops",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await Laptop.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Laptops not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deletelaptop/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Laptop.delete(id);
-    if (result) {
-      res.status(201).json({ message: "Deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Asset not found" });
+router.delete(
+  "/deletelaptop/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Laptop.delete(id);
+      if (result) {
+        res.status(201).json({ message: "Deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Asset not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updatelaptop/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const laptopData = req.body;
-    const result = await Laptop.update(id, laptopData);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updatelaptop/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const laptopData = req.body;
+      const result = await Laptop.update(id, laptopData);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 router.post(
   "/upload-laptop-csv",
   upload.single("csvfile"),
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian", "System Admin"]),
   authenticateToken,
   async (req, res) => {
     try {

@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const DatabaseUseCases = require("../../usecase/Assets/Database/DatabaseUseCases.js");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const database = new DatabaseUseCases();
 const {
   generateSchema,
@@ -42,78 +43,103 @@ const validateSchema = require("..//middleware/validateService.js");
     }
   });*/
 
-router.post("/adddatabase", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const data = req.body;
-    const result = await database.add(data);
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+router.post(
+  "/adddatabase",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const data = req.body;
+      const result = await database.add(data);
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/getdatabase/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await database.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "database not found" });
+router.get(
+  "/getdatabase/:id",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await database.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "database not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getdatabases", authenticateToken, async (req, res) => {
-  try {
-    const result = await database.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "database not found" });
+router.get(
+  "/getdatabases",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await database.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "database not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deletedatabase/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await database.delete(id);
-    if (result) {
-      res.status(201).json(result, { message: "database deleted" });
-    } else {
-      res.status(404).json({ message: "database not found" });
+router.delete(
+  "/deletedatabase/:id",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await database.delete(id);
+      if (result) {
+        res.status(201).json(result, { message: "database deleted" });
+      } else {
+        res.status(404).json({ message: "database not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updatedatabase/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const data = req.body;
-    const result = await database.update(id, data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updatedatabase/:id",
+  authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+      const result = await database.update(id, data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

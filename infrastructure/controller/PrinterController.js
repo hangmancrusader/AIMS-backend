@@ -6,6 +6,7 @@ const PrinterUseCases = require("../../usecase/Assets/EndPointDevice/PrinterUseC
 const Printer = new PrinterUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const TablesRepository = new TablesRepo();
 const {
   generateSchema,
@@ -46,82 +47,108 @@ const fastcsv = require("fast-csv");
     }
   });*/
 
-router.post("/addprinter", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const Data = req.body;
-    const result = await Printer.add(Data); // the db returns the id of new Laptop
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+router.post(
+  "/addprinter",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const Data = req.body;
+      const result = await Printer.add(Data); // the db returns the id of new Laptop
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/getprinter/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Printer.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Printer not found" });
+router.get(
+  "/getprinter/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Printer.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Printer not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getprinters", authenticateToken, async (req, res) => {
-  try {
-    const result = await Printer.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "Printers not found" });
+router.get(
+  "/getprinters",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await Printer.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Printers not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deleteprinter/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await Printer.delete(id);
-    if (result) {
-      res.status(201).json({ message: "Deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Asset not found" });
+router.delete(
+  "/deleteprinter/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await Printer.delete(id);
+      if (result) {
+        res.status(201).json({ message: "Deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Asset not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updateprinter/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const Data = req.body;
-    const result = await Printer.update(id, Data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updateprinter/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const Data = req.body;
+      const result = await Printer.update(id, Data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 router.post(
   "/upload-printer-csv",
   upload.single("csvfile"),
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian", "System Admin"]),
   authenticateToken,
   async (req, res) => {
     try {

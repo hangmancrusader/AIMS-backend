@@ -6,6 +6,7 @@ const VoIPUseCases = require("../../usecase/Assets/EndPointDevice/VoIPUseCases")
 const voip = new VoIPUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository");
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const TablesRepository = new TablesRepo();
 const {
   generateSchema,
@@ -45,82 +46,108 @@ const fastcsv = require("fast-csv");
       res.status(400).json({ error: error.message });
     }
   });*/
-router.post("/addvoip", authenticateToken, async (req, res) => {
-  try {
-    console.log(req.body);
-    const Data = req.body;
-    const result = await voip.add(Data); // the db returns the id of new
-    //res.status(201).json(result);
-    if (result === "error") {
-      res.status(400).json({ error: "Not added, recheck fields" });
-    } else {
-      const id = result;
-      res.status(201).json(id);
+router.post(
+  "/addvoip",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      console.log(req.body);
+      const Data = req.body;
+      const result = await voip.add(Data); // the db returns the id of new
+      //res.status(201).json(result);
+      if (result === "error") {
+        res.status(400).json({ error: "Not added, recheck fields" });
+      } else {
+        const id = result;
+        res.status(201).json(id);
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
-router.get("/getvoip/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await voip.get(id);
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "VoIP not found" });
+router.get(
+  "/getvoip/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await voip.get(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "VoIP not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/getvoips", authenticateToken, async (req, res) => {
-  try {
-    const result = await voip.getAll();
-    if (result) {
-      res.status(201).json(result);
-    } else {
-      res.status(404).json({ message: "VoIPs not found" });
+router.get(
+  "/getvoips",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const result = await voip.getAll();
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "VoIPs not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.delete("/deletevoip/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await voip.delete(id);
-    if (result) {
-      res.status(201).json({ message: "Deleted successfully" });
-    } else {
-      res.status(404).json({ message: "Asset not found" });
+router.delete(
+  "/deletevoip/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await voip.delete(id);
+      if (result) {
+        res.status(201).json({ message: "Deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Asset not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.patch("/updatevoip/:id", authenticateToken, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const Data = req.body;
-    const result = await voip.update(id, Data);
-    if (result && result.length > 0) {
-      res.status(201).json({ message: "Updated Successfully", result });
-    } else {
-      res.status(404).json({ message: "Resource not found" });
+router.patch(
+  "/updatevoip/:id",
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian"]),
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const Data = req.body;
+      const result = await voip.update(id, Data);
+      if (result && result.length > 0) {
+        res.status(201).json({ message: "Updated Successfully", result });
+      } else {
+        res.status(404).json({ message: "Resource not found" });
+      }
+    } catch (error) {
+      res.status(400).json({ error: error.message });
     }
-  } catch (error) {
-    res.status(400).json({ error: error.message });
   }
-});
+);
 
 router.post(
   "/upload-voip-csv",
   upload.single("csvfile"),
+  authorizeUserRole(["RootUser", "Endpoint Devices Custodian", "System Admin"]),
   authenticateToken,
   async (req, res) => {
     try {

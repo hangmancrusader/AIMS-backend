@@ -6,6 +6,7 @@ const SecSolUseCases = require("../../usecase/Assets/SecuritySolution/SecuritySo
 const SecSol = new SecSolUseCases();
 //a separate repo only for creating and altering tables
 const TablesRepo = require("../repository/TablesRepository")
+const authorizeUserRole = require("../middleware/authorizeUserRoleService.js");
 const TablesRepository = new TablesRepo();
 const {
   generateSchema,
@@ -39,7 +40,7 @@ const validateSchema = require('..//middleware/validateService.js');
       res.status(400).json({ error: error.message });
     }
   });*/
-  router.post("/addsecsol",authenticateToken,async (req, res) => {
+  router.post("/addsecsol",authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),authenticateToken,async (req, res) => {
     try {
       console.log(req.body)
       const Data = req.body;
@@ -57,7 +58,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getsecsol/:id", authenticateToken, async (req, res) => {
+  router.get("/getsecsol/:id", authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await SecSol.get(id)
@@ -71,7 +72,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.get("/getsecsols", authenticateToken, async (req, res) => {
+  router.get("/getsecsols",authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]), authenticateToken, async (req, res) => {
     try {
       
       const result = await SecSol.getAll();
@@ -85,7 +86,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
   
-  router.delete("/deletesecsol/:id", authenticateToken, async (req, res) => {
+  router.delete("/deletesecsol/:id",authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]), authenticateToken, async (req, res) => {
     try {
       const {id}= req.params;
       const result = await SecSol.delete(id);
@@ -99,7 +100,7 @@ const validateSchema = require('..//middleware/validateService.js');
     }
   } );
 
-  router.patch("/updatesecsol/:id", authenticateToken, async (req, res) => {
+  router.patch("/updatesecsol/:id", authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),authenticateToken, async (req, res) => {
     try {
       const { id } = req.params;
       const Data = req.body;

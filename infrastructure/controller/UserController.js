@@ -86,7 +86,7 @@ router.post(
   "/homepage/User_Administration/resetpassword/:id",
   authenticateToken,
   hashPassword,
-  authorizeUserRole("RootUser"),
+  authorizeUserRole(["RootUser", "User Admin"]),
   async (req, res) => {
     try {
       //const {email} = req.body;
@@ -111,7 +111,7 @@ router.post(
 router.get(
   "/homepage/User_Administration/user_management/user_profile/:id",
   authenticateToken,
-  authorizeUserRole("RootUser"),
+  authorizeUserRole(["RootUser", "User Admin"]),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -131,7 +131,7 @@ router.get(
 router.get(
   "/homepage/User_Administration/user_management/user_profile/",
   authenticateToken,
-  authorizeUserRole("RootUser"),
+  authorizeUserRole(["RootUser", "User Admin"]),
   async (req, res) => {
     try {
       const user = await rootUser.getAllUsers();
@@ -151,7 +151,7 @@ router.patch(
   "/homepage/User_Administration/user_management/user_profile/:id",
   authenticateToken,
   hashPassword,
-  authorizeUserRole("RootUser"),
+  authorizeUserRole(["RootUser", "User Admin"]),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -173,7 +173,7 @@ router.patch(
 router.delete(
   "/homepage/User_Administration/user_management/user_profile/deleteuser/:id",
   authenticateToken,
-  authorizeUserRole("RootUser"),
+  authorizeUserRole(["RootUser", "User Admin"]),
   async (req, res) => {
     try {
       const { id } = req.params;
