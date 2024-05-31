@@ -30,6 +30,10 @@ class DatabaseUseCases {
   async update(Id, Data) {
     return await this.dbRepository.update(Id, Data);
   }
+
+  async dbfortidytree() {
+    return await this.dbRepository.dbfortidytree();
+  }
 }
 
 module.exports = DatabaseUseCases;

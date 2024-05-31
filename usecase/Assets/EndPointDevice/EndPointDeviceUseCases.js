@@ -30,6 +30,18 @@ class EndPointDeviceUseCases {
   async update(Id, Data) {
     return await this.EndPointDevRepository.update(Id, Data);
   }
+
+  async getcount() {
+    return await this.EndPointDevRepository.getcount();
+  }
+
+  async getperct() {
+    return await this.EndPointDevRepository.getperct();
+  }
+
+  async getcost() {
+    return await this.EndPointDevRepository.getcost();
+  }
 }
 
 module.exports = EndPointDeviceUseCases;

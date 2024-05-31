@@ -30,6 +30,10 @@ class ApplicationUseCases {
   async update(Id, Data) {
     return await this.applicationRepository.update(Id, Data);
   }
+
+  async appsfortidytree() {
+    return await this.applicationRepository.appsfortidytree();
+  }
 }
 
 module.exports = ApplicationUseCases;

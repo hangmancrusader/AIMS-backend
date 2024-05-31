@@ -34,6 +34,10 @@ class VMUseCases {
   async update(Id, Data) {
     return await this.vmRepository.update(Id, Data);
   }
+
+  async vmfortidytree() {
+    return await this.vmRepository.vmfortidytree();
+  }
 }
 
 module.exports = VMUseCases;

@@ -14,6 +14,11 @@ class ServiceUseCases {
     return { newService, id };
   }
 
+  async getServiceTidyTree(Id) {
+    console.log(Id);
+    return await this.serviceRepository.getServiceTidyTree(Id);
+  }
+
   async get(Id) {
     console.log(Id);
     return await this.serviceRepository.get(Id);
@@ -35,6 +40,9 @@ class ServiceUseCases {
   }
   async getReclassification() {
     return await this.serviceRepository.getReclassification();
+  }
+  async servicesfortidytree() {
+    return await this.serviceRepository.servicesfortidytree();
   }
 }
 
