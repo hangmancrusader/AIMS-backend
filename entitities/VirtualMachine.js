@@ -83,7 +83,6 @@ class VirtualMachine {
     this.NetworkDeviceModelNumber = NetworkDeviceModelNumber;
   }
 
-  // Getters and setters can be added as needed
 }
 
 module.exports = VirtualMachine;

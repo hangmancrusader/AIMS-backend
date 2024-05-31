@@ -126,6 +126,49 @@ class ServiceRepository {
     }
   }
 
+  async getServiceTidyTree(Id) {
+    const query = `SELECT 
+    s.id AS service_id,
+    s.servicename,
+    a.id AS application_id,
+    a.ApplicationName,
+    d.id AS database_id,
+    d.DBServername,
+    d.vmID AS db_vm_id,
+    dv.VMname AS db_vm_name,
+    v.id AS app_vm_id,
+    v.VMname AS app_vm_name,
+    v.netdevID,
+    v.NetworkDeviceName,
+    v.NetworkDeviceType,
+    v.NetworkDeviceModelNumber,
+    v.secsolID,
+    v.SecSoln,
+    v.hostingID,
+    v.Hostname
+  FROM 
+    Service s
+  JOIN 
+    Application a ON s.appID = a.id
+  JOIN 
+    Database d ON a.dbID = d.id
+  JOIN 
+    VirtualMachine dv ON d.vmID = dv.id
+  JOIN 
+    VirtualMachine v ON a.vmID = v.id
+  WHERE 
+    s.id = $1; 
+    `;
+    const values = [Id];
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query, values);
+      return result.rows[0];
+    } finally {
+      client.release();
+    }
+  }
+
   async getAll() {
     const query = `SELECT *,
     TO_CHAR(DeployDate, 'yyyy-MM-dd') AS DeployDate,

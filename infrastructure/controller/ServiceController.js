@@ -86,6 +86,24 @@ router.get(
     }
   }
 );
+//api for tidy tree
+router.get(
+  "/get-Service-TidyTree/:id",
+
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const result = await service.getServiceTidyTree(id);
+      if (result) {
+        res.status(201).json(result);
+      } else {
+        res.status(404).json({ message: "Service not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
 
 router.get(
   "/getservices",
