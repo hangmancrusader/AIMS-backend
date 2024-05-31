@@ -110,7 +110,7 @@ router.get(
 
 router.get("/app-for-tidytree", async (req, res) => {
   try {
-    const result = await application.appfortidytree();
+    const result = await application.appsfortidytree();
     if (result) {
       res.status(201).json(result);
     } else {
