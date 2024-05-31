@@ -278,6 +278,23 @@ class VMRepository {
       client.release();
     }
   }
+
+  async vmfortidytree() {
+    const query = `
+    SELECT vm.id, vm. VMname , vm.Hostname, vm.SecSoln, vm.NetworkDeviceName
+    FROM virtualmachine vm
+    LEFT JOIN hosting h ON vm.hostingID= h.id
+    LEFT JOIN securitysolution s ON vm.secsolID= s.id
+    LEFT JOIN networkdevice n ON vm.netdevID= n.id;
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = VMRepository;

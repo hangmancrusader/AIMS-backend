@@ -108,6 +108,19 @@ router.get(
   }
 );
 
+router.get("/app-for-tidytree", async (req, res) => {
+  try {
+    const result = await application.appfortidytree();
+    if (result) {
+      res.status(201).json(result);
+    } else {
+      res.status(404).json({ message: "Application not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete(
   "/deleteapplication/:id",
   authorizeUserRole(["RootUser", "Applications and Services Custodian"]),

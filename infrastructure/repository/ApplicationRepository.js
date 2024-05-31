@@ -212,6 +212,21 @@ class ApplicationRepository {
       client.release();
     }
   }
+  async appsfortidytree() {
+    const query = `
+    SELECT a.id, a.ApplicationName, a.Virtual_Machine, a.DatabaseServer
+    FROM application a
+    LEFT JOIN virtualmachine vm ON a.vmID = vm.id
+    LEFT JOIN database db ON a.dbID = db.id;
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = ApplicationRepository;

@@ -102,6 +102,19 @@ router.get(
   }
 );
 
+router.get("/db-for-tidytree", async (req, res) => {
+  try {
+    const result = await database.dbfortidytree();
+    if (result) {
+      res.status(201).json(result);
+    } else {
+      res.status(404).json({ message: "database not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete(
   "/deletedatabase/:id",
   authorizeUserRole(["RootUser", "Applications and Services Custodian"]),

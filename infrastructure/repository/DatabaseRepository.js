@@ -184,6 +184,20 @@ class DatabaseRepository {
       client.release();
     }
   }
+  async dbfortidytree() {
+    const query = `
+    SELECT d.id, d.DBServername, d.Virtual_Machine
+    FROM database d 
+    LEFT JOIN virtualmachine vm ON d.vmID= vm.id;
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = DatabaseRepository;

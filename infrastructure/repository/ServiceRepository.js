@@ -318,6 +318,20 @@ class ServiceRepository {
       client.release();
     }
   }
+
+  async servicesfortidytree() {
+    const query = `SELECT s.id, s.servicename, s.Databases AS SupportingApplication, s.Applications
+    FROM service s
+    LEFT JOIN application a ON s.appID = a.id;
+    `;
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 
 module.exports = ServiceRepository;

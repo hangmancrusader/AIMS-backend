@@ -117,6 +117,19 @@ router.get(
   }
 );
 
+router.get("/vm-tidy-tree", async (req, res) => {
+  try {
+    const result = await VM.vmfortidytree();
+    if (result) {
+      res.status(201).json(result);
+    } else {
+      res.status(404).json({ message: "VMs not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete(
   "/deletevm/:id",
   authorizeUserRole(["RootUser", "Base Infrastructure Custodian"]),

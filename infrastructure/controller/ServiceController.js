@@ -109,6 +109,19 @@ router.get(
   }
 );
 
+router.get("/services-for-tidytree", async (req, res) => {
+  try {
+    const result = await service.servicesfortidytree();
+    if (result) {
+      res.status(201).json(result);
+    } else {
+      res.status(404).json({ message: "Services not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.delete(
   "/deleteservice/:id",
   authorizeUserRole(["RootUser", "Applications and Services Custodian"]),
@@ -191,7 +204,6 @@ router.get(
     }
   }
 );
-
 
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];

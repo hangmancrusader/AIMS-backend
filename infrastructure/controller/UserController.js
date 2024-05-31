@@ -232,81 +232,10 @@ router.post("/logout", async (req, res) => {
   }
 });
 
-router.post("/login/verify_acc/phone_verification", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await rootUser.login(email, password);
 
-    console.log("user is" + user);
 
-    res.json(user);
-  } catch (error) {
-    res.status(401).json({ error: error.message });
-  }
-});
 
-router.post("/login/verify_acc/email_verification", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await UserUseCases.login(email, password);
-    res.json(user);
-  } catch (error) {
-    res.status(401).json({ error: error.message });
-  }
-});
 
-//if OTP verification is successful then this route generates JWT authentication token and sends it to the client in response
-router.post(
-  "/login/verify_acc/phone_verification/verifyOTP",
-  async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await UserUseCases.login(email, password);
-      res.json(user);
-    } catch (error) {
-      res.status(401).json({ error: error.message });
-    }
-  }
-);
-
-router.post(
-  "/login/verify_acc/email_verification/verifyOTP",
-  async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await UserUseCases.login(email, password);
-      res.json(user);
-    } catch (error) {
-      res.status(401).json({ error: error.message });
-    }
-  }
-);
-
-router.post(
-  "/login/verify_acc/phone_verification/resendOTP",
-  async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await UserUseCases.login(email, password);
-      res.json(user);
-    } catch (error) {
-      res.status(401).json({ error: error.message });
-    }
-  }
-);
-
-router.post(
-  "/login/verify_acc/email_verification/resendOTP",
-  async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      const user = await UserUseCases.login(email, password);
-      res.json(user);
-    } catch (error) {
-      res.status(401).json({ error: error.message });
-    }
-  }
-);
 
 //middleware for JWT authentication
 function authenticateToken(req, res, next) {
