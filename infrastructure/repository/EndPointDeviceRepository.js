@@ -87,6 +87,72 @@ class EndPointDeviceRepository {
       client.release();
     }
   }
-  
+
+  async getcount() {
+    const query = `SELECT
+    (SELECT COUNT(*) FROM laptop) AS laptop_count,
+    (SELECT COUNT(*) FROM printer) AS printer_count,
+    (SELECT COUNT(*) FROM voip) AS voip_count,
+    (SELECT COUNT(*) FROM mobilephone) AS mobilephone_count;`;
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+  async getperct() {
+    const query = `
+    WITH total_counts AS (
+      SELECT 
+        (SELECT COUNT(*) FROM laptop) AS laptop_count,
+        (SELECT COUNT(*) FROM printer) AS printer_count,
+        (SELECT COUNT(*) FROM voip) AS voip_count,
+        (SELECT COUNT(*) FROM mobilephone) AS mobilephone_count
+    ),
+    total_sum AS (
+      SELECT 
+        (laptop_count + printer_count + voip_count + mobilephone_count) AS total_count
+      FROM total_counts
+    )
+    SELECT
+      ROUND((SELECT laptop_count FROM total_counts) * 100.0 / (SELECT total_count FROM total_sum), 2) AS laptop_percent,
+      ROUND((SELECT printer_count FROM total_counts) * 100.0 / (SELECT total_count FROM total_sum), 2) AS printer_percent,
+      ROUND((SELECT voip_count FROM total_counts) * 100.0 / (SELECT total_count FROM total_sum), 2) AS voip_percent,
+      ROUND((SELECT mobilephone_count FROM total_counts) * 100.0 / (SELECT total_count FROM total_sum), 2) AS mobilephone_percent;
+    `;
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
+
+  async getcost() {
+    const query = `
+    SELECT
+    SUM(CASE WHEN l.cost IS NOT NULL THEN l.cost ELSE 0 END) AS laptop_cost,
+    SUM(CASE WHEN p.cost IS NOT NULL THEN p.cost ELSE 0 END) AS printer_cost,
+    SUM(CASE WHEN v.cost IS NOT NULL THEN v.cost ELSE 0 END) AS voip_cost,
+    SUM(CASE WHEN m.cost IS NOT NULL THEN m.cost ELSE 0 END) AS mobilephone_cost
+  FROM laptop l
+  FULL JOIN printer p ON 1 = 1  -- Assuming no related table for printers
+  FULL JOIN voip v ON 1 = 1      -- Assuming no related table for VoIP
+  FULL JOIN mobilephone m ON 1 = 1;  -- Assuming no related table for mobile phones
+  `;
+
+    const client = await this.pool.connect();
+    try {
+      const result = await client.query(query);
+      return result.rows;
+    } finally {
+      client.release();
+    }
+  }
 }
 module.exports = EndPointDeviceRepository;
