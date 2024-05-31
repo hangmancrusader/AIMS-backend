@@ -87,5 +87,6 @@ class EndPointDeviceRepository {
       client.release();
     }
   }
+  
 }
 module.exports = EndPointDeviceRepository;

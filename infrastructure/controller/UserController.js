@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const UserAuthentication = require("../../usecase/User/UserAuthenticationUseCase.js");
 const rootUser = new UserUseCases();
 const authUser = new UserAuthentication();
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const app = express();
 app.use(express.json());
 const {
@@ -114,7 +114,16 @@ router.post(
 router.get(
   "/homepage/User_Administration/user_management/user_profile/:id",
   authenticateToken,
-  authorizeUserRole(["RootUser", "User Admin"]),
+  authorizeUserRole([
+    "RootUser",
+    "User Admin",
+    "View Only User",
+    "System Admin",
+    "Service Owner",
+    "Endpoint Devices Custodian",
+    "Base Infrastructure Custodian",
+    "Applications and Services Custodian"
+  ]),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -231,11 +240,6 @@ router.post("/logout", async (req, res) => {
     res.status(401).json({ error: error.message });
   }
 });
-
-
-
-
-
 
 //middleware for JWT authentication
 function authenticateToken(req, res, next) {
